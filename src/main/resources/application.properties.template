@@ -1,5 +1,3 @@
-
-
 # port
 server.port=8082
 
@@ -24,6 +22,6 @@ spring.jpa.database=oracle
 spring.jpa.show-sql=true
 
 #multipart
-spring.servlet.multipart.location=
-spring.servlet.multipart.max-file-size=
+#spring.servlet.multipart.location=
+#spring.servlet.multipart.max-file-size=
 
