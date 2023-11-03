@@ -30,7 +30,7 @@ public class MemberController {
         System.out.println("m = " + m);
         if (Objects.nonNull(m) && pwd.equals(m.getPwd())) {
             session.setAttribute("user", m);
-            path = "index";
+            path = "redirect:/";
         }
         return path;
     }
