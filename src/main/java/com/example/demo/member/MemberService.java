@@ -17,6 +17,10 @@ public class MemberService {
                         .email(dto.getEmail())
                         .phone(dto.getPhone())
                         .address(dto.getAddress())
+
+                        .newNo(dto.getNewNo())
+                        .deptCode(dto.getDeptCode())
+                        .companyRank(dto.getCompanyRank())
                         .build());
         return MemberDto.builder()
                 .username(m.getUsername())
@@ -25,6 +29,10 @@ public class MemberService {
                 .email(m.getEmail())
                 .phone(m.getPhone())
                 .address(m.getAddress())
+
+                .newNo(m.getNewNo())
+                .deptCode(m.getDeptCode())
+                .companyRank(m.getCompanyRank())
                 .build();
     }
 

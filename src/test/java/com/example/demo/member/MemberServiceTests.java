@@ -21,6 +21,10 @@ public class MemberServiceTests {
                 .phone("010-1234-5678")
                 .address("서울")
                 .isMaster(1)
+
+                .newNo(1)
+                .deptCode(0)
+                .companyRank(0)
                 .build());
     }
 
@@ -37,8 +41,8 @@ public class MemberServiceTests {
                     .address("경기")
 
                     .newNo(i)
-                    .deptCode(i % 3)
-                    .companyRank(i % 4)
+                    .deptCode(i % 3 + 1)
+                    .companyRank(i % 4 + 1)
                     .build());
         }
     }
