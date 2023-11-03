@@ -25,11 +25,12 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(String username, String pwd, HttpSession session) {
-        String path = "member/login";
+        String path = "member/loginForm";
         MemberDto m = service.getMember(username);
+        System.out.println("m = " + m);
         if (Objects.nonNull(m) && pwd.equals(m.getPwd())) {
             session.setAttribute("user", m);
-            path = "/";
+            path = "redirect:/";
         }
         return path;
     }
