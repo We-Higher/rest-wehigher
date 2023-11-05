@@ -1,0 +1,138 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<nav id="sidebar" th:fragment="sidebarFragment">
+    <div class="p-4 pt-5">
+        <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a>
+        <ul class="list-unstyled components mb-5">
+            <li class="active">
+                <a href="#empSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">임직원 관리</a>
+                <ul class="collapse list-unstyled" id="empSubmenu">
+                    <li>
+                        <a href="employee/list">임직원 목록</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">마이페이지</a>
+                <ul class="collapse list-unstyled" id="homeSubmenu">
+                    <li>
+                        <a href="#">내 정보수정</a>
+                    </li>
+                    <li>
+                        <a href="#">비밀번호 수정</a>
+                    </li>
+                    <li>
+                        <a href="#">회원탈퇴</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#boardSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">게시판</a>
+                <ul class="collapse list-unstyled" id="boardSubmenu">
+                    <li>
+                        <a href="#">글 목록</a>
+                    </li>
+                    <li>
+                        <a href="#">글 작성</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">전자결재</a>
+                <ul class="collapse list-unstyled" id="pageSubmenu">
+                    <li>
+                        <a id="report">품의서</a>
+                    </li>
+                    <li>
+                        <a id="expense">지출결의서</a>
+                    </li>
+                    <li>
+                        <a id="vacation">휴가신청서</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#mailSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">메일</a>
+                <ul class="collapse list-unstyled" id="mailSubmenu">
+                    <li>
+                        <a href="#">메일 보내기</a>
+                    </li>
+                    <li>
+                        <a href="#">받은 메일함</a>
+                    </li>
+                    <li>
+                        <a href="#">보낸 메일함</a>
+                    </li>
+                    <li>
+                        <a href="#">휴지통</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#messegeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">메신저</a>
+                <ul class="collapse list-unstyled" id="messegeSubmenu">
+                    <li>
+                        <a href="#">메신저</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false"
+                   class="dropdown-toggle">드라이브(자료실)</a>
+                <ul class="collapse list-unstyled" id="dataSubmenu">
+                    <li>
+                        <a href="#">자료 목록</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#workSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">일정(캘린더)</a>
+                <ul class="collapse list-unstyled" id="workSubmenu">
+                    <li>
+                        <a href="#">캘린더 보기</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#roomSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">회의실</a>
+                <ul class="collapse list-unstyled" id="roomSubmenu">
+                    <li>
+                        <a href="#">회의실 접속</a>
+                    </li>
+                    <li>
+                        <a href="#">회의실 예약</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#attSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">근태관리</a>
+                <ul class="collapse list-unstyled" id="attSubmenu">
+                    <li>
+                        <a href="#">임직원 목록</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#">About</a>
+            </li>
+            <li>
+                <a href="#">Portfolio</a>
+            </li>
+            <li>
+                <a href="#">Contact</a>
+            </li>
+        </ul>
+
+        <div class="footer">
+            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a
+                        href="https://colorlib.com" target="_blank">Colorlib.com</a>
+                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>
+        </div>
+    </div>
+    <script src="/js/sidebar.js" type='text/javascript'></script>
+</nav>
+</html>

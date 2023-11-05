@@ -1,0 +1,14 @@
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{base}">
+<div layout:fragment="content">
+<link href="/member/css/login_form.css" rel="stylesheet">
+<form action="/member/login" method="POST">
+    id: <input type="text" name="username"><br/>
+    pwd: <input type="password" name="pwd"><br/>
+    <button type="submit" class="btn btn-primary">로그인</button>
+</form>
+</div>
+<script layout:fragment="script" src="/member/js/login_form.js" type='text/javascript'></script>
+</html>

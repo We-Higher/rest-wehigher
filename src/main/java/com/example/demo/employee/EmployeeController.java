@@ -20,7 +20,7 @@ public class EmployeeController {
 	@GetMapping("/list")
 	public String emplist() {
 		
-		return "employee/list";
+		return "employee/employee_list";
 	}
 	
 	//글목록
