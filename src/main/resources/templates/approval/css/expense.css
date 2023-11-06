@@ -1,0 +1,192 @@
+/* 1. Essential style : 반드시 적용되어야 하는 스타일입니다. 문서작성 시, Sample에서 제거불가 한 스타일 */
+#divCustomWrapper {
+    word-break: break-all;
+    font-family: malgun gothic, dotum, arial, tahoma;
+    font-size: 9pt;
+}
+
+#divCustomWrapper * {
+    max-width: 800px !important;
+}
+
+/* (1) Section(제목, 결재선, 내용) */
+#divCustomWrapper #titleSection,
+#divCustomWrapper #draftSection,
+#divCustomWrapper .detailSection {
+    width: 800px !important;
+    clear: both;
+    margin-top: 20px !important;
+    vertical-align: middle;
+}
+
+#divCustomWrapper #titleSection {
+    text-align: center;
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 30px !important;
+    margin-top: 20px !important;
+}
+
+#divCustomWrapper #draftSection {
+    display: inline-block;
+}
+
+#divCustomWrapper .detailSection > * {
+    margin-bottom: 10px;
+}
+
+/* (2) Table */
+#divCustomWrapper table {
+    border-collapse: collapse;
+    table-layout: fixed;
+    word-break: break-all;
+}
+
+/* 2. Option style : 용도에 따라 적용합니다.*/
+/* (1) Table option : 2Type(subject / detail), Affacted elements(td), Range('divCustomWrapper' 하단요소) */
+#divCustomWrapper td.subjectColumn {
+    border: 1px solid black !important;
+    font-size: 9pt !important;
+    height: 22px;
+    padding: 3px 1px 3px 1px; /*top right bottom left*/
+}
+
+#divCustomWrapper td.detailColumn {
+    border: 1px solid black !important;
+    font-size: 9pt !important;
+    height: 22px;
+    padding: 3px 5px 3px 5px; /*top right bottom left*/
+}
+
+#divCustomWrapper td.detailColumn {
+    text-align: left;
+}
+
+#divCustomWrapper td.subjectColumn {
+    background: rgb(221, 221, 221);
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* (2) detailColumn :  3Type(center / right / high), Affacted elements(All), Range('detailColumn' 하단요소) */
+/* 설명 : detailColumn 커스텀 시 사용 */
+/* 사용방법 : 번호와 중앙정렬 텍스트 작성 시 'centerCol' CLASS 적용, 숫자와 금액 작성 시 'rightCol' CLASS 적용,
+editor 작성 시 'editorCol' CLASS 적용, textarea 작성 시 'areaCol' CLASS 적용 */
+#divCustomWrapper td.detailColumn.centerCol {
+    text-align: center;
+}
+
+#divCustomWrapper td.detailColumn.rightCol {
+    text-align: right;
+}
+
+#divCustomWrapper td.detailColumn.editorCol {
+    height: 300px;
+    vertical-align: top;
+}
+
+#divCustomWrapper td.detailColumn.areaCol {
+    height: 120px;
+    vertical-align: top;
+}
+
+/* (3) Partition option : 2Type (left / right), Affacted elements(div), Range('partition'div영역 하단요소) */
+/* 설명 : 좌,우로 분할되는 레이아웃 작성시 사용, 1라인에 1개 요소만 배치(줄바뀜 동반) */
+/* 사용방법 : 분할할 영역에 partition CLASS를 적용 -> 분할배치하고자하는 하위요소에 'left, right' CLASS 적용 */
+#divCustomWrapper div.partition .left {
+    display: inline-block;
+    clear: left;
+    float: left;
+}
+
+#divCustomWrapper div.partition .right {
+    display: inline-block;
+    clear: right;
+    float: right;
+}
+
+/* (4) In a row option : 2Type(left / right), Affacted elements(All), Range('inaRowRight or inRowLeft'div영역 하단요소) */
+/* 설명 : 좌,우 끝에 정렬되는 레이아웃 작성 시 사용, 1라인에 여러개 요소 배치, Partition option과 조합(줄바뀜 없이 배치) */
+/* 사용방법 : 나란히 정렬하고자 하는 요소들을, 'in a row'div 영역 내에 배치 */
+#divCustomWrapper div.inaRowRight {
+    text-align: right;
+}
+
+#divCustomWrapper div.inaRowLeft {
+    text-align: left;
+}
+
+/* (5) button :  2Type(td / div), Affacted elements(All) */
+/* 설명 : 행 추가, 행 삭제 버튼 작성 시 'viewModeHiddenPart'(기안 시 버튼 가려주는 클래스)와 조합해서 사용 */
+/* 사용방법 : 테이블에 한줄로 사용 시 td에 'viewModeHiddenPart .td_button' CLASS 적용 -> 각 버튼에 'button' CLASS 적용 td 내 텍스트 아래에 쓰이거나 테이블 밖에서 사용 시 div에 viewModeHiddenPart .div_button CLASS 적용 -> 각 버튼에 button CLASS 적용 */
+#divCustomWrapper .td_button {
+    word-break: break-all;
+    padding: 3px;
+    border: none;
+    width: 800px;
+    height: 22px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+#divCustomWrapper .div_button {
+    word-break: break-all;
+    padding: 3px;
+    border: none;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    height: 22px;
+    vertical-align: middle;
+}
+
+#divCustomWrapper a.button {
+    background: rgb(102, 102, 102);
+    color: rgb(255, 255, 255);
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 0px;
+    margin-left: 0px;
+    font-size: 9pt !important;
+}
+
+/* (6) p :  2Type(titleP / freeP), Affacted elements(All) */
+/* 설명 : 테이블 별 소제목과 테이블 아래 설명 작성 시 사용*/
+p.titleP {
+    font-weight: bold;
+    font-size: 12px;
+    margin: 15px 1px 5px 5px; /*top right bottom left*/
+}
+
+p.freeP {
+    font-weight: normal;
+    font-size: 12px;
+    margin: 1px 1px 3px 5px; /*top right bottom left*/
+}
+
+/* 인쇄시에만 적용되는 스타일입니다. 순서대로 1.양식 인쇄 시 중앙으로 위치 2.테이블 테두리 고정 3.버튼 가리기 */
+
+@media print {
+    .viewModeHiddenPart {
+        display: none;
+    }
+
+    h1, h2, h3, h4, h5, dl, dt, dd, ul, li, ol, th, td, p, blockquote, form, fieldset, legend, div, body {
+        -webkit-print-color-adjust: exact;
+    }
+}
+
+/* 추가적인 스타일이 필요한 경우, 하단의 style에서 정의하여야 합니다. 상단의 Common style은 변경하지 않습니다. */
+/* (스타일이 중복되는 경우, 기본적으로 하단에 작성한 style이 우선적으로 적용됩니다.) */
+#divCustomWrapper td.subjectColumn.no {
+    background: rgb(255, 255, 255);
+    border: none !important;
+}
+
+#divCustomWrapper td.detailColumn.no {
+    border: none !important;
+}
+
+#divCustomWrapper td.subjectColumn.leftCol {
+    text-align: left !important;
+}

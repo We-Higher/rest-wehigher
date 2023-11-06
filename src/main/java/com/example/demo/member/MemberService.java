@@ -36,8 +36,8 @@ public class MemberService {
                 .build();
     }
 
-    public MemberDto getMember(String id) {
-        Member m = dao.findByUsername(id);
+    public MemberDto getMember(String username) {
+        Member m = dao.findByUsername(username);
         if (m == null) {
             return null;
         }
@@ -49,7 +49,7 @@ public class MemberService {
                 .email(m.getEmail())
                 .phone(m.getPhone())
                 .address(m.getAddress())
-                .companyNamme(m.getCompanyNamme())
+                .companyName(m.getCompanyName())
                 .deptCode(m.getDeptCode())
                 .companyRank(m.getCompanyRank())
                 .newNo(m.getNewNo())
