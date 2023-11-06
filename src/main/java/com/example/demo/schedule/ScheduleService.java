@@ -13,19 +13,19 @@ public class ScheduleService {
 
     //추가,수정
     public ScheduleDto save(ScheduleDto dto) {
-        Schedule entity = dao.save(new Schedule(dto.getId(), dto.getTitle(), dto.getStartDate(), dto.getEndDate()));
-        return new ScheduleDto(entity.getId(), entity.getTitle(), entity.getStartDate(), entity.getEndDate());
+        Schedule entity = dao.save(new Schedule(dto.getId(), dto.getTitle(), dto.getStartDate(), dto.getEndDate(),dto.getClassName()));
+        return new ScheduleDto(entity.getId(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(),entity.getClassName());
     }
 
     public ScheduleDto get(int id) {
         Schedule entity = dao.findById(id).orElse(null);
-        return new ScheduleDto(entity.getId(), entity.getTitle(), entity.getStartDate(), entity.getEndDate());
+        return new ScheduleDto(entity.getId(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(),entity.getClassName());
     }
     public ArrayList<ScheduleDto> getAll(){
         List<Schedule> s = dao.findAll();
         ArrayList<ScheduleDto> list = new ArrayList<>();
         for(Schedule entity:s) {
-            list.add(new ScheduleDto(entity.getId(), entity.getTitle(), entity.getStartDate(), entity.getEndDate()));
+            list.add(new ScheduleDto(entity.getId(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(),entity.getClassName()));
         }
         return list;
     }

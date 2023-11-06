@@ -6,9 +6,10 @@ import org.json.simple.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -21,17 +22,18 @@ public class ScheduleController {
     @ResponseBody
     public ArrayList<Map<String, Object>> list(ModelMap map) {//map은 자동으로 뷰페이지로 전달됨
         ArrayList<ScheduleDto> listAll = service.getAll();
+
         JSONObject jsonObj = new JSONObject();
         JSONArray jsonArr = new JSONArray();
 
         HashMap<String, Object> hash = new HashMap<>();
 
-
-
         for (int i = 0; i < listAll.size(); i++) {
 
             hash.put("title", listAll.get(i).getTitle());
             hash.put("start", listAll.get(i).getStartDate());
+            hash.put("end", listAll.get(i).getEndDate());
+            hash.put("className", listAll.get(i).getClassName());
 
             jsonObj = new JSONObject(hash);
             jsonArr.add(jsonObj);
@@ -46,9 +48,21 @@ public class ScheduleController {
 
     //글작성
     @PostMapping("/add")
-    public String add(ScheduleDto s) {
-        service.save(s);
-        return "redirect:/schedule/canlendar";
+    @ResponseBody
+    public String addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
+
+        for (int i = 0; i < param.size(); i++) {
+
+            String title = (String) param.get(i).get("title");
+            String startDateString = (String) param.get(i).get("start");
+            String endDateString = (String) param.get(i).get("end");
+
+            LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
+            LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+        }
+        return "/schedule/canlendar";
     }
 
     //글번호로검색

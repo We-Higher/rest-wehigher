@@ -30,6 +30,7 @@ public class Schedule {
     @Column(name = "end_date")
     private LocalDateTime endDate;
 
+    private String className;
 
 
 }
