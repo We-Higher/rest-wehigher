@@ -21,7 +21,7 @@ public class Member {
     private String email;
     private String phone; // 휴대전화
     private String address; // 거주지
-    private String companyNamme; // 회사명
+    private String companyName; // 회사명
     private int deptCode; // 부서 코드
     private int companyRank; // 직급
     private int newNo; // 사번
