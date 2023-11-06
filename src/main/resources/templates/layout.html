@@ -14,6 +14,9 @@
     <!-- main css -->
     <link rel="stylesheet" href="/css/style.css">
 
+    <!-- content style -->
+    <th:block layout:fragment="style"></th:block>
+
 
     <!-- JQuery -->
     <!--<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>-->
@@ -30,11 +33,11 @@
 <body>
 <div class="wrapper d-flex align-items-stretch">
     <!-- sidebar -->
-    <nav th:replace="~{sidebar :: sidebarFragment}"></nav>
+    <nav th:replace="~{fragments/sidebar :: sidebarFragment}"></nav>
 
     <!-- main content -->
     <div id="content" class="p-4 p-md-5">
-        <nav th:replace="~{navbar :: navbarFragment}"></nav>
+        <nav th:replace="~{fragments/navbar :: navbarFragment}"></nav>
         <th:block layout:fragment="content"></th:block>
     </div>
 </div>
@@ -42,7 +45,7 @@
 <!-- main js -->
 <script src="/js/main.js"></script>
 
-<!-- 개별 JavaScript -->
+<!-- content JavaScript -->
 <th:block layout:fragment="script"></th:block>
 
 </body>
