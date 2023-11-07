@@ -56,7 +56,7 @@ public class ScheduleController {
     //글작성
     @PostMapping("/add")
     @ResponseBody
-    public String addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
+    public Map addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
@@ -77,9 +77,12 @@ public class ScheduleController {
         ScheduleDto dto = ScheduleDto.builder()
                 .title(title).startDate(startDate).endDate(endDate)
                 .build();
-        service.save(dto);
+        ScheduleDto s = service.save(dto);
 
-        return "/schedule";
+        Map<String, String> map = new HashMap<>();
+        map.put("id" , s.getId()+"");
+        return map;
+
     }
 
     //삭제
