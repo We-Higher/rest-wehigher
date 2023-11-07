@@ -19,7 +19,7 @@ public class ScheduleController {
 
     @RequestMapping("")
     public String schedule() {
-        return "schedule/canlendar";
+        return "schedule/calendar";
     }
 
 
