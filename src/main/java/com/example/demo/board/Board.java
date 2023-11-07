@@ -29,7 +29,7 @@ import lombok.ToString;
 @ToString
 public class Board {
 	@Id //pk지정
-	@SequenceGenerator(name="seq_gen", sequenceName="seq_board", allocationSize=1)//시퀀스 생성. 생성한 시퀀스 이름:seq_board 
+	@SequenceGenerator(name="seq_gen", sequenceName="seq_board1", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_gen")//자동으로 값 할당
 	private int num;
 	private Date wdate;
@@ -38,11 +38,7 @@ public class Board {
 	@ManyToOne
 	@JoinColumn(nullable=false)//member(id)에 조인. 널 허용 안함
 	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Member id;
-	@ManyToOne
-	@JoinColumn(nullable=false)//member(id)에 조인. 널 허용 안함
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Member username;
+	private Member member;
 	private String title;
 	private String content;
 

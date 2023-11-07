@@ -27,7 +27,7 @@ public class MemberController {
         MemberDto m = service.getMember(username);
         System.out.println("m = " + m);
         if (Objects.nonNull(m) && pwd.equals(m.getPwd())) {
-            session.setAttribute("user", m);
+            session.setAttribute("username", m);
             session.setAttribute("loginId", m.getName());
             System.out.println(m.getName());
             path = "redirect:/";
