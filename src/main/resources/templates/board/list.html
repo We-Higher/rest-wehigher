@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Title</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$("#report").click(function () {
+				var width = 830;
+				var height = 750;
+				var left = (window.innerWidth - width) / 2;
+				var top = (window.innerHeight - height) / 2;
+
+				window.open("/report", "_blank", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
+			})
+
+			$("#expense").click(function () {
+				var width = 820;
+				var height = 750;
+				var left = (window.innerWidth - width) / 2;
+				var top = (window.innerHeight - height) / 2;
+
+				window.open("/expense", "_blank", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
+			})
+
+			$("#vacation").click(function () {
+				var width = 830;
+				var height = 500;
+				var left = (window.innerWidth - width) / 2;
+				var top = (window.innerHeight - height) / 2;
+
+				window.open("/vacation", "_blank", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
+			})
+		})
+	</script>
+</head>
+
+<body>
+	<div class="wrapper d-flex align-items-stretch">
+		<nav id="sidebar">
+			<div class="p-4 pt-5">
+				<a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a>
+				<ul class="list-unstyled components mb-5">
+					<li class="active">
+						<a href="#empSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">임직원
+							관리</a>
+						<ul class="collapse list-unstyled" id="empSubmenu">
+							<li>
+								<a href="#employee/list">임직원 목록</a>
+							</li>
+						</ul>
+					</li>
+					<li class="active">
+						<a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">마이페이지</a>
+						<ul class="collapse list-unstyled" id="homeSubmenu">
+							<li>
+								<a href="#">내 정보수정</a>
+							</li>
+							<li>
+								<a href="#">비밀번호 수정</a>
+							</li>
+							<li>
+								<a href="#">회원탈퇴</a>
+							</li>
+						</ul>
+					</li>
+					<li class="active">
+						<a href="#boardSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">게시판</a>
+						<ul class="collapse list-unstyled" id="boardSubmenu">
+							<li>
+								<a href="#">글 목록</a>
+							</li>
+							<li>
+								<a href="#">글 작성</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">전자결재</a>
+						<ul class="collapse list-unstyled" id="pageSubmenu">
+							<li>
+								<a id="report">품의서</a>
+							</li>
+							<li>
+								<a id="expense">지출결의서</a>
+							</li>
+							<li>
+								<a id="vacation">휴가신청서</a>
+							</li>
+						</ul>
+					</li>
+					<li class="active">
+						<a href="#mailSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">메일</a>
+						<ul class="collapse list-unstyled" id="mailSubmenu">
+							<li>
+								<a href="#">메일 보내기</a>
+							</li>
+							<li>
+								<a href="#">받은 메일함</a>
+							</li>
+							<li>
+								<a href="#">보낸 메일함</a>
+							</li>
+							<li>
+								<a href="#">휴지통</a>
+							</li>
+						</ul>
+					</li>
+					<li class="active">
+						<a href="#messegeSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">메신저</a>
+						<ul class="collapse list-unstyled" id="messegeSubmenu">
+							<li>
+								<a href="#">메신저</a>
+							</li>
+						</ul>
+					</li>
+					<li class="active">
+						<a href="#dataSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">드라이브(자료실)</a>
+						<ul class="collapse list-unstyled" id="dataSubmenu">
+							<li>
+								<a href="#">자료 목록</a>
+							</li>
+						</ul>
+					</li>
+					<li class="active">
+						<a href="#workSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">일정(캘린더)</a>
+						<ul class="collapse list-unstyled" id="workSubmenu">
+							<li>
+								<a href="#">캘린더 보기</a>
+							</li>
+						</ul>
+					</li>
+					<li class="active">
+						<a href="#roomSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">회의실</a>
+						<ul class="collapse list-unstyled" id="roomSubmenu">
+							<li>
+								<a href="#">회의실 접속</a>
+							</li>
+							<li>
+								<a href="#">회의실 예약</a>
+							</li>
+						</ul>
+					</li>
+					<li class="active">
+						<a href="#attSubmenu" data-toggle="collapse" aria-expanded="false"
+							class="dropdown-toggle">근태관리</a>
+						<ul class="collapse list-unstyled" id="attSubmenu">
+							<li>
+								<a href="#">임직원 목록</a>
+							</li>
+						</ul>
+					</li>
+					<li>
+						<a href="#">About</a>
+					</li>
+					<li>
+						<a href="#">Portfolio</a>
+					</li>
+					<li>
+						<a href="#">Contact</a>
+					</li>
+				</ul>
+
+				<div class="footer">
+					<p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						Copyright &copy;
+						<script>document.write(new Date().getFullYear());</script> All rights reserved | This template
+						is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com"
+							target="_blank">Colorlib.com</a>
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</p>
+				</div>
+
+			</div>
+		</nav>
+
+		<div id="content" class="p-4 p-md-5">
+
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<div class="container-fluid">
+
+					<button type="button" id="sidebarCollapse" class="btn btn-primary">
+						<i class="fa fa-bars"></i>
+						<span class="sr-only">Toggle Menu</span>
+					</button>
+					<button class="btn btn-dark d-inline-block d-lg-none ml-auto" type="button" data-toggle="collapse"
+						data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<i class="fa fa-bars"></i>
+					</button>
+
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="nav navbar-nav ml-auto">
+							<li class="nav-item active">
+								<a class="nav-link" href="#">Home</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">About</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Portfolio</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Contact</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<h2 class="mb-4">자유게시판</h2>
+			<form action="/employee/list" method="post">
+					<select name="type">
+						<option value="none">전체</option>
+						<option value="name">이름</option>
+					</select>
+					<input type="text" name="option">
+					<input type="submit" value="검색" name="search">
+				</form>
+				<table border="1">
+					<tr>
+						<th>글번호</th>
+						<th>아이디</th>
+						<th>이름</th>
+						<th>제목</th>
+						<th>작성일자</th>
+						<th>수정일자</th>
+					</tr>
+					<tr th:each="b:${list}">
+						<td><a th:href="@{/board/edit(num=${b.num })}" th:text="${b.name }"></a></td>
+						<td th:text="${b.id }"></td>
+						<td th:text="${b.username }"></td>
+						<td th:text="${b.title }"></td>
+						<td th:text="${b.content }"></td>
+						<td th:text="${b.wdate }"></td>
+						<td th:text="${b.udate }"></td>
+					</tr>
+				</table>
+		</div>
+
+		<script src="/js/jquery.min.js"></script>
+		<script src="/js/popper.js"></script>
+		<script src="/js/bootstrap.min.js"></script>
+		<script src="/js/main.js"></script>
+</body>
+
+</html>

@@ -22,12 +22,15 @@ public class MemberController {
 
     @PostMapping("/login")
     public String login(String username, String pwd, HttpSession session) {
-        String path = "login_form";
+    	
+        String path = "member/loginForm";
         MemberDto m = service.getMember(username);
         System.out.println("m = " + m);
         if (Objects.nonNull(m) && pwd.equals(m.getPwd())) {
-            session.setAttribute("username", m);
-            path = "redirect:/"; // 로그인 성공시 이동할 페이지
+            session.setAttribute("user", m);
+            session.setAttribute("loginId", m.getName());
+            System.out.println(m.getName());
+            path = "redirect:/";
         }
         return path;
     }

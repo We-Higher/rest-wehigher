@@ -39,7 +39,6 @@ public class MemberServiceTests {
                     .email("user" + i + "@email.com")
                     .phone("010-1234-5678")
                     .address("경기")
-
                     .newNo(i)
                     .deptCode(i % 3 + 1)
                     .companyRank(i % 4 + 1)

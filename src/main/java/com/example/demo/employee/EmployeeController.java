@@ -10,31 +10,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.example.demo.employee.EmployeeDto;
+import com.example.demo.employee.EmployeeService;
+
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {
 
-	//@Autowired
-	//private EmployeeService service;
+	@Autowired
+	private EmployeeService service;
 	
 	@GetMapping("/list")
-	public String emplist() {
-		
 		return "employee/employee_list";
-	}
-	
-	//글목록
-	/*
-	@RequestMapping("/list")
-	public void list(ModelMap map) {//map은 자동으로 뷰페이지로 전달됨
+	public void list(ModelMap map) {
 		ArrayList<EmployeeDto> list = service.getAll();
 		map.addAttribute("list", list);
-		//뷰 페이지 경로: /Employee/list.jsp
 	}
 	
-	@GetMapping("/add")
-	public void addForm() {}
+	// 옵션으로 검색
+	@PostMapping("/list")
+	public String getbyfname(String type, Model map, String option) {
+		System.out.println(type);
+		System.out.println(option);
+		ArrayList<EmployeeDto> list = service.getByOption(type, option);
+		map.addAttribute("list", list);
+		return "Employee/list";
+	}
 	
+	/*
 	//글작성
 	@PostMapping("/add")
 	public String add(EmployeeDto b) {
@@ -73,14 +76,7 @@ public class EmployeeController {
 		map.addAttribute("list", list);
 		return "Employee/list";
 	}
-	
-	//제목으로 검색
-	@RequestMapping("/getbytitle")
-	public String getbytitle(String title, Model map) {
-		ArrayList<EmployeeDto> list = service.getByTitle(title);
-		map.addAttribute("list", list);
-		return "Employee/list";
-	}*/
+	*/
 }
 
 
