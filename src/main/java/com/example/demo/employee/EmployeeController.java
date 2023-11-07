@@ -21,7 +21,6 @@ public class EmployeeController {
 	private EmployeeService service;
 	
 	@GetMapping("/list")
-		return "employee/employee_list";
 	public void list(ModelMap map) {
 		ArrayList<EmployeeDto> list = service.getAll();
 		map.addAttribute("list", list);
