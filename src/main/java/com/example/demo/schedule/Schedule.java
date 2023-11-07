@@ -17,7 +17,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class Schedule {
     @Id
-    @SequenceGenerator(name="sch_gen", sequenceName="seq_schedule", allocationSize=1)
+    @SequenceGenerator(name="sch_gen", sequenceName="seq_schedule1", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="sch_gen")
     private int id;
     private String title;

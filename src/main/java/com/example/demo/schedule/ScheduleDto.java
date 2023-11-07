@@ -9,6 +9,7 @@ import java.util.Date;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class ScheduleDto {
     private int id;
     private String title;

@@ -17,6 +17,12 @@ import java.util.*;
 public class ScheduleController {
     private final ScheduleService service;
 
+    @RequestMapping("")
+    public String schedule() {
+        return "schedule/canlendar";
+    }
+
+
     //글목록
     @RequestMapping("/list")
     @ResponseBody
@@ -29,7 +35,7 @@ public class ScheduleController {
         HashMap<String, Object> hash = new HashMap<>();
 
         for (int i = 0; i < listAll.size(); i++) {
-
+            hash.put("cal_Id",listAll.get(i).getId());
             hash.put("title", listAll.get(i).getTitle());
             hash.put("start", listAll.get(i).getStartDate());
             hash.put("end", listAll.get(i).getEndDate());
@@ -43,7 +49,8 @@ public class ScheduleController {
 
     //글작성폼
     @GetMapping("/add")
-    public void addForm() {}
+    public void addForm() {
+    }
 
 
     //글작성
@@ -53,16 +60,33 @@ public class ScheduleController {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
-        for (int i = 0; i < param.size(); i++) {
+        System.out.println("param = " + param);
+        System.out.println(param.get(0));
+        System.out.println(param.get(0).get("title"));
+        System.out.println(param.get(0).get("start"));
+        System.out.println(param.get(0).get("end"));
 
-            String title = (String) param.get(i).get("title");
-            String startDateString = (String) param.get(i).get("start");
-            String endDateString = (String) param.get(i).get("end");
+        String title = (String) param.get(0).get("title"); // 이름 받아오기
+        String startDateString = (String) param.get(0).get("start");
+        String endDateString = (String) param.get(0).get("end");
 
-            LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
-            LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
-        }
-        return "/schedule/canlendar";
+
+        LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
+        LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+
+        ScheduleDto dto = ScheduleDto.builder()
+                .title(title).startDate(startDate).endDate(endDate)
+                .build();
+        service.save(dto);
+
+        return "/schedule";
+    }
+
+    //삭제
+    @DeleteMapping("/del/{id}")
+    public String del(@PathVariable("id") int id) {
+        service.del(id);
+        return "redirect:/schedule";
     }
 
     //글번호로검색
