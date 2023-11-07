@@ -15,7 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Expense {
     @Id
     @SequenceGenerator(name = "seq_gen", sequenceName = "seq_expense", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_expense")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen")
     private int expenseNum; //품의서 고유번호
 
     @JoinColumn(nullable = false)

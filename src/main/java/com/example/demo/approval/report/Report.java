@@ -17,7 +17,7 @@ import java.util.Date;
 public class Report {
     @Id
     @SequenceGenerator(name = "seq_gen", sequenceName = "seq_report", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_report")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen")
     private int reportNum; //품의서 고유번호
 
     @JoinColumn(nullable = false)
@@ -26,7 +26,12 @@ public class Report {
     private Member member;   //멤버
     private String title;   //제목
     private String content; //상세내용
-    private String wdate; //기안일
+    private Date wdate; //기안일
     private String serviceLife; //보존연한
     private String classification; //비밀등급
+
+    @PrePersist
+    public void setDate(){
+        wdate = new Date();
+    }
 }

@@ -30,7 +30,7 @@ import lombok.ToString;
 public class Board {
 	@Id //pk지정
 	@SequenceGenerator(name="seq_gen", sequenceName="seq_board1", allocationSize=1)
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_board1")//자동으로 값 할당
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_gen")//자동으로 값 할당
 	private int num;
 	private Date wdate;
 	private Date udate;

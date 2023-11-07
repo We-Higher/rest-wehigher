@@ -32,7 +32,7 @@ public class Employee {
 	@Id //pk지정
 	@SequenceGenerator(name="seq_gen", sequenceName="seq_emp1", allocationSize=1)//시퀀스 생성. 생성한 시퀀스 이름:seq_board2 
 	private int num;
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_emp1")//자동으로 값 할당
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_gen")//자동으로 값 할당
     private String name; // 이름
     private int newNo; // 사번
     private int deptCode; // 부서 코드

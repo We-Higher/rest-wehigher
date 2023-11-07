@@ -15,7 +15,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Vacation {
     @Id
     @SequenceGenerator(name = "seq_gen", sequenceName = "seq_vacation", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_vacation")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen")
     private int vacationNum; //휴가신청서 고유번호
 
     @JoinColumn(nullable = false)
