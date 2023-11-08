@@ -49,12 +49,6 @@ public class ScheduleController {
         return jsonArr;
     }
 
-    //일정추가폼
-    @GetMapping("/add")
-    public void addForm() {
-    }
-
-
     //일정추가
     @PostMapping("/add")
     @ResponseBody
@@ -94,13 +88,6 @@ public class ScheduleController {
         return "redirect:/schedule";
     }
 
-    //글번호로검색(수정폼)
-    @GetMapping("/edit/{id}")
-    public void editForm(int id, ModelMap map) {
-        ScheduleDto s = service.get(id);
-        map.addAttribute("s", s);
-    }
-
     //수정
     @PatchMapping("/edit/{id}")
     @ResponseBody
@@ -121,19 +108,4 @@ public class ScheduleController {
 
         return null;
     }
-
-
-
-//
-//    //수정완료
-//    @PostMapping("/edit")
-//    public String edit(ScheduleDto s) {
-//        ScheduleDto s2 = service.get(s.getId());
-//        s2.setTitle(s.getTitle());
-//        s2.setStart(s.getStart());
-//        s2.setEnd(s.getEnd());
-//        service.save(s2);
-//        return "redirect:/schedule/canlendar";
-//    }
-
 }
