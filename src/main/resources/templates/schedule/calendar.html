@@ -45,6 +45,10 @@
                                 }
                             },
 
+                            /**
+                             * 드래그로 이벤트 추가하기
+                             */
+
                             select: function (arg) { // 캘린더에서 이벤트를 생성할 수 있다.
 
                                 var title = prompt('일정을 입력해주세요.');
@@ -98,6 +102,35 @@
                             },
 
                             /**
+                             * 드래그로 이벤트 수정하기
+                             */
+                            eventDrop: function (info){
+                                console.log(info);
+                                if(confirm(info.event.title + "일정을 수정하시겠습니까 ?")){
+                                }
+                                var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                                var obj = new Object();
+
+                                obj.title = info.event._def.title;
+                                obj.start = info.event._instance.range.start;
+                                obj.end = info.event._instance.range.end;
+                                events.push(obj);
+
+                                console.log(events);
+                                console.log(info.event._def.extendedProps.cal_Id)
+                                let calId = info.event._def.extendedProps.cal_Id
+                                $(function deleteData() {
+                                    $.ajax({
+                                        url: "/schedule/edit/" + calId,
+                                        method: "PATCH",
+                                        dataType: "json",
+                                        data: JSON.stringify(events),
+                                        contentType: 'application/json',
+                                    })
+                                })
+                            },
+
+                            /**
                              * 이벤트 선택해서 삭제하기
                              */
                             eventClick: function (info) {
@@ -123,6 +156,7 @@
                                     })
                                 })
                             },
+
                             /**
                              * data 로 값이 넘어온다. log 값 전달.
                              */
