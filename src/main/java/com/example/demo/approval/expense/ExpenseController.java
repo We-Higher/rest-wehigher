@@ -14,6 +14,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ExpenseController {
@@ -28,20 +30,26 @@ public class ExpenseController {
 
     //지출결의서
     @GetMapping("/expense")
-    public ModelAndView expense(HttpSession session){
+    public ModelAndView expense(HttpSession session) {
         ModelAndView mav = new ModelAndView("approval/expense");
         MemberDto mdto = (MemberDto) session.getAttribute("username");
-        mav.addObject("m",mdto);
+        mav.addObject("m", mdto);
         return mav;
     }
 
     @PostMapping("/expense")
-    public void addReport(HttpServletResponse response, ExpenseDto dto, HttpSession session){
+    public void addExpense(HttpServletResponse response, ExpenseDto dto, HttpSession session) {
         try {
             init(response);
             PrintWriter out = response.getWriter();
             MemberDto mdto = (MemberDto) session.getAttribute("username");
-            dto.setMember(new Member(mdto.getId(),mdto.getUsername(),mdto.getPwd(),mdto.getName(),mdto.getEmail(),mdto.getPhone(),mdto.getAddress(),mdto.getCompanyName(),mdto.getDeptCode(),mdto.getCompanyRank(),mdto.getNewNo(),mdto.getComCall(),mdto.getIsMaster(),mdto.getStatus(),mdto.getOriginFname(),mdto.getThumbnailFname(),mdto.getNewMemNo()));
+            String[] expenses = dto.getSum().split(",");
+            int sum = 0;
+            for (String expense : expenses) {
+                sum += Integer.parseInt(expense);
+            }
+            dto.setSum(String.valueOf(sum));
+            dto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getCompanyRank(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
             eservice.saveExpense(dto);
             out.println(String.format("<script>window.close();</script>"));
             out.flush();

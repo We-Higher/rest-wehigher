@@ -41,7 +41,7 @@ public class ReportController {
             init(response);
             PrintWriter out = response.getWriter();
             MemberDto mdto = (MemberDto) session.getAttribute("username");
-            dto.setMember(new Member(mdto.getId(),mdto.getUsername(),mdto.getPwd(),mdto.getName(),mdto.getEmail(),mdto.getPhone(),mdto.getAddress(),mdto.getCompanyName(),mdto.getDeptCode(),mdto.getCompanyRank(),mdto.getNewNo(),mdto.getComCall(),mdto.getIsMaster(),mdto.getStatus(),mdto.getOriginFname(),mdto.getThumbnailFname(),mdto.getNewMemNo()));
+            dto.setMember(new Member(mdto.getId(),mdto.getUsername(),mdto.getPwd(),mdto.getName(),mdto.getEmail(),mdto.getPhone(),mdto.getAddress(),mdto.getCompanyName(),mdto.getDeptCode(),mdto.getCompanyRank(),mdto.getNewNo(),mdto.getComCall(),mdto.getIsMaster(),mdto.getStatus(),mdto.getOriginFname(),mdto.getThumbnailFname(),mdto.getNewMemNo(),mdto.getRemain()));
             rservice.saveReport(dto);
             out.println(String.format("<script>window.close();</script>"));
             out.flush();

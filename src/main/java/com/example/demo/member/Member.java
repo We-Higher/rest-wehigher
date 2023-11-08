@@ -11,7 +11,8 @@ import lombok.*;
 @Builder
 public class Member {
     @Id
-    @SequenceGenerator(name = "seq_gen", sequenceName = "seq_member1", allocationSize = 1) // 시퀀스 생성. 생성한 시퀀스 이름: seq_board
+    @SequenceGenerator(name = "seq_gen", sequenceName = "seq_member1", allocationSize = 1)
+    // 시퀀스 생성. 생성한 시퀀스 이름: seq_board
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen")
     private Long id;
     @Column(unique = true)
@@ -33,5 +34,6 @@ public class Member {
     private String originFname; // 프로필 이미지 원본 파일명
     private String thumbnailFname; // 프로필 이미지 썸네일 파일명
     private int newMemNo; // 임시 테이블 사번
-
+    @Column(columnDefinition = "int default 15", nullable = false)
+    private int remain; //연차 잔여일
 }

@@ -16,53 +16,53 @@ import java.util.ArrayList;
 @RequestMapping("/board")
 public class BoardController {
 
-	@Autowired
-	private BoardService service;
-	
-	//글목록
-	@GetMapping("/list")
-	public void list(ModelMap map) {
-		ArrayList<BoardDto> list = service.getAll();
-		map.addAttribute("list", list);
-	}
+    @Autowired
+    private BoardService service;
 
-	@GetMapping("/add")
-	public String addForm() {
-		return "/board/add";
-	}
-	
-	//글작성
-	@PostMapping("/add")
-	public String add(BoardDto b, HttpSession session) {
-		MemberDto mdto = (MemberDto) session.getAttribute("username");
-		b.setMember(new Member(mdto.getId(),mdto.getUsername(),mdto.getPwd(),mdto.getName(),mdto.getEmail(),mdto.getPhone(),mdto.getAddress(),mdto.getCompanyName(),mdto.getDeptCode(),mdto.getCompanyRank(),mdto.getNewNo(),mdto.getComCall(),mdto.getIsMaster(),mdto.getStatus(),mdto.getOriginFname(),mdto.getThumbnailFname(),mdto.getNewMemNo()));
-		service.saveBoard(b);
-		return "redirect:/board/list";
-	}
-	
-	//글번호로검색(수정폼)
-	@GetMapping("/edit")
-	public void editForm(int num, ModelMap map) {
-		BoardDto b = service.getBoard(num);
-		map.addAttribute("b", b);
-	}
-	
-	//수정완료
-	@PostMapping("/edit")
-	public String edit(BoardDto b) {
-		BoardDto b2 = service.getBoard(b.getNum());
-		b2.setTitle(b.getTitle());
-		b2.setContent(b.getContent());
-		service.saveBoard(b2);
-		return "redirect:/board/list";
-	}
-	
-	//삭제
-	@RequestMapping("/del")
-	public String del(int num) {
-		service.delBoard(num);
-		return "redirect:/board/list";
-	}
+    //글목록
+    @GetMapping("/list")
+    public void list(ModelMap map) {
+        ArrayList<BoardDto> list = service.getAll();
+        map.addAttribute("list", list);
+    }
+
+    @GetMapping("/add")
+    public String addForm() {
+        return "/board/add";
+    }
+
+    //글작성
+    @PostMapping("/add")
+    public String add(BoardDto b, HttpSession session) {
+        MemberDto mdto = (MemberDto) session.getAttribute("username");
+        b.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getCompanyRank(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
+        service.saveBoard(b);
+        return "redirect:/board/list";
+    }
+
+    //글번호로검색(수정폼)
+    @GetMapping("/edit")
+    public void editForm(int num, ModelMap map) {
+        BoardDto b = service.getBoard(num);
+        map.addAttribute("b", b);
+    }
+
+    //수정완료
+    @PostMapping("/edit")
+    public String edit(BoardDto b) {
+        BoardDto b2 = service.getBoard(b.getNum());
+        b2.setTitle(b.getTitle());
+        b2.setContent(b.getContent());
+        service.saveBoard(b2);
+        return "redirect:/board/list";
+    }
+
+    //삭제
+    @RequestMapping("/del")
+    public String del(int num) {
+        service.delBoard(num);
+        return "redirect:/board/list";
+    }
 	
 	/*
 	@RequestMapping("/getbyusername")
