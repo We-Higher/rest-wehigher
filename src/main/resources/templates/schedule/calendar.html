@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>일정달력</title>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 
+<th:block layout:fragment="style">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.5/main.min.css"
           integrity="sha512-1P/SRFqI1do4eNtBsGIAqIZIlnmOQkaY7ESI2vkl+q+hl9HSXmdPqotN0McmeZVyR4AWV+NvkP6pKOiVdY/V5A=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</th:block>
 
+<th:block layout:fragment="script">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.9/index.global.min.js"></script>
 
     <script>
-
         document.addEventListener('DOMContentLoaded', function () {
             $(function () {
                 $.ajax({
@@ -104,9 +105,9 @@
                             /**
                              * 드래그로 이벤트 수정하기
                              */
-                            eventDrop: function (info){
+                            eventDrop: function (info) {
                                 console.log(info);
-                                if(confirm(info.event.title + "일정을 수정하시겠습니까 ?")){
+                                if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
                                 }
                                 var events = new Array(); // Json 데이터를 받기 위한 배열 선언
                                 var obj = new Object();
@@ -177,16 +178,15 @@
         });
 
     </script>
-
-</head>
+</th:block>
 <body>
-<div id='wrap'>
 
-    <div id='calendar'></div>
-
-    <div style='clear:both'></div>
+<div layout:fragment="content">
+    <div id='wrap'>
+        <div id='calendar'></div>
+        <div style='clear:both'></div>
+    </div>
 </div>
-
 
 </body>
 </html>
