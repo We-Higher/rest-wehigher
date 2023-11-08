@@ -27,6 +27,7 @@ public class Expense {
     private String wdate; //작성일
     private String category; //분류
     private String detail; //내역
-    private int sum; //금액
+    private String sum;     //금액
     private String note;    //비고
+    private int status;     //결재 상태
 }

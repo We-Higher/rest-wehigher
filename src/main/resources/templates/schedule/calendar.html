@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <title>일정달력</title>
 
@@ -145,14 +148,12 @@
     </script>
 
 </head>
-<body>
+<div layout:fragment="content">
 <div id='wrap'>
 
     <div id='calendar'></div>
 
     <div style='clear:both'></div>
 </div>
-
-
-</body>
+</div>
 </html>
