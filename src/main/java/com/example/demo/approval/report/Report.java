@@ -26,12 +26,7 @@ public class Report {
     private Member member;   //멤버
     private String title;   //제목
     private String content; //상세내용
-    private Date wdate; //기안일
+    private String wdate; //기안일
     private String serviceLife; //보존연한
     private String classification; //비밀등급
-
-    @PrePersist
-    public void setDate(){
-        wdate = new Date();
-    }
 }

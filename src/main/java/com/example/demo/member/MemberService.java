@@ -1,11 +1,13 @@
 package com.example.demo.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+    @Autowired
     private final MemberDao dao;
 
     public MemberDto create(MemberDto dto) {
@@ -17,9 +19,12 @@ public class MemberService {
                         .email(dto.getEmail())
                         .phone(dto.getPhone())
                         .address(dto.getAddress())
-
+                        .comCall(dto.getComCall())
                         .newNo(dto.getNewNo())
+                        .status(dto.getStatus())
                         .deptCode(dto.getDeptCode())
+                        .isMaster(dto.getIsMaster())
+                        .companyName(dto.getCompanyName())
                         .companyRank(dto.getCompanyRank())
                         .build());
         return MemberDto.builder()
@@ -29,9 +34,12 @@ public class MemberService {
                 .email(m.getEmail())
                 .phone(m.getPhone())
                 .address(m.getAddress())
-
+                .comCall(m.getComCall())
                 .newNo(m.getNewNo())
+                .status(m.getStatus())
                 .deptCode(m.getDeptCode())
+                .isMaster(m.getIsMaster())
+                .companyName(m.getCompanyName())
                 .companyRank(m.getCompanyRank())
                 .build();
     }
@@ -42,6 +50,7 @@ public class MemberService {
             return null;
         }
         return MemberDto.builder()
+                .username(m.getUsername())
                 .id(m.getId())
                 .deptCode(m.getDeptCode())
                 .pwd(m.getPwd())
@@ -61,4 +70,41 @@ public class MemberService {
                 .newMemNo(m.getNewMemNo())
                 .build();
     }
+
+    public MemberDto getMemberByName(String name) {
+        Member m = dao.findByName(name);
+        if (m == null) {
+            return null;
+        }
+        return MemberDto.builder()
+                .username(m.getUsername())
+                .id(m.getId())
+                .deptCode(m.getDeptCode())
+                .pwd(m.getPwd())
+                .name(m.getName())
+                .email(m.getEmail())
+                .phone(m.getPhone())
+                .address(m.getAddress())
+                .companyName(m.getCompanyName())
+                .deptCode(m.getDeptCode())
+                .companyRank(m.getCompanyRank())
+                .newNo(m.getNewNo())
+                .comCall(m.getComCall())
+                .isMaster(m.getIsMaster())
+                .status(m.getStatus())
+                .originFname(m.getOriginFname())
+                .thumbnailFname(m.getThumbnailFname())
+                .newMemNo(m.getNewMemNo())
+                .build();
+    }
+
+    public MemberDto save(MemberDto dto) {
+        Member m = dao.save(new Member(dto.getId(),dto.getUsername(),dto.getPwd(),dto.getName(),dto.getEmail(),dto.getPhone(),dto.getAddress(),dto.getCompanyName(),dto.getDeptCode(),dto.getCompanyRank(),dto.getNewNo(),dto.getComCall(),dto.getIsMaster(),dto.getStatus(),dto.getOriginFname(),dto.getThumbnailFname(),dto.getNewMemNo()));
+        return new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getCompanyRank(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo());
+    }
+
+    public void delete(Long id){
+       dao.deleteById(id);
+    }
 }
+
