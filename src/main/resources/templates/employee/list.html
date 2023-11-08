@@ -1,7 +1,8 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <div layout:fragment="content">
-    <h2 class="mb-4">임직원목록</h2>
+    <a href="/member/join">임직원 추가</a>
+    <h2 class="mb-4">임직원 목록</h2>
     <form action="/employee/list" method="post">
         <select name="type">
             <option value="none">전체</option>
@@ -23,14 +24,14 @@
             <th>이메일</th>
             <th>내선전화</th>
         </tr>
-        <tr th:each="b:${list}">
-            <td th:text="${b.name }"></td>
-            <td th:text="${b.newNo }"></td>
-            <td th:text="${b.deptCode }"></td>
-            <td th:text="${b.companyRank }"></td>
-            <td th:text="${b.phone }"></td>
-            <td th:text="${b.email }"></td>
-            <td th:text="${b.comCall }"></td>
+        <tr th:each="m : ${list}">
+            <td><a th:href="@{/member/edit(name=${m.name})}">[[${m.name}]]</a></td>
+            <td th:text="${m.newNo}"></td>
+            <td th:text="${m.deptCode}"></td>
+            <td th:text="${m.companyRank}"></td>
+            <td th:text="${m.phone}"></td>
+            <td th:text="${m.email}"></td>
+            <td th:text="${m.comCall}"></td>
         </tr>
     </table>
 </div>

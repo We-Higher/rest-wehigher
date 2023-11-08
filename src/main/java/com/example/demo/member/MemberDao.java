@@ -12,6 +12,7 @@ import java.util.Optional;
 @Repository
 public interface MemberDao extends JpaRepository<Member, Long> {
     Member findByUsername(String username);
+    Member findByName(String name);
     ArrayList<Member> findByNameLike(String name);//이름으로 검색
     ArrayList<Member> findByNewNoLike(String newNo);//사번으로 검색
     ArrayList<Member> findByDeptCodeLike(String deptCode);//부서코드로 검색
