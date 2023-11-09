@@ -26,6 +26,7 @@ public class MemberService {
                         .isMaster(dto.getIsMaster())
                         .companyName(dto.getCompanyName())
                         .companyRank(dto.getCompanyRank())
+                        .remain(15)
                         .build());
         return MemberDto.builder()
                 .username(m.getUsername())
@@ -41,6 +42,7 @@ public class MemberService {
                 .isMaster(m.getIsMaster())
                 .companyName(m.getCompanyName())
                 .companyRank(m.getCompanyRank())
+                .remain(m.getRemain())
                 .build();
     }
 
@@ -68,6 +70,7 @@ public class MemberService {
                 .originFname(m.getOriginFname())
                 .thumbnailFname(m.getThumbnailFname())
                 .newMemNo(m.getNewMemNo())
+                .remain(m.getRemain())
                 .build();
     }
 
@@ -95,12 +98,13 @@ public class MemberService {
                 .originFname(m.getOriginFname())
                 .thumbnailFname(m.getThumbnailFname())
                 .newMemNo(m.getNewMemNo())
+                .remain(m.getRemain())
                 .build();
     }
 
     public MemberDto save(MemberDto dto) {
-        Member m = dao.save(new Member(dto.getId(),dto.getUsername(),dto.getPwd(),dto.getName(),dto.getEmail(),dto.getPhone(),dto.getAddress(),dto.getCompanyName(),dto.getDeptCode(),dto.getCompanyRank(),dto.getNewNo(),dto.getComCall(),dto.getIsMaster(),dto.getStatus(),dto.getOriginFname(),dto.getThumbnailFname(),dto.getNewMemNo()));
-        return new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getCompanyRank(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo());
+        Member m = dao.save(new Member(dto.getId(),dto.getUsername(),dto.getPwd(),dto.getName(),dto.getEmail(),dto.getPhone(),dto.getAddress(),dto.getCompanyName(),dto.getDeptCode(),dto.getCompanyRank(),dto.getNewNo(),dto.getComCall(),dto.getIsMaster(),dto.getStatus(),dto.getOriginFname(),dto.getThumbnailFname(),dto.getNewMemNo(),dto.getRemain()));
+        return new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getCompanyRank(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain());
     }
 
     public void delete(Long id){

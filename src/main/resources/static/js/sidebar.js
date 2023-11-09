@@ -19,7 +19,7 @@ $(document).ready(function () {
 
     $("#vacation").click(function () {
         var width = 830;
-        var height = 750;
+        var height = 780;
         var left = (window.innerWidth - width) / 2;
         var top = (window.innerHeight - height) / 2;
 

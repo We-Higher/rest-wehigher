@@ -26,5 +26,6 @@ public class MemberDto {
     private String originFname; // 프로필 이미지 원본 파일명
     private String thumbnailFname; // 프로필 이미지 썸네일 파일명
     private int newMemNo; // 임시 테이블 사번
+    private int remain; //연차 잔여일
     // TODO multipart 추가
 }
