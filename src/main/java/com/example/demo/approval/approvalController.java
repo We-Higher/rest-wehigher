@@ -6,11 +6,19 @@ import com.example.demo.approval.report.ReportDto;
 import com.example.demo.approval.report.ReportService;
 import com.example.demo.approval.vacation.VacationDto;
 import com.example.demo.approval.vacation.VacationService;
+import com.example.demo.employee.EmployeeDto;
+import com.example.demo.employee.EmployeeService;
+import com.example.demo.member.Member;
+import com.example.demo.member.MemberDto;
+import com.example.demo.member.MemberService;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 
@@ -23,37 +31,83 @@ public class approvalController {
     private ReportService rservice;
     @Autowired
     private VacationService vservice;
+    @Autowired
+    private EmployeeService empservice;
+    @Autowired
+    private MemberService mservice;
+
+    public static void init(HttpServletResponse response) {
+        response.setContentType("text/html; charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+    }
 
     @GetMapping("/draft")
     public void list(Model map) {
         ArrayList<ExpenseDto> elist = eservice.getAll();
         ArrayList<ReportDto> rlist = rservice.getAll();
         ArrayList<VacationDto> vlist = vservice.getAll();
-        map.addAttribute("elist",elist);
-        map.addAttribute("rlist",rlist);
-        map.addAttribute("vlist",vlist);
+        map.addAttribute("elist", elist);
+        map.addAttribute("rlist", rlist);
+        map.addAttribute("vlist", vlist);
+    }
+
+    @GetMapping("/mydraft")
+    public void listByMember(Model map) {
+        ArrayList<ExpenseDto> elist = eservice.getAll();
+        ArrayList<ReportDto> rlist = rservice.getAll();
+        ArrayList<VacationDto> vlist = vservice.getAll();
+        map.addAttribute("elist", elist);
+        map.addAttribute("rlist", rlist);
+        map.addAttribute("vlist", vlist);
+    }
+
+    @GetMapping("/process")
+    public void listById(Model map) {
+        ArrayList<ExpenseDto> elist = eservice.getAll();
+        ArrayList<ReportDto> rlist = rservice.getAll();
+        ArrayList<VacationDto> vlist = vservice.getAll();
+        map.addAttribute("elist", elist);
+        map.addAttribute("rlist", rlist);
+        map.addAttribute("vlist", vlist);
     }
 
     @GetMapping("/expense/edit")
-    public String editExpense(ExpenseDto edto,Model map){
+    public String editExpense(ExpenseDto edto, Model map) {
         edto = eservice.getById(edto.getExpenseNum());
-        map.addAttribute("edto",edto);
+        map.addAttribute("edto", edto);
         return "approval/edit/editExpense";
     }
 
     @GetMapping("/report/edit")
-    public String editReport(ReportDto rdto,Model map){
+    public String editReport(ReportDto rdto, Model map) {
         rdto = rservice.getById(rdto.getReportNum());
         System.out.println("rdto = " + rdto);
-        map.addAttribute("rdto",rdto);
+        map.addAttribute("rdto", rdto);
         return "approval/edit/editReport";
     }
 
     @GetMapping("/vacation/edit")
-    public String editVacation(VacationDto vdto,Model map){
+    public String editVacation(VacationDto vdto, Model map) {
         vdto = vservice.getById(vdto.getVacationNum());
         System.out.println("vdto = " + vdto);
-        map.addAttribute("vdto",vdto);
+        map.addAttribute("vdto", vdto);
         return "approval/edit/editVacation";
     }
+
+    @GetMapping("/approvalList1")
+    public ModelAndView approvalList1() {
+        ModelAndView mav = new ModelAndView("approval/approvalList1");
+        ArrayList<EmployeeDto> list = empservice.getAll();
+        mav.addObject("list", list);
+        return mav;
+    }
+
+    @GetMapping("/approvalList2")
+    public ModelAndView approvalList2() {
+        ModelAndView mav = new ModelAndView("approval/approvalList2");
+        ArrayList<EmployeeDto> list = empservice.getAll();
+        mav.addObject("list", list);
+        return mav;
+    }
+
 }

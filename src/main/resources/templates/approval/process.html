@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <h2 class="mb-4">처리할 결재문서</h2>
+    <table border="1">
+        <tr>
+            <th>문서종류</th>
+            <th>기안자</th>
+            <th>제목</th>
+            <th>작성일</th>
+        </tr>
+        <tr th:each="e: ${elist}" th:if="${e.approval1 == session.loginId || e.approval2 == session.loginId}">
+            <td>지출결의서</td>
+            <td>[[${e.member.name}]]</td>
+            <td><a th:href="@{/approval/expense/edit(expenseNum=${e.expenseNum})}">[[${e.title}]]</a></td>
+            <td>[[${e.wdate}]]</td>
+        </tr>
+        <tr th:each="r:${rlist}" th:if="${r.approval1 == session.loginId || r.approval2 == session.loginId}">
+            <td>품의서</td>
+            <td>[[${r.member.name}]]</td>
+            <td><a th:href="@{/approval/report/edit(reportNum=${r.reportNum})}">[[${r.title}]]</a></td>
+            <td>[[${r.wdate}]]</td>
+        </tr>
+        <tr th:each="v:${vlist}" th:if="${v.approval1 == session.loginId || v.approval2 == session.loginId}">
+            <td>휴가신청서</td>
+            <td>[[${v.member.name}]]</td>
+            <td><a th:href="@{/approval/vacation/edit(vacationNum=${v.vacationNum})}">[[${v.member.name}]] 휴가신청</a></td>
+            <td>[[${v.wdate}]]</td>
+        </tr>
+    </table>
+</div>
+</html>

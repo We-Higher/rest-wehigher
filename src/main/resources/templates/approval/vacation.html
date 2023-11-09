@@ -1,7 +1,28 @@
 ﻿<meta charset="UTF-8">
 <html lang="en">
 <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#approvalList1").click(function () {
+                var width = 450;
+                var height = 600;
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
 
+                window.open("/approval/approvalList1", "approvalList_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
+            });
+
+            $("#approvalList2").click(function () {
+                var width = 450;
+                var height = 600;
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+
+                window.open("/approval/approvalList2", "approvalList_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
+            });
+        });
+    </script>
 </head>
 <span style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
 	<form action="/vacation" method="post">
@@ -52,10 +73,16 @@
 					     <td>팀장</td>
 					     <td>부서장</td>
 					     </tr>
-					 <tr>
-					     <td style="width: 70px" height="40px;"></td>
-					     <td style="width: 70px" height="40px;"></td>
-					     <td style="width: 70px" height="40px;"></td>
+					<tr>
+					     <td style="width: 70px; height:40px; font-size: 12px; text-align: center;">[[${m.name}]]</td>
+					     <td style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" id="ap1">
+                             <input type="text" id="approvalList1" name="approval1" value=""
+                                    style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red"
+                                    readonly text="등록"></td>
+					     <td style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" id="ap2">
+                             <input type="text" id="approvalList2" name="approval2" value=""
+                                    style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red"
+                                    readonly></td>
 					 </tr>
 				 </table>
 			</td>

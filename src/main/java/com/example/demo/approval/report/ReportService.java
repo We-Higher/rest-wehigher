@@ -17,21 +17,21 @@ public class ReportService {
     private ReportDao dao;
 
     public ReportDto saveReport(ReportDto dto) {
-        Report r = dao.save(new Report(dto.getReportNum(), dto.getMember(), dto.getTitle(), dto.getContent(), dto.getWdate(), dto.getServiceLife(), dto.getClassification()));
-        return new ReportDto(r.getReportNum(), r.getMember(), r.getTitle(), r.getContent(), r.getWdate(), r.getServiceLife(), r.getClassification());
+        Report r = dao.save(new Report(dto.getReportNum(), dto.getMember(), dto.getTitle(), dto.getContent(), dto.getWdate(), dto.getServiceLife(), dto.getClassification(), dto.getApproval1(), dto.getApproval2()));
+        return new ReportDto(r.getReportNum(), r.getMember(), r.getTitle(), r.getContent(), r.getWdate(), r.getServiceLife(), r.getClassification(),r.getApproval1(),r.getApproval2());
     }
 
-    public ArrayList<ReportDto> getAll(){
+    public ArrayList<ReportDto> getAll() {
         ArrayList<Report> list = (ArrayList<Report>) dao.findAll();
         ArrayList<ReportDto> list2 = new ArrayList<>();
-        for(Report r : list){
-            list2.add(new ReportDto(r.getReportNum(), r.getMember(), r.getTitle(), r.getContent(), r.getWdate(), r.getServiceLife(), r.getClassification()));
+        for (Report r : list) {
+            list2.add(new ReportDto(r.getReportNum(), r.getMember(), r.getTitle(), r.getContent(), r.getWdate(), r.getServiceLife(), r.getClassification(),r.getApproval1(),r.getApproval2()));
         }
         return list2;
     }
 
-    public ReportDto getById(int num){
+    public ReportDto getById(int num) {
         Report r = dao.getById(num);
-        return new ReportDto(r.getReportNum(), r.getMember(), r.getTitle(), r.getContent(), r.getWdate(), r.getServiceLife(), r.getClassification());
+        return new ReportDto(r.getReportNum(), r.getMember(), r.getTitle(), r.getContent(), r.getWdate(), r.getServiceLife(), r.getClassification(),r.getApproval1(),r.getApproval2());
     }
 }
