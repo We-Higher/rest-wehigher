@@ -3,19 +3,20 @@ package com.example.demo.member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-    @Autowired
     private final MemberDao dao;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberDto create(MemberDto dto) {
         Member m = dao.save(
                 Member.builder()
                         .username(dto.getUsername())
-                        .pwd(new BCryptPasswordEncoder().encode(dto.getPwd()))
+                        .pwd(passwordEncoder.encode(dto.getPwd()))
                         .name(dto.getName())
                         .email(dto.getEmail())
                         .phone(dto.getPhone())
