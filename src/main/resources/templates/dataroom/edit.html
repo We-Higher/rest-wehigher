@@ -16,7 +16,7 @@
     </head>
     <body>
     <h3>자료 상세페이지</h3>
-    <form action="/dataroom/edit" method="post">
+    <form method="post"  action="/dataroom/edit" enctype="multipart/form-data">
         <table border="1">
             <tr>
                 <th>글번호</th>
@@ -41,7 +41,7 @@
             </tr>
             <tr th:if="${session.username.id==dto.writer.id }">
                 <th>자료변경</th>
-                <td><input type="flie" name="fname" th:value="${dto.fname }"></td>
+                <td><input type="file" name="f"></td></tr>
             </tr>
             <tr>
                 <th>자료</th>

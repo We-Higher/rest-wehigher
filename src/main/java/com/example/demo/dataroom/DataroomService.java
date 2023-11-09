@@ -42,4 +42,12 @@ public class DataroomService {
     public void editCnt(int num) {
         dao.updateCnt(num);
     }
+
+    public DataroomDto edit(DataroomDto dto) {
+        Dataroom d = dao.save(new Dataroom(dto.getNum(),dto.getWriter(),dto.getWdate(),dto.getTitle(),
+                dto.getContent(),dto.getFname(),dto.getCnt()));
+        return new DataroomDto(d.getNum(),d.getWriter(),d.getWdate(),d.getTitle(),d.getContent(),
+                d.getFname(),d.getCnt(),null);
+    }
+
 }

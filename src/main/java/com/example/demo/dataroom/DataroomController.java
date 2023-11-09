@@ -1,8 +1,6 @@
 package com.example.demo.dataroom;
 
-import com.example.demo.board.BoardDto;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,6 +11,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -68,9 +67,12 @@ public class DataroomController {
         m.addAttribute("dto", dto);
     }
 
-    @PostMapping("/edit")
-    public String edit(DataroomDto dto) {
+
+    @PostMapping(value = "/edit", consumes = "multipart/form-data")
+    public String edit(@RequestParam("f") MultipartFile file, DataroomDto dto) {
+        System.out.println(dto.getF());
         MultipartFile f = dto.getF();
+
         DataroomDto origin = service.getDataroom(dto.getNum());
         if (f != null && f.getSize() > 0) {
             String fname = f.getOriginalFilename();
