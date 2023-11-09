@@ -2,6 +2,7 @@ package com.example.demo.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +15,7 @@ public class MemberService {
         Member m = dao.save(
                 Member.builder()
                         .username(dto.getUsername())
-                        .pwd(dto.getPwd())
+                        .pwd(new BCryptPasswordEncoder().encode(dto.getPwd()))
                         .name(dto.getName())
                         .email(dto.getEmail())
                         .phone(dto.getPhone())
