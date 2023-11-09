@@ -4,6 +4,25 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#approvalList1").click(function () {
+                var width = 450;
+                var height = 600;
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+
+                window.open("/approval/approvalList1", "approvalList_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
+            });
+
+            $("#approvalList2").click(function () {
+                var width = 450;
+                var height = 600;
+                var left = (window.innerWidth - width) / 2;
+                var top = (window.innerHeight - height) / 2;
+
+                window.open("/approval/approvalList2", "approvalList_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
+            });
+
+
             document.getElementById('plus1').addEventListener('click', function () {
                 var table = document.getElementById('dynamic_table1');
                 var row = table.insertRow(-1);
@@ -94,28 +113,6 @@
                       data-value="" data-autotype="">[[${m.deptCode}]]</span>
 			</td>
 		</tr>
-        <!--		<tr>-->
-        <!--			<td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; height: 18px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">-->
-        <!-- 기안일-->
-        <!--			</td>-->
-        <!--			<td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">-->
-        <!--				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="2"-->
-        <!--                      data-dsl="{{label:draftDate}}" data-wrapper=""-->
-        <!--                      style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"-->
-        <!--                      data-value="" data-autotype=""></span>-->
-        <!--			</td>-->
-        <!--		</tr>-->
-        <!--		<tr>-->
-        <!--			<td style="background: rgb(226, 226, 226); padding: 5px; border: 1px solid black; height: 18px; text-align: center; color: rgb(0, 0, 0); font-size: 12px; font-weight: bold; vertical-align: middle;">-->
-        <!-- 문서번호-->
-        <!--			</td>-->
-        <!--			<td style="background: rgb(255, 255, 255); padding: 5px; border: 1px solid black; text-align: left; color: rgb(0, 0, 0); font-size: 12px; font-weight: normal; vertical-align: middle;">-->
-        <!--				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="3"-->
-        <!--                      data-dsl="{{label:docNo}}" data-wrapper=""-->
-        <!--                      style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"-->
-        <!--                      data-value="" data-autotype=""></span>-->
-        <!--			</td>-->
-        <!--		</tr>-->
 	</tbody>
 </table>
 			</td>
@@ -129,13 +126,13 @@
 					     <td>부서장</td>
 					     </tr>
 					 <tr>
-					     <td style="width: 70px" height="40px;"></td>
-					     <td style="width: 70px" height="40px;"></td>
-					     <td style="width: 70px" height="40px;"></td>
+					     <td style="width: 70px; height:40px; font-size: 12px; text-align: center;">[[${m.name}]]</td>
+					     <td style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" id="ap1">
+                             <input type="text" id="approvalList1" name="approval1" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly text="등록"></td>
+					     <td style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" id="ap2">
+                             <input type="text" id="approvalList2" name="approval2" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly></td>
 					 </tr>
 				 </table>
-    </td>
-    </tr>
     </tbody>
     </table>
     </span></div>
@@ -202,7 +199,7 @@
                 class="dext_table_border_t">
                 <strong style="font-size: 9pt;">작성자</strong>
             </td>
-            <td colspan="6"
+            <td colspan="12"
                 style="padding-top: 1px; padding-right: 1px; padding-left: 1px; font-family: &quot;맑은 고딕&quot;, monospace; vertical-align: middle; font-size: 10pt; text-align: center; border-top: 1px solid windowtext; border-right: 1px solid windowtext; border-bottom: 1px solid windowtext; border-image: initial; border-left: none; width: 303px;"
                 class="dext_table_border_l">
                 <p style="font-family: &quot;맑은 고딕&quot;, monospace; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;">
@@ -210,14 +207,6 @@
                       data-wrapper="" style="width: 100%; font-family: &quot;맑은 고딕&quot;, monospace; font-size: 10pt;"
                       data-value="" data-autotype="">[[${m.name}]]</span>
                 </p>
-            </td>
-            <td style="padding-top: 1px; padding-right: 1px; padding-left: 1px; font-family: &quot;맑은 고딕&quot;, monospace; vertical-align: middle; text-align: center; border-right: 1px solid windowtext; border-bottom: 1px solid windowtext; border-left: 1px solid windowtext; border-image: initial; height: 30px; border-top: none; background-color: rgb(226, 226, 226); width: 79px;"
-                class="dext_table_border_t">
-                <strong style="font-size: 9pt;">금 액</strong>
-            </td>
-            <td class="total_price dext_table_border_l" colspan="5"
-                style="padding-top: 1px; padding-right: 1px; padding-left: 1px; font-family: &quot;맑은 고딕&quot;, monospace; vertical-align: middle; font-size: 10pt; text-align: center; border-top: 1px solid windowtext; border-right: 1px solid windowtext; border-bottom: 1px solid windowtext; border-image: initial; border-left: none; width: 242px;">
-                <p><br></p>
             </td>
         </tr>
         <tr>
@@ -242,99 +231,99 @@
     </table>
 
     <div id="divCustomWrapper"
-         style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
-        <table id="dynamic_table1" class="detailSection"
-               style="margin-top: 5px !important; height: 100px; border:1px solid black">
-            <colgroup>
-                <col width="135">
-                <col width="180">
-                <col width="240">
-                <col width="120">
-                <col width="120">
-                <col width="120">
-            </colgroup>
-            <tbody>
-            <tr style="text-align: center">
-                <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="">
+                    style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
+                    <table id="dynamic_table1" class="detailSection"
+                           style="margin-top: 5px !important; height: 100px; border:1px solid black">
+                        <colgroup>
+                            <col width="135">
+                            <col width="180">
+                            <col width="240">
+                            <col width="120">
+                            <col width="120">
+                            <col width="120">
+                        </colgroup>
+                        <tbody>
+                        <tr style="text-align: center">
+                            <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="">
 				<span style="font-size: 9pt;">
  일 자
 </span>
-                </th>
-                <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="">
+                            </th>
+                            <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="">
 				<span style="font-size: 9pt;">
  분 류
 </span>
-                </th>
-                <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="">
+                            </th>
+                            <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="">
 				<span style="font-size: 9pt;">
  사용 내역
 </span>
-                </th>
-                <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="">
+                            </th>
+                            <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="">
 				<span style="font-size: 9pt;">
  금 액
 </span>
-                </th>
-                <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="">
+                            </th>
+                            <th class="subjectColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="">
 				<span style="font-size: 9pt;">
  비 고
 </span>
-                </th>
-            </tr>
-            <tr class="copyRow1">
+                            </th>
+                        </tr>
+                        <tr class="copyRow1">
                 <span style="margin-left: 755px;"><input type="button" id="plus1" data-bypass=""
                                                          style="font-size: 10px; width: 40px; margin: 5px;" value="추가"></span>
-                <td class="detailColumn centerCol dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="height: 29px;">
+                            <td class="detailColumn centerCol dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="height: 29px;">
                 <span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="9" data-dsl="{{calendar}}"
                       data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
                       data-value="" data-autotype=""><input class="ipt_editor ipt_editor_date" type="date"></span>
-                </td>
-                <td class="detailColumn centerCol dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="height: 29px;">
+                            </td>
+                            <td class="detailColumn centerCol dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="height: 29px;">
                 <span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="10"
                       data-dsl="{{cSel__물품구입비_잡비_회식비_식비_교통비_기타}}" data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
                       data-value="" data-autotype=""><select class="editor_slt" style="width:100px;" name="category"><option
                         selected="selected">물품구입비</option><option>잡비</option><option>회식비</option><option>식비</option><option>교통비</option><option>기타</option></select></span>
-                    <span contenteditable="false" class="comp_hover" data-content-protect-cover="true" data-origin="10"
-                          style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;">
+                                <span contenteditable="false" class="comp_hover" data-content-protect-cover="true" data-origin="10"
+                                      style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;">
                     <a contenteditable="false" class="ic_prototype ic_prototype_trash" data-content-protect-cover="true"
                        data-component-delete-button="true"></a>
                 </span>
-                </td>
-                <td class="detailColumn centerCol dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="height: 29px;">
+                            </td>
+                            <td class="detailColumn centerCol dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="height: 29px;">
                 <span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="12" data-dsl="{{text}}"
                       data-wrapper=""
                       style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
                       data-value="" data-autotype=""><input class="ipt_editor" type="text" style="width: 250px;"
                                                             name="detail"></span>
-                </td>
-                <td class="detailColumn centerCol price dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="height: 29px;">
+                            </td>
+                            <td class="detailColumn centerCol price dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="height: 29px;">
                 <span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="11"
                       data-dsl="{{currency_0}}" data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
                       data-value="" data-autotype=""><input class="ipt_editor ipt_editor_currency" type="text"
                                                             style="width:120px;" name="sum"></span>
-                </td>
-                <td class="detailColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
-                    style="height: 29px;">
+                            </td>
+                            <td class="detailColumn dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
+                                style="height: 29px;">
                 <span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="13" data-dsl="{{text}}"
                       data-wrapper=""
                       style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
                       data-value="" data-autotype=""><input class="ipt_editor" type="text" style="width: 120px;"
                                                             name="note"></span>
-                </td>
-                <td>
-                    <input type="button" class="minus1" data-bypass="" style="font-size: 10px; width: 40px;" value="삭제">
+                            </td>
+                            <td>
+                                <input type="button" class="minus1" data-bypass="" style="font-size: 10px; width: 40px;" value="삭제">
                 </td>
             </tr>
             </tbody>

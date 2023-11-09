@@ -15,21 +15,21 @@ public class VacationService {
     private VactaionDao dao;
 
     public VacationDto saveVacation(VacationDto dto) {
-        Vacation v = dao.save(new Vacation(dto.getVacationNum(), dto.getMember(), dto.getType(), dto.getStartDate(), dto.getEndDate(), dto.getReason(),dto.getWdate()));
-        return new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(),v.getWdate());
+        Vacation v = dao.save(new Vacation(dto.getVacationNum(), dto.getMember(), dto.getType(), dto.getStartDate(), dto.getEndDate(), dto.getReason(), dto.getWdate(), dto.getApproval1(), dto.getApproval2()));
+        return new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(), v.getWdate(), v.getApproval1(), v.getApproval2());
     }
 
-    public ArrayList<VacationDto> getAll(){
+    public ArrayList<VacationDto> getAll() {
         ArrayList<Vacation> list = (ArrayList<Vacation>) dao.findAll();
         ArrayList<VacationDto> list2 = new ArrayList<>();
-        for(Vacation v : list){
-            list2.add(new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(),v.getWdate()));
+        for (Vacation v : list) {
+            list2.add(new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(), v.getWdate(), v.getApproval1(), v.getApproval2()));
         }
         return list2;
     }
 
-    public VacationDto getById(int num){
+    public VacationDto getById(int num) {
         Vacation v = dao.getById(num);
-        return new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(),v.getWdate());
+        return new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(), v.getWdate(), v.getApproval1(), v.getApproval2());
     }
 }
