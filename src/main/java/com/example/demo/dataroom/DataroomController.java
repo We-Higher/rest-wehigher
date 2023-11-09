@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -102,6 +103,14 @@ public class DataroomController {
         delFile.delete();
         service.delDataroom(num);
         return "redirect:/dataroom/list";
+    }
+
+    @GetMapping("/search")
+    public String searchReferenceList(ReferenceSearch referenceSearch,
+                                      Model model) {
+        List<DataroomDto> listReference = service.getSearchReference(referenceSearch);
+        model.addAttribute("list", listReference);
+        return "dataroom/list";
     }
 
     @RequestMapping("/down")
