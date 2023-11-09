@@ -1,5 +1,6 @@
 package com.example.demo.dataroom;
 
+import com.example.demo.board.BoardDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -78,7 +79,7 @@ public class DataroomController {
                 f.transferTo(newFile);
                 dto.setFname(fname);
                 File delFile = new File(path + origin.getFname());
-
+                delFile.delete();
             } catch (IllegalStateException e) {
                 e.printStackTrace();
             } catch (IOException e) {
@@ -96,32 +97,26 @@ public class DataroomController {
     public String del(int num) {
         DataroomDto origin = service.getDataroom(num);
         File delFile = new File(path + origin.getFname());
+        delFile.delete();
+        service.delDataroom(num);
         return "redirect:/dataroom/list";
     }
 
-    @RequestMapping("/downpage")
-    public String downpage(String fname, int num, Model m) {
-        m.addAttribute("fname", fname);
-        m.addAttribute("num", num);
-        return "dataroom/down";
-    }
-
     @RequestMapping("/down")
-    public ResponseEntity<byte[]> down(String fname, int num) throws IOException {
-        File f= new File(path + fname);
+    public ResponseEntity<byte[]> down(String fname, int num) {
+        File f = new File(path + fname);
 
         HttpHeaders header = new HttpHeaders();
 
         ResponseEntity<byte[]> result = null;
-
-        try{
-            header.add("Contenet-Type",Files.probeContentType(f.toPath()));
-            header.add(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=\"" + URLEncoder.encode(fname, "UTF-8") + "\"");
-            result=new ResponseEntity<byte[]>(
+        try {
+            header.add("Content-Type", Files.probeContentType(f.toPath()));
+            header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=\"" + URLEncoder.encode(fname, "UTF-8") + "\"");
+            result = new ResponseEntity<byte[]>(
                     FileCopyUtils.copyToByteArray(f), header, HttpStatus.OK
             );
-            service.editCnt(num);
         } catch (IOException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return result;

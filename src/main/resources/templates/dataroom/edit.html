@@ -24,11 +24,11 @@
             </tr>
             <tr>
                 <th>작성일</th>
-                <td><input type="text" th:value="${dto.wdate }" readonly></td>
+                <td><input type="text" name="wdate" th:value="${dto.wdate }" readonly></td>
             </tr>
             <tr>
                 <th>작성자</th>
-                <td><input type="text" th:value="${dto.writer.id }" readonly></td>
+                <td><input type="text" name="writer" th:value="${dto.writer.id }" readonly></td>
             </tr>
             <tr>
                 <th>제목</th>
@@ -45,11 +45,7 @@
             </tr>
             <tr>
                 <th>자료</th>
-                <td>[[${dto.fname }]] <input type="button" id="down" value="다운로드"></td>
-            </tr>
-            <tr>
-                <th>다운수</th>
-                <td th:text="${dto.cnt }"></td>
+                <td><a th:href="@{/dataroom/down(fname=${dto.fname}, num=${dto.num})}" th:text="${dto.fname}"></a></td>
             </tr>
             <tr th:if="${session.username.id == dto.writer.id}">
                 <th>편집</th>
