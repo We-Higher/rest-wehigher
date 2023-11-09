@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<div layout:fragment="content">
+    <h2 class="mb-4">자료실</h2>
+    <a href="/dataroom/add">글 작성</a>
+
+    <form action="/dataroom/search">
+        <select name="select">
+            <option value="writer">작성자</option>
+            <option value="title">제목</option>
+        </select>
+        <input type="text" name="search"/>
+        <input type="submit" value="검색"/>
+    </form>
+
+    <table border="1">
+        <tr>
+            <br>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>작성일자</th>
+        </tr>
+
+        <tr th:each="i:${list}">
+            <td th:text="${i.num}"></td>
+            <td><a th:href="@{/dataroom/edit(num=${i.num})}" th:text="${i.title }"></a></td>
+            <td th:text="${i.writer.name}"></td>
+            <td th:text="${i.wdate }"></td>
+        </tr>
+    </table>
+</div>
+</html>
