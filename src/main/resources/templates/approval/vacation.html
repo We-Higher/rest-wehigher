@@ -26,6 +26,7 @@
 </head>
 <span style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
 	<form action="/vacation" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <table style="border: 0px solid rgb(0, 0, 0); width: 800px; font-family: malgun gothic, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;"><!-- Header --><colgroup><col
         width="310"><col width="490"></colgroup>
 	<tbody>

@@ -7,6 +7,7 @@ import com.example.demo.member.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,13 +15,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+@PreAuthorize("isAuthenticated()")
 @Controller
 public class ExpenseController {
     @Autowired
     private ExpenseService eservice;
+    @Autowired
+    private MemberService mservice;
 
     //자바에서 script 사용하기
     public static void init(HttpServletResponse response) {
@@ -30,19 +35,19 @@ public class ExpenseController {
 
     //지출결의서
     @GetMapping("/expense")
-    public ModelAndView expense(HttpSession session) {
+    public ModelAndView expense(Principal principal) {
         ModelAndView mav = new ModelAndView("approval/expense");
-        MemberDto mdto = (MemberDto) session.getAttribute("username");
+        MemberDto mdto = mservice.getMember(principal.getName());
         mav.addObject("m", mdto);
         return mav;
     }
 
     @PostMapping("/expense")
-    public void addExpense(HttpServletResponse response, ExpenseDto dto, HttpSession session) {
+    public void addExpense(HttpServletResponse response, ExpenseDto dto, Principal principal) {
         try {
             init(response);
             PrintWriter out = response.getWriter();
-            MemberDto mdto = (MemberDto) session.getAttribute("username");
+            MemberDto mdto = mservice.getMember(principal.getName());
             String[] expenses = dto.getSum().split(",");
             int sum = 0;
             for (String expense : expenses) {

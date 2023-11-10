@@ -66,6 +66,7 @@
     <link rel="stylesheet" href="/approval/css/expense.css">
 </head>
 <form action="/expense" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <div style="font-family: 돋움; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
   <span style="font-family: 돋움; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
 

@@ -6,6 +6,7 @@ import com.example.demo.member.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +14,12 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-
+@PreAuthorize("isAuthenticated()")
 @Controller
 public class VacationController {
     @Autowired
@@ -33,19 +35,19 @@ public class VacationController {
 
     //휴가신청서
     @GetMapping("/vacation")
-    public ModelAndView vacation(HttpSession session) {
+    public ModelAndView vacation(Principal principal) {
         ModelAndView mav = new ModelAndView("approval/vacation");
-        MemberDto mdto = (MemberDto) session.getAttribute("username");
+        MemberDto mdto = mservice.getMember(principal.getName());
         mav.addObject("m", mdto);
         return mav;
     }
 
     @PostMapping("/vacation")
-    public void addVacation(HttpServletResponse response, VacationDto dto, HttpSession session) {
+    public void addVacation(HttpServletResponse response, VacationDto dto, Principal principal) {
         try {
             init(response);
             PrintWriter out = response.getWriter();
-            MemberDto mdto = (MemberDto) session.getAttribute("username");
+            MemberDto mdto = mservice.getMember(principal.getName());
             String startDate = dto.getStartDate();
             String endDate = dto.getEndDate();
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -54,7 +56,7 @@ public class VacationController {
             long daysBetween = ChronoUnit.DAYS.between(startDateLocalDate, endDateLocalDate);
             int remain = (int) daysBetween;
             System.out.println("remain = " + remain);
-            mdto.setRemain(mdto.getRemain() - remain);
+            mdto.setRemain(mdto.getRemain() - remain - 1);
             mservice.save(mdto);
             dto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getCompanyRank(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
             vservice.saveVacation(dto);

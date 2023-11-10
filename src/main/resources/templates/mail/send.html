@@ -6,6 +6,7 @@
 <div layout:fragment="content">
   <h1>메일 보내기</h1>
   <form action="/mail/send" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <table>
       <tr>
         <td>메일 주소</td>

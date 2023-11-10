@@ -28,7 +28,7 @@ import java.util.List;
 public class DataroomController {
     private final DataroomService service;
 
-    @Value("C:/data/")
+    @Value("${spring.servlet.multipart.location}")
     private String path;
 
     @RequestMapping("/list")
