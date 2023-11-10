@@ -12,19 +12,19 @@
             <th>제목</th>
             <th>작성일</th>
         </tr>
-        <tr th:each="e: ${elist}" th:if="${e.member.name == session.loginId}">
+        <tr th:each="e: ${elist}" th:if="${#authentication.principal.username == e.member.username}">
             <td>지출결의서</td>
             <td>[[${e.member.name}]]</td>
             <td><a th:href="@{/approval/expense/edit(expenseNum=${e.expenseNum})}">[[${e.title}]]</a></td>
             <td>[[${e.wdate}]]</td>
         </tr>
-        <tr th:each="r:${rlist}" th:if="${r.member.name == session.loginId}">
+        <tr th:each="r:${rlist}" th:if="${#authentication.principal.username == r.member.username}">
             <td>품의서</td>
             <td>[[${r.member.name}]]</td>
             <td><a th:href="@{/approval/report/edit(reportNum=${r.reportNum})}">[[${r.title}]]</a></td>
             <td>[[${r.wdate}]]</td>
         </tr>
-        <tr th:each="v:${vlist}" th:if="${v.member.name == session.loginId}">
+        <tr th:each="v:${vlist}" th:if="${#authentication.principal.username == v.member.username}">
             <td>휴가신청서</td>
             <td>[[${v.member.name}]]</td>
             <td><a th:href="@{/approval/vacation/edit(vacationNum=${v.vacationNum})}">[[${v.member.name}]] 휴가신청</a></td>

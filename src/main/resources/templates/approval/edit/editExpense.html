@@ -6,7 +6,7 @@
 <head>
 </head>
 <div layout:fragment="content">
-    <form action="/expense" method="post">
+    <form action="/approval/expense/approve" method="post">
         <div style="font-family: 돋움; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
   <span style="font-family: 돋움; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
 
@@ -291,9 +291,8 @@
             </table>
             <span style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;">
                 <strong style="color: black;">* 영수증 별도 제출</strong></span>
-            <input type="submit" value="결재" style="margin-left: 620px; margin-top: 5px"><input type="button" value="보류"
-                                                                                               style="margin-left: 5px; margin-top: 5px"
-                                                                                               id="defer">
+            <input type="submit" value="결재" style="margin-left: 620px; margin-top: 5px">
+            <input type="button" value="보류" style="margin-left: 5px; margin-top: 5px" id="defer">
     </form>
 </div>
 </div>

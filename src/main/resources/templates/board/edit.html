@@ -17,6 +17,7 @@
 	<body>
 	<h3>글 상세페이지</h3>
 	<form action="/board/edit" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 		<table border="1">
 			<tr>
 				<th>글번호</th>

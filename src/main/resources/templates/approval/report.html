@@ -28,6 +28,7 @@
         style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
  <!-- 문서 헤더 시작-->
  <form action="/report" method="post">
+	 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <table style="width: 800px; border-collapse: collapse !important; color: black; background: white; border: 1px solid black; font-size: 12px; font-family: malgun gothic,dotum,arial,tahoma;"><colgroup>
    <col style="width: 90px;">
    <col style="width: 180px;">

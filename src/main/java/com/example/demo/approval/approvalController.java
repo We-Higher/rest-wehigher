@@ -14,14 +14,17 @@ import com.example.demo.member.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.ArrayList;
-
+@PreAuthorize("isAuthenticated()")
 @Controller
 @RequestMapping("/approval")
 public class approvalController {
@@ -62,10 +65,12 @@ public class approvalController {
     }
 
     @GetMapping("/process")
-    public void listById(Model map) {
+    public void listById(Model map, Principal principal) {
         ArrayList<ExpenseDto> elist = eservice.getAll();
         ArrayList<ReportDto> rlist = rservice.getAll();
         ArrayList<VacationDto> vlist = vservice.getAll();
+        MemberDto mdto = mservice.getMember(principal.getName());
+        map.addAttribute("m",mdto);
         map.addAttribute("elist", elist);
         map.addAttribute("rlist", rlist);
         map.addAttribute("vlist", vlist);
@@ -94,6 +99,7 @@ public class approvalController {
         return "approval/edit/editVacation";
     }
 
+    //1차 결재자 선택
     @GetMapping("/approvalList1")
     public ModelAndView approvalList1() {
         ModelAndView mav = new ModelAndView("approval/approvalList1");
@@ -102,12 +108,19 @@ public class approvalController {
         return mav;
     }
 
+    //2차 결재자 선택
     @GetMapping("/approvalList2")
     public ModelAndView approvalList2() {
         ModelAndView mav = new ModelAndView("approval/approvalList2");
         ArrayList<EmployeeDto> list = empservice.getAll();
         mav.addObject("list", list);
         return mav;
+    }
+
+    //지출결의서 결재
+    @PostMapping("/approval/expense/approve")
+    public String approveExpense() {
+        return "redirect:/approval/process";
     }
 
 }
