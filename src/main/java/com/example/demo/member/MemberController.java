@@ -1,44 +1,40 @@
 package com.example.demo.member;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Map;
-import java.util.Objects;
-
+@PreAuthorize("hasRole(\"ADMIN\")")
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService service;
 
+    @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String loginForm() {
         return "member/login_form";
     }
 
-    @PostMapping("/login")
-    public String login(String username, String pwd, HttpSession session) {
-
-        String path = "member/login_Form";
-        MemberDto m = service.getMember(username);
-        System.out.println("m = " + m);
-        if (Objects.nonNull(m) && pwd.equals(m.getPwd())) {
-            session.setAttribute("username", m);
-            session.setAttribute("loginId", m.getName());
-            System.out.println(m.getName());
-            path = "redirect:/";
-        }
-        return path;
-    }
+//    @PostMapping("/login")
+//    public String login(String username, String pwd, HttpSession session) {
+//
+//        String path = "member/login_Form";
+//        MemberDto m = service.getMember(username);
+//        System.out.println("m = " + m);
+//        if (Objects.nonNull(m) && pwd.equals(m.getPwd())) {
+//            session.setAttribute("username", m);
+//            session.setAttribute("loginId", m.getName());
+//            System.out.println(m.getName());
+//            path = "redirect:/";
+//        }
+//        return path;
+//    }
 
     @GetMapping("/join")
     public String joinForm() {
