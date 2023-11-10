@@ -13,53 +13,6 @@ import org.springframework.security.web.header.writers.frameoptions.XFrameOption
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
-//@EnableWebSecurity
-//@EnableMethodSecurity
-//@Configuration
-//@RequiredArgsConstructor
-//public class SecurityConfig {
-//
-//
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return (web) -> web.ignoring().requestMatchers("/member/login");
-//    }
-//
-//    @Bean
-//    protected SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests((authorizeHttpRequests) -> authorizeHttpRequests
-//                        .requestMatchers("/member/login", "/css/**", "/images/**", "/js/**").permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//
-//                .formLogin((formLogin) -> formLogin
-//                        .loginPage("/member/login")
-//                        .defaultSuccessUrl("/main")
-//                        .permitAll()
-//                );
-//
-//        http
-//                .sessionManagement((sessionManagement) -> sessionManagement
-//                        .invalidSessionUrl("/member/login")
-//                )
-//                .logout((logout) -> logout
-//                        .invalidateHttpSession(true)
-//                        .logoutRequestMatcher(new AntPathRequestMatcher("/member/logout"))
-//                        .deleteCookies("JSESSIONID")
-//                        .permitAll()
-//                );
-//
-//
-//        //CSRF 토큰
-//        http
-//                .csrf((csrf) -> csrf
-//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-//                );
-//
-//        return http.build();
-//    }
-//}
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)

@@ -1,8 +1,7 @@
 package com.example.demo.employee;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -10,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.example.demo.employee.EmployeeDto;
-import com.example.demo.employee.EmployeeService;
+import java.util.ArrayList;
 
+@PreAuthorize("isAuthenticated()")
 @Controller
 @RequestMapping("/employee")
 public class EmployeeController {

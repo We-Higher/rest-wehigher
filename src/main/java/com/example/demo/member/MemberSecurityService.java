@@ -33,7 +33,7 @@ public class MemberSecurityService implements UserDetailsService {
             authorities.add(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
         }
 
-        // User는 시큐리티에서 작동하는 클래스
+        // User는 시큐리티에서 작동하는 클래스 // TODO: custom
         return new User(member.getUsername(), member.getPwd(), authorities);
     }
 }
