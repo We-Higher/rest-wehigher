@@ -3,6 +3,7 @@ package com.example.demo.schedule;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-import static junit.runner.Version.id;
-
+@PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/schedule")
@@ -82,7 +82,7 @@ public class ScheduleController {
     }
 
     //일정삭제
-    @DeleteMapping("/del/{id}")
+    @GetMapping("/del/{id}")
     public String del(@PathVariable("id") int id) {
         service.del(id);
         return "redirect:/schedule";
@@ -95,6 +95,7 @@ public class ScheduleController {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
         ScheduleDto origin = service.get(id);
+
         String startDateString = (String) param.get(0).get("start");
         String endDateString = (String) param.get(0).get("end");
 

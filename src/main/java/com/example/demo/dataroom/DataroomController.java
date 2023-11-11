@@ -1,10 +1,14 @@
 package com.example.demo.dataroom;
 
+import com.example.demo.member.Member;
+import com.example.demo.member.MemberDto;
+import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -18,10 +22,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/dataroom")
@@ -31,6 +36,8 @@ public class DataroomController {
     @Value("${spring.servlet.multipart.location}")
     private String path;
 
+    private final MemberService memberService;
+
     @RequestMapping("/list")
     public void list(Model m) {
         ArrayList<DataroomDto> list = service.getAll();
@@ -38,19 +45,25 @@ public class DataroomController {
     }
 
     @GetMapping("/add")
-    public void addForm() {
+    public void addForm(Principal principal) {
+        System.out.println("principal = " + principal);
+        System.out.println("principal.getName() = " + principal.getName());
 
     }
 
     @PostMapping("/add")
-    public String add(DataroomDto dto) {
+    public String add(Principal principal, DataroomDto dto) {
         MultipartFile f = dto.getF();
         String fname = f.getOriginalFilename();
+        System.out.println("principal = " + principal.getName());
+        MemberDto m = memberService.getMember(principal.getName());
+        System.out.println("m = " + m);
         File newFile = new File(path + fname);
         try {
-            System.out.println("유저아이디:" + dto.getWriter());
             f.transferTo(newFile);
             dto.setFname(fname);
+//            dto.setWriter(new Member(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getCompanyRank(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain()));
+            dto.setWriter(Member.builder().id(m.getId()).build());
             service.save(dto);
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
@@ -70,17 +83,19 @@ public class DataroomController {
 
 
     @PostMapping(value = "/edit", consumes = "multipart/form-data")
-    public String edit(@RequestParam("f") MultipartFile file, DataroomDto dto) {
+    public String edit(@RequestParam("f") MultipartFile file, Principal principal,DataroomDto dto) {
         System.out.println(dto.getF());
         MultipartFile f = dto.getF();
-
         DataroomDto origin = service.getDataroom(dto.getNum());
+        MemberDto m = memberService.getMember(principal.getName());
+
         if (f != null && f.getSize() > 0) {
             String fname = f.getOriginalFilename();
             File newFile = new File(path + fname);
             try {
                 f.transferTo(newFile);
                 dto.setFname(fname);
+                dto.setWriter(Member.builder().id(m.getId()).build());
                 File delFile = new File(path + origin.getFname());
                 delFile.delete();
             } catch (IllegalStateException e) {
