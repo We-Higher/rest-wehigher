@@ -44,6 +44,7 @@ public class Board {
 
 	@PrePersist //insert문 실행전 자동 호출
 	public void setDate() {
+		
 		wdate = new Date();
 		udate = new Date();
 	}

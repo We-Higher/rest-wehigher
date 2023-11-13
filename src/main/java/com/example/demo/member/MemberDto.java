@@ -18,8 +18,10 @@ public class MemberDto {
     private String address; // 거주지
     private String companyName; // 회사명
     private int deptCode; // 부서 코드
+    private String deptName; // 부서명
     private int companyRank; // 직급
-    private int newNo; // 사번
+    private String companyRankName; // 직급명
+    private String newNo; // 사번
     private String comCall; // 내선 전화
     private int isMaster; // 관리자 여부. 0: 일반, 1: Master
     private int status; // 사원 근무 여부?

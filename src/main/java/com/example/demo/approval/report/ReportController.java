@@ -29,8 +29,8 @@ public class ReportController {
         response.setContentType("text/html; charset=utf-8");
         response.setCharacterEncoding("utf-8");
     }
+    
     //품의서
-
     @GetMapping("/report")
     public ModelAndView report(Principal principal) {
         ModelAndView mav = new ModelAndView("approval/report");
@@ -45,7 +45,7 @@ public class ReportController {
             init(response);
             PrintWriter out = response.getWriter();
             MemberDto mdto = mservice.getMember(principal.getName());
-            dto.setMember(new Member(mdto.getId(),mdto.getUsername(),mdto.getPwd(),mdto.getName(),mdto.getEmail(),mdto.getPhone(),mdto.getAddress(),mdto.getCompanyName(),mdto.getDeptCode(),mdto.getCompanyRank(),mdto.getNewNo(),mdto.getComCall(),mdto.getIsMaster(),mdto.getStatus(),mdto.getOriginFname(),mdto.getThumbnailFname(),mdto.getNewMemNo(),mdto.getRemain()));
+            dto.setMember(new Member(mdto.getId(),mdto.getUsername(),mdto.getPwd(),mdto.getName(),mdto.getEmail(),mdto.getPhone(),mdto.getAddress(),mdto.getCompanyName(),mdto.getDeptCode(),mdto.getDeptName(),mdto.getCompanyRank(),mdto.getCompanyRankName(),mdto.getNewNo(),mdto.getComCall(),mdto.getIsMaster(),mdto.getStatus(),mdto.getOriginFname(),mdto.getThumbnailFname(),mdto.getNewMemNo(),mdto.getRemain()));
             rservice.saveReport(dto);
             out.println(String.format("<script>window.close();</script>"));
             out.flush();

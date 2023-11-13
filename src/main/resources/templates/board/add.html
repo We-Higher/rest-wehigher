@@ -10,7 +10,7 @@
     <table border="1">
         <tr>
             <th>작성자</th>
-            <td><input type="text" th:value="${session.username.name }" readonly></td>
+            <td><input type="text" th:value="${#authentication.principal.username}" readonly></td>
         </tr>
         <tr>
             <th>제목</th>

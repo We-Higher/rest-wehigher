@@ -14,20 +14,20 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.9/index.global.min.js"></script>
 
-    <script th:inline="javascript">
-        var header = /*[[${_csrf.headerName}]]*/ null;
-        var token = /*[[${_csrf.token}]]*/ null;
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             $(function () {
                 $.ajax({
-                    url: "/schedule/list",
+                    url: "/schedule/list", // 변경하기
                     method: "GET",
                     dataType: "json",
                     success: function (data) {
+                        console.log(data); // log 로 데이터 찍어주기.
 
                         var calendarEl = document.getElementById('calendar');
 
                         var calendar = new FullCalendar.Calendar(calendarEl, {
+                            // initialView: 'monthGridWeek',
                             headerToolbar: {
                                 left: 'prev,next today',
                                 center: 'title',
@@ -56,9 +56,9 @@
                                     var events = new Array(); // Json 데이터를 받기 위한 배열 선언
                                     var obj = new Object();     // Json 을 담기 위해 Object 선언
 
-                                    obj.title = title;
-                                    obj.start = arg.start;
-                                    obj.end = arg.end;
+                                    obj.title = title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
+                                    obj.start = arg.start; // 시작
+                                    obj.end = arg.end; // 끝
                                     events.push(obj);
 
                                     var jsondata = JSON.stringify(events);
@@ -68,13 +68,11 @@
                                         $.ajax({
                                             url: "/schedule/add",
                                             method: "POST",
-                                            beforeSend : function(xhr){
-                                                xhr.setRequestHeader(header, token);
-                                            },
                                             dataType: "json",
                                             data: JSON.stringify(events),
                                             contentType: 'application/json',
                                             success: function (data) {
+                                                console.log(data)
                                                 calendar.addEvent({
                                                     id: data.id,
                                                     title: title,
@@ -82,12 +80,14 @@
                                                     end: arg.end,
                                                     allDay: arg.allDay,
                                                 })
+                                                console.log("저장 성공")
                                             },
                                             error: function (e) {
                                                 console.log(e)
                                             }
                                         })
                                             .done(function (result) {
+                                                // console.log("저장 성공")
                                             })
                                             .fail(function (request, status, error) {
                                                 console.log(request)
@@ -121,9 +121,6 @@
                                         $.ajax({
                                             url: "/schedule/edit/" + calId,
                                             method: "PATCH",
-                                            beforeSend : function(xhr){
-                                                xhr.setRequestHeader(header, token);
-                                            },
                                             dataType: "json",
                                             data: JSON.stringify(events),
                                             contentType: 'application/json',
@@ -146,10 +143,14 @@
 
                                     let calId = info.event._def.extendedProps.cal_Id
 
+                                    // console.log(events);
                                     $(function deleteData() {
                                         $.ajax({
                                             url: "/schedule/del/" + calId,
-                                            method: "GET",
+                                            method: "DELETE",
+                                            // dataType: "json",
+                                            // data: JSON.stringify(obj),
+                                            // contentType: 'application/json',
                                         })
                                     })
 

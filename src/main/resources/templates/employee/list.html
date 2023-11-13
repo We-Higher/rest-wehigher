@@ -9,27 +9,27 @@
             <option value="none">전체</option>
             <option value="name">이름</option>
             <option value="newNo">사번</option>
-            <option value="deptCode">부서</option>
-            <option value="companyRank">직급</option>
+            <option value="companyRankName">직급</option>
+            <option value="deptName">부서</option>
         </select>
         <input type="text" name="option">
         <input type="submit" value="검색" name="search">
     </form>
     <table border="1">
         <tr>
-            <th>이름</th>
             <th>사번</th>
-            <th>부서</th>
+            <th>이름</th>
             <th>직급</th>
+            <th>부서</th>
             <th>휴대전화</th>
             <th>이메일</th>
             <th>내선전화</th>
         </tr>
         <tr th:each="m : ${list}">
-            <td><a th:href="@{/member/edit(name=${m.name})}">[[${m.name}]]</a></td>
-            <td th:text="${m.newNo}"></td>
-            <td th:text="${m.deptCode}"></td>
-            <td th:text="${m.companyRank}"></td>
+        	<td th:text="${m.newNo}"></td>
+            <td><a th:href="@{/member/edit(name=${m.name})}">[[${m.name}]]</a></td>  
+            <td th:text="${m.companyRankName}"></td>
+            <td th:text="${m.deptName}"></td>
             <td th:text="${m.phone}"></td>
             <td th:text="${m.email}"></td>
             <td th:text="${m.comCall}"></td>
