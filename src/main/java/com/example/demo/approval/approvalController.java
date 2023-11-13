@@ -70,7 +70,7 @@ public class approvalController {
         ArrayList<ReportDto> rlist = rservice.getAll();
         ArrayList<VacationDto> vlist = vservice.getAll();
         MemberDto mdto = mservice.getMember(principal.getName());
-        map.addAttribute("m",mdto);
+        map.addAttribute("m", mdto);
         map.addAttribute("elist", elist);
         map.addAttribute("rlist", rlist);
         map.addAttribute("vlist", vlist);
@@ -107,6 +107,15 @@ public class approvalController {
         mav.addObject("list", list);
         return mav;
     }
+    
+    //1차 결재자 검색
+    @PostMapping("/approvalList1")
+	public ModelAndView getbyOption(String type, String option) {
+    	ModelAndView mav = new ModelAndView("approval/approvalList1");
+		ArrayList<EmployeeDto> list = empservice.getByOption(type, option);
+		mav.addObject("list", list);
+		return mav;
+	}
 
     //2차 결재자 선택
     @GetMapping("/approvalList2")
@@ -115,6 +124,26 @@ public class approvalController {
         ArrayList<EmployeeDto> list = empservice.getAll();
         mav.addObject("list", list);
         return mav;
+    }
+    
+    //2차 결재자 검색
+    @PostMapping("/approvalList2")
+	public ModelAndView getbyOption2(String type, String option) {
+    	ModelAndView mav = new ModelAndView("approval/approvalList2");
+		ArrayList<EmployeeDto> list = empservice.getByOption(type, option);
+		mav.addObject("list", list);
+		return mav;
+	}
+    
+    //품의서 결재
+    @PostMapping("/report/approve")
+    public String editReportApproval(int reportNum, Principal principal) {
+
+    	MemberDto mdto = mservice.getMember(principal.getName());
+    	ReportDto rdto = rservice.getById(reportNum);
+    	rservice.approveReport(rdto, mdto);
+    	
+    	return "redirect:/main";
     }
 
     //지출결의서 결재

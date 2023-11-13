@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @PreAuthorize("hasRole(\"ADMIN\")")
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService service;
+    private final PasswordEncoder passwordEncoder;
 
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
@@ -35,10 +37,10 @@ public class MemberController {
 //        }
 //        return path;
 //    }
-
+    
     @GetMapping("/join")
     public String joinForm() {
-        return "member/join_form";
+        return "member/join";
     }
 
     @PostMapping("/join")
@@ -51,12 +53,13 @@ public class MemberController {
     public String editForm(String name, Model map) {
         MemberDto dto = service.getMemberByName(name);
         map.addAttribute("m", dto);
-        return "member/edit_form";
+        return "member/edit";
     }
 
     @PostMapping("/edit")
     public String edit(MemberDto dto) {
         MemberDto m = service.getMemberByName(dto.getName());
+        
         m.setUsername(dto.getUsername());
         m.setPwd(dto.getPwd());
         m.setName(dto.getName());
@@ -78,5 +81,34 @@ public class MemberController {
     public String delete(Long id){
         service.delete(id);
         return "redirect:/employee/list";
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/mypage")
+    public String mypageForm(String name, Model map) {
+        MemberDto dto = service.getMember(name);
+        map.addAttribute("m", dto);
+        return "member/mypage";
+    }
+    
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/pwdedit")
+    public String pwdedit(MemberDto dto) {
+        MemberDto m = service.getMemberByName(dto.getName());
+        m.setUsername(dto.getUsername());
+        m.setPwd(passwordEncoder.encode(dto.getPwd()));
+        m.setName(dto.getName());
+        m.setCompanyName(dto.getCompanyName());
+        m.setDeptCode(dto.getDeptCode());
+        m.setCompanyRank(dto.getCompanyRank());
+        m.setNewNo(dto.getNewNo());
+        m.setEmail(dto.getEmail());
+        m.setAddress(dto.getAddress());
+        m.setComCall(dto.getComCall());
+        m.setPhone(dto.getPhone());
+        m.setIsMaster(dto.getIsMaster());
+        m.setStatus(dto.getStatus());
+        service.save(m);
+        return "redirect:/main";
     }
 }

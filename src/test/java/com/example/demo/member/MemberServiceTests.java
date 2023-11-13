@@ -21,17 +21,17 @@ public class MemberServiceTests {
                 .phone("010-1234-5678")
                 .address("서울")
                 .isMaster(1)
-
-                .newNo(1)
+                .newNo("115284")
+                .comCall("02-3415-2108")
                 .deptCode(0)
-                .companyRank(0)
+                .companyRank(1)
                 .build());
     }
 
     @Test
     @DisplayName("일반 회원가입")
     public void 일반_회원가입() {
-        for (int i = 2; i < 12; i++) {
+        for (int i = 2; i < 30; i++) {
             service.create(MemberDto.builder()
                     .username("user" + i)
                     .pwd("1234")
@@ -39,9 +39,11 @@ public class MemberServiceTests {
                     .email("user" + i + "@email.com")
                     .phone("010-1234-5678")
                     .address("경기")
-                    .newNo(i)
-                    .deptCode(i % 3 + 1)
-                    .companyRank(i % 4 + 1)
+                    .companyName("Co-Operate-Works")
+                    .newNo("2023"+i)
+                    .comCall("02-3415-2108")
+                    .deptCode(i % 6 + 1)
+                    .companyRank(i % 9 + 1)
                     .build());
         }
     }
