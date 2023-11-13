@@ -1,85 +1,91 @@
-<!doctype html>
-<html lang="ko">
-<head>
-    <title>Websocket Chat</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+
+<th:block layout:fragment="style">
     <!-- CSS -->
     <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/dist/css/bootstrap.min.css">
-</head>
-<body>
-<div class="container" id="app">
-    <div class="row">
-        <div class="col-md-12">
-            <h3>채팅방 리스트</h3>
+
+    <!-- JavaScript -->
+    <script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
+    <script src="/webjars/bootstrap/4.3.1/dist/js/bootstrap.min.js"></script>
+    <script src="/webjars/sockjs-client/1.1.2/dist/sockjs.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</th:block>
+
+<div layout:fragment="content">
+    <div class="container" id="app">
+        <div class="row">
+            <div class="col-md-12">
+                <h3>채팅방 리스트</h3>
+            </div>
         </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text">방제목</label>
+            </div>
+            <input type="text" class="form-control" id="room_name">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button" id="createRoom">채팅방 개설</button>
+            </div>
+        </div>
+        <ul class="list-group" id="chatrooms">
+        </ul>
     </div>
-    <div class="input-group">
-        <div class="input-group-prepend">
-            <label class="input-group-text">방제목</label>
-        </div>
-        <input type="text" class="form-control" id="room_name">
-        <div class="input-group-append">
-            <button class="btn btn-primary" type="button" id="createRoom">채팅방 개설</button>
-        </div>
-    </div>
-    <ul class="list-group" id="chatrooms">
-    </ul>
 </div>
-<!-- JavaScript -->
-<script src="/webjars/vue/2.5.16/dist/vue.min.js"></script>
-<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
-<script src="/webjars/bootstrap/4.3.1/dist/js/bootstrap.min.js"></script>
-<script src="/webjars/sockjs-client/1.1.2/dist/sockjs.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script th:inline="javascript">
-    $(document).ready(function() {
-        var room_name = '';
-        var chatrooms = [];
 
-        function findAllRoom() {
-            axios.get('/chat/rooms').then(function(response) {
-                chatrooms = response.data;
-                $('#chatrooms').empty();
-                $.each(chatrooms, function(index, item){
-                    $('#chatrooms').append(`<li class="list-group-item list-group-item-action" id="${item.roomId}" onclick="enterRoom('${item.roomId}')">${item.name}</li>`);
-                });
-            });
-        }
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        $(document).ready(function() {
+            var room_name = '';
+            var chatrooms = [];
 
-        function createRoom() {
-            room_name = $('#room_name').val();
-            if(room_name === "") {
-                alert("방 제목을 입력해 주십시요.");
-                return;
-            } else {
-                var params = new URLSearchParams();
-                params.append("name",room_name);
-                axios.post('/chat/room', params)
-                    .then(function(response) {
-                        alert(response.data.name+"방 개설에 성공하였습니다.")
-                        $('#room_name').val('');
-                        findAllRoom();
-                    })
-                    .catch(function(response) {
-                        alert("채팅방 개설에 실패하였습니다.");
+            function findAllRoom() {
+                axios.get('/chat/rooms').then(function(response) {
+                    chatrooms = response.data;
+                    $('#chatrooms').empty();
+                    $.each(chatrooms, function(index, item){
+                        $('#chatrooms').append(`<li class="list-group-item list-group-item-action" id="${item.roomId}" onclick="enterRoom('${item.roomId}')">${item.name}</li>`);
                     });
+                });
             }
-        }
 
-        window.enterRoom = function(roomId) {
-            var sender = prompt('대화명을 입력해 주세요.');
-            if(sender !== "") {
-                localStorage.setItem('wschat.sender',sender);
-                localStorage.setItem('wschat.roomId',roomId);
-                location.href="/chat/room/enter/"+roomId;
+            function createRoom() {
+                room_name = $('#room_name').val();
+                if(room_name === "") {
+                    alert("방 제목을 입력해 주십시요.");
+                    return;
+                } else {
+                    var params = new URLSearchParams();
+                    params.append("name",room_name);
+                    axios.post('/chat/room', params)
+                        .then(function(response) {
+                            alert(response.data.name+"방 개설에 성공하였습니다.")
+                            $('#room_name').val('');
+                            findAllRoom();
+                        })
+                        .catch(function(response) {
+                            alert("채팅방 개설에 실패하였습니다.");
+                        });
+                }
             }
-        }
 
-        $('#createRoom').on('click', createRoom);
+            window.enterRoom = function(roomId) {
+                var sender = prompt('대화명을 입력해 주세요.');
+                if(sender !== "") {
+                    localStorage.setItem('wschat.sender',sender);
+                    localStorage.setItem('wschat.roomId',roomId);
+                    location.href="/chat/room/enter/"+roomId;
+                }
+            }
 
-        findAllRoom();
-    });
-</script>
-</body>
+            $('#createRoom').on('click', createRoom);
+
+            findAllRoom();
+        });
+    </script>
+</th:block>
+
 </html>
