@@ -1,10 +1,13 @@
 package com.example.demo.chat;
 
+import com.example.demo.employee.EmployeeDto;
+import com.example.demo.employee.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -13,10 +16,14 @@ import java.util.List;
 public class ChatRoomController {
 
     private final com.example.demo.chat.ChatRoomRepository chatRoomRepository;
+    private final EmployeeService eService;
 
     // 채팅 리스트 화면
     @GetMapping("/room")
-    public String rooms(Model model) {
+    public String rooms(Model map) {
+        ArrayList<EmployeeDto> list = eService.getAll();
+        map.addAttribute("list", list);
+
         return "/chat/room";
     }
     // 모든 채팅방 목록 반환

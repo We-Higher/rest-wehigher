@@ -16,37 +16,56 @@
 </th:block>
 
 <div layout:fragment="content">
-    <div class="container" id="app">
-        <div class="row">
-            <div class="col-md-12">
-                <h3>채팅방 리스트</h3>
-            </div>
+    <div class="d-flex">
+        <div style="min-width: 200px;">
+            <h3>임직원 리스트</h3>
+            <table border="1">
+                <tr>
+                    <th>이름</th>
+                    <th>부서</th>
+                    <th>직급</th>
+                    <th></th>
+                </tr>
+                <tr th:each="m : ${list}">
+                    <td>홍길동</td> <!-- TODO: 바꾸기 -->
+                    <td th:text="${m.deptCode}"></td>
+                    <td th:text="${m.companyRank}"></td>
+                    <td class="text-center" style="min-width: 30px;"><input type="checkbox" name="" id="" class="check_empl"></td>
+                </tr>
+            </table>
         </div>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text">방제목</label>
+        <div class="container" id="app">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>채팅방 리스트</h3>
+                </div>
             </div>
-            <input type="text" class="form-control" id="room_name">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="createRoom">채팅방 개설</button>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">방제목</label>
+                </div>
+                <input type="text" class="form-control" id="room_name">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="createRoom">채팅방 개설</button>
+                </div>
             </div>
+            <ul class="list-group" id="chatrooms">
+            </ul>
         </div>
-        <ul class="list-group" id="chatrooms">
-        </ul>
     </div>
 </div>
 
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             var room_name = '';
             var chatrooms = [];
 
             function findAllRoom() {
-                axios.get('/chat/rooms').then(function(response) {
+                axios.get('/chat/rooms').then(function (response) {
                     chatrooms = response.data;
                     $('#chatrooms').empty();
-                    $.each(chatrooms, function(index, item){
+                    $.each(chatrooms, function (index, item) {
                         $('#chatrooms').append(`<li class="list-group-item list-group-item-action" id="${item.roomId}" onclick="enterRoom('${item.roomId}')">${item.name}</li>`);
                     });
                 });
@@ -54,30 +73,30 @@
 
             function createRoom() {
                 room_name = $('#room_name').val();
-                if(room_name === "") {
+                if (room_name === "") {
                     alert("방 제목을 입력해 주십시요.");
                     return;
                 } else {
                     var params = new URLSearchParams();
-                    params.append("name",room_name);
+                    params.append("name", room_name);
                     axios.post('/chat/room', params)
-                        .then(function(response) {
-                            alert(response.data.name+"방 개설에 성공하였습니다.")
+                        .then(function (response) {
+                            alert(response.data.name + "방 개설에 성공하였습니다.")
                             $('#room_name').val('');
                             findAllRoom();
                         })
-                        .catch(function(response) {
+                        .catch(function (response) {
                             alert("채팅방 개설에 실패하였습니다.");
                         });
                 }
             }
 
-            window.enterRoom = function(roomId) {
+            window.enterRoom = function (roomId) {
                 var sender = prompt('대화명을 입력해 주세요.');
-                if(sender !== "") {
-                    localStorage.setItem('wschat.sender',sender);
-                    localStorage.setItem('wschat.roomId',roomId);
-                    location.href="/chat/room/enter/"+roomId;
+                if (sender !== "") {
+                    localStorage.setItem('wschat.sender', sender);
+                    localStorage.setItem('wschat.roomId', roomId);
+                    location.href = "/chat/room/enter/" + roomId;
                 }
             }
 
