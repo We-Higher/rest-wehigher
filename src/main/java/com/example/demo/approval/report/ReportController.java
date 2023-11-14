@@ -1,11 +1,9 @@
 package com.example.demo.approval.report;
 
 import com.example.demo.member.Member;
-import com.example.demo.member.MemberDao;
 import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

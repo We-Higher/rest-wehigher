@@ -1,0 +1,43 @@
+<meta charset="UTF-8">
+<html lang="en">
+<head>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<center>
+<body>
+<h3 class="mb-4">근태 수정신청</h3>
+    <table border="1" style="margin-bottom: 10px;">
+        <tr>
+            <th style="width:150px;">기준일</th>
+            <th style="width:150px;">출근시간</th>
+            <th style="width:150px;">퇴근시간</th>
+        </tr>
+        <tr>
+            <td>[[${cdto.basicDate}]]</td>
+            <td>[[${cdto.startTime}]]</td>
+            <td>[[${cdto.endTime}]]</td>
+        </tr>
+    </table>
+<p style="font-size: 30px; font-weight: bold; color: red;"><strong>↓</strong></p>
+<form action="/commute/editRequest" method="post">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <table border="1" style="margin-top: 10px; margin-bottom: 10px;">
+        <tr>
+            <th style="width:150px;">수정요청일</th>
+            <th style="width:150px;">수정출근시간</th>
+            <th style="width:150px;">수정퇴근시간</th>
+            <th style="width:150px;">사 유</th>
+        </tr>
+        <tr>
+            <td><input type="date" name="editBasicDate"></td>
+            <td><input type="text" name="editStartTime" th:readonly="${cdto.startTime==null}"></td>
+            <td><input type="text" name="editEndTime" th:readonly="${cdto.endTime==null}"></td>
+            <td><input type="text" name="reason" placeholder="사유를 입력해주세요"></td>
+        </tr>
+    </table>
+    <input type="hidden" name="commuteNum" th:value="${cdto.commuteNum}">
+    <input type="submit" value="수정신청">
+</form>
+</body>
+</center>
+</html>
