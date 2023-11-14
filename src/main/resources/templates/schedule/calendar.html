@@ -36,6 +36,7 @@
                             editable: true,
                             selectable: true,
                             droppable: true,
+                            dayMaxEvents: true,
 
                             drop: function (arg) {
                                 if (document.getElementById('drop-remove').checked) {
@@ -73,13 +74,6 @@
                                             data: JSON.stringify(events),
                                             contentType: 'application/json',
                                             success: function (data) {
-                                                // calendar.addEvent({
-                                                //     id: data.id,
-                                                //     title: title,
-                                                //     start: arg.start,
-                                                //     end: arg.end,
-                                                //     allDay: arg.allDay,
-                                                // })
                                                 location.reload()
                                             },
                                             error: function (e) {
@@ -103,6 +97,39 @@
                              */
                             eventDrop: function (info) {
                                 console.log(info);
+                                if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
+                                    //확인 클릭시
+                                    var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                                    var obj = new Object();
+
+                                    obj.title = info.event._def.title;
+                                    obj.start = info.event._instance.range.start;
+                                    obj.end = info.event._instance.range.end;
+                                    events.push(obj);
+
+                                    console.log(events);
+                                    console.log(info.event._def.extendedProps.cal_Id)
+                                    let calId = info.event._def.extendedProps.cal_Id
+                                    $(function eidtData() {
+                                        $.ajax({
+                                            url: "/schedule/edit/" + calId,
+                                            method: "PATCH",
+                                            beforeSend : function(xhr){
+                                                xhr.setRequestHeader(header, token);
+                                            },
+                                            dataType: "json",
+                                            data: JSON.stringify(events),
+                                            contentType: 'application/json',
+                                        })
+                                    })
+                                }else{
+                                    info.revert();
+                                }
+                            },
+
+                            //드래그로 시간 수정
+                            eventResize: function (info){
+                                console.log(info)
                                 if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
                                     //확인 클릭시
                                     var events = new Array(); // Json 데이터를 받기 위한 배열 선언
