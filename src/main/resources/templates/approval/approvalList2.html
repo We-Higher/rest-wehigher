@@ -6,6 +6,8 @@
         function selectEmployee(button) {
             let name = button.parentElement.parentElement.querySelector(".ename").textContent;
             opener.document.getElementById("approvalList2").value = name;
+            let username = button.parentElement.parentElement.querySelector(".eusername").textContent;
+            opener.document.getElementById("app2username").value = username;
             window.close();
         }
     </script>
@@ -13,6 +15,7 @@
 <h2 class="mb-4">임직원 목록</h2>
     <form action="/approval/approvalList2" method="post">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        
 	    <select name="type">
             <option value="none">전체</option>
             <option value="name">이름</option>
@@ -36,7 +39,10 @@
         <td>[[${e.newNo}]]</td>
         <td>[[${e.deptName}]]</td>
         <td>[[${e.companyRankName}]]</td>
-        <td><button onclick="selectEmployee(this)">선택</button></td>
+        <td style="display: none;" class="eusername">[[${e.username}]]</td>
+        <td>
+            <button onclick="selectEmployee(this)">선택</button>
+        </td>
     </tr>
 </table>
 </html>

@@ -24,7 +24,7 @@ public class EmployeeService {
 		List<Member> list = mdao.findAll();
 		ArrayList<EmployeeDto> list2 = new ArrayList<>();
 		for (Member b : list) {
-			list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
+			list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 					b.getPhone(), b.getEmail(), b.getComCall()));
 		}
 		return list2;
@@ -37,7 +37,7 @@ public class EmployeeService {
 		if(type.equals("name")){
 			List<Member> list = mdao.findByNameLike("%" + option +"%");
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;
@@ -45,7 +45,7 @@ public class EmployeeService {
 		else if(type.equals("newNo")) {
 			List<Member> list = mdao.findByNewNoLike("%" + option +"%");
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;
@@ -53,7 +53,7 @@ public class EmployeeService {
 		else if(type.equals("companyRankName")) {
 			List<Member> list = mdao.findByCompanyRankNameLike("%" + option +"%");
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;
@@ -61,7 +61,7 @@ public class EmployeeService {
 		else if(type.equals("deptName")) {
 			List<Member> list = mdao.findByDeptNameLike("%" + option +"%");
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;
@@ -69,7 +69,7 @@ public class EmployeeService {
 		else {
 			List<Member> list = mdao.findAll();
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;

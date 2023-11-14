@@ -111,7 +111,7 @@
 				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="1"
                       data-dsl="{{label:draftDept}}" data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
-                      data-value="" data-autotype="">[[${m.deptCode}]]</span>
+                      data-value="" data-autotype="">[[${m.deptName}]]</span>
 			</td>
 		</tr>
 	</tbody>
@@ -130,8 +130,10 @@
 					     <td style="width: 70px; height:40px; font-size: 12px; text-align: center;">[[${m.name}]]</td>
 					     <td style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" id="ap1">
                              <input type="text" id="approvalList1" name="approval1" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly text="등록"></td>
+                             <input type="hidden" id="app1username" name="app1username" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly></td>
 					     <td style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" id="ap2">
                              <input type="text" id="approvalList2" name="approval2" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly></td>
+                             <input type="hidden" id="app2username" name="app2username" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly></td>
 					 </tr>
 				 </table>
     </tbody>
@@ -190,7 +192,7 @@
                 <p style="font-family: &quot;맑은 고딕&quot;, monospace; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;">
                 <span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="6" data-dsl="{{text}}"
                       data-wrapper="" style="width: 100%; font-family: &quot;맑은 고딕&quot;, monospace; font-size: 10pt;"
-                      data-value="" data-autotype="">[[${m.deptCode}]]</span>
+                      data-value="" data-autotype="">[[${m.deptName}]]</span>
                 </p>
             </td>
         </tr>

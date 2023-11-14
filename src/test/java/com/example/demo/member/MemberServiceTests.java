@@ -20,6 +20,7 @@ public class MemberServiceTests {
                 .email("admin@email.com")
                 .phone("010-1234-5678")
                 .address("서울")
+                .companyName("Co-Operate-Works")
                 .isMaster(1)
                 .newNo("115284")
                 .comCall("02-3415-2108")
