@@ -5,14 +5,20 @@
       layout:decorate="~{layout}">
 <div layout:fragment="content">
 <span style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
-	<form action="/vacation" method="post">
+	<form action="/approval/vacation/approve" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		<input type="hidden" th:name="vacationNum" th:value="${vdto.vacationNum}"/>
 <table style="border: 0px solid rgb(0, 0, 0); width: 800px; font-family: malgun gothic, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;"><!-- Header --><colgroup><col
         width="310"><col width="490"></colgroup>
 	<tbody>
 		<tr>
 			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: top;"
-                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l">
+                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${vdto.rstatus != -1}">
 휴가원
+			</td>
+			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: top;"
+                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${vdto.rstatus == -1}">
+휴가원		<img src="/img/refuse.png" style="position:absolute; width:130px; height:130px; margin-left:-500px; margin-top:-50px"/>
 			</td>
 		</tr>
 		<tr>
@@ -39,7 +45,7 @@
 				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="12"
                       data-dsl="{{label:draftDept}}" data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"
-                      data-value="" data-autotype="">[[${vdto.member.deptCode}]]</span>
+                      data-value="" data-autotype="">[[${vdto.member.deptName}]]</span>
 			</td>
 		</tr>
 		<tr>
@@ -77,8 +83,22 @@
 					     </tr>
 					 <tr style="text-align: center">
 					     <td style="width: 70px" height="40px;">[[${vdto.member.name}]]</td>
-					     <td style="width: 70px" height="40px;">[[${vdto.approval1}]]</td>
-					     <td style="width: 70px" height="40px;">[[${vdto.approval2}]]</td>
+					     
+					     <td style="width: 70px" height="40px;" th:if="${vdto.status == 0}">[[${vdto.approval1}]]</td>
+					     <td style="width: 70px" height="40px;" th:if="${vdto.status == 0}">[[${vdto.approval2}]]</td>
+					     	
+					     <td style="width: 70px" height="40px;" th:if="${vdto.status == 1}">[[${vdto.approval1}]]
+					     <img src="/img/approve.png" style="position:absolute; width:90px; height:70px; margin-left:-60px; margin-top:-27px" />
+					     </td>
+					     <td style="width: 70px" height="40px;" th:if="${vdto.status == 1}">[[${vdto.approval2}]]</td>
+					     
+					     <td style="width: 70px" height="40px;" th:if="${vdto.status == 2}">[[${vdto.approval1}]]
+					     <img src="/img/approve.png" style="position:absolute; width:90px; height:70px; margin-left:-60px; margin-top:-27px" />
+					     </td>
+					     <td style="width: 70px" height="40px;" th:if="${vdto.status == 2}">[[${vdto.approval2}]]
+					     <img src="/img/approve.png" style="position:absolute; width:90px; height:70px; margin-left:-60px; margin-top:-27px" />
+					     </td>
+					 </tr>
 					 </tr>
 				 </table>
 			</td>
@@ -104,7 +124,7 @@
 				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="4" data-dsl="{{text}}"
                       data-wrapper=""
                       style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 11pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"
-                      data-value="">[[${vdto.member.deptCode}]]</span>
+                      data-value="">[[${vdto.member.deptName}]]</span>
 			</td>
 		</tr>
 		<tr>
@@ -116,7 +136,7 @@
 				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="5" data-dsl="{{text}}"
                       data-wrapper=""
                       style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 11pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"
-                      data-value="">[[${vdto.member.companyRank}]]</span>
+                      data-value="">[[${vdto.member.companyRankName}]]</span>
 			</td>
 		</tr>
 		<tr>
@@ -204,6 +224,7 @@
 </table>
 	<input type="submit" value="결재" style="margin-left: 713px; margin-top: 5px">
 	<input type="button" value="보류" style="margin-left: 5px; margin-top: 5px" id="defer">
+	<a th:href="@{/approval/vacation/refuse(vacationNum=${vdto.vacationNum })}">반려</a>
 </span>
     </form>
     <p style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;">

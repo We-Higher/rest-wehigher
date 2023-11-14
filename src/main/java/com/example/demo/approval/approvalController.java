@@ -75,6 +75,18 @@ public class approvalController {
         map.addAttribute("rlist", rlist);
         map.addAttribute("vlist", vlist);
     }
+    
+    @GetMapping("/myrefuse")
+    public void RefuseListById(Model map, Principal principal) {
+        ArrayList<ExpenseDto> elist = eservice.getAll();
+        ArrayList<ReportDto> rlist = rservice.getAll();
+        ArrayList<VacationDto> vlist = vservice.getAll();
+        MemberDto mdto = mservice.getMember(principal.getName());
+        map.addAttribute("m", mdto);
+        map.addAttribute("elist", elist);
+        map.addAttribute("rlist", rlist);
+        map.addAttribute("vlist", vlist);
+    }
 
     @GetMapping("/expense/edit")
     public String editExpense(ExpenseDto edto, Model map) {
@@ -137,19 +149,67 @@ public class approvalController {
     
     //품의서 결재
     @PostMapping("/report/approve")
-    public String editReportApproval(int reportNum, Principal principal) {
+    public String ReportApproval(int reportNum, Principal principal) {
 
     	MemberDto mdto = mservice.getMember(principal.getName());
     	ReportDto rdto = rservice.getById(reportNum);
     	rservice.approveReport(rdto, mdto);
     	
-    	return "redirect:/main";
+    	return "redirect:/approval/process";
     }
 
     //지출결의서 결재
-    @PostMapping("/approval/expense/approve")
-    public String approveExpense() {
-        return "redirect:/approval/process";
+    @PostMapping("/expense/approve")
+    public String ExpenseApproval(int expenseNum, Principal principal) {
+    	
+    	MemberDto mdto = mservice.getMember(principal.getName());
+    	ExpenseDto edto = eservice.getById(expenseNum);
+    	eservice.approveExpense(edto, mdto);
+    	
+    	return "redirect:/approval/process";
+    }
+    
+    //휴가신청서 결재
+    @PostMapping("/vacation/approve")
+    public String VacationApproval(int vacationNum, Principal principal) {
+    	
+    	MemberDto mdto = mservice.getMember(principal.getName());
+    	VacationDto vdto = vservice.getById(vacationNum);
+    	vservice.approveVacation(vdto, mdto);
+    	
+    	return "redirect:/approval/process";
+    }
+    
+    //품의서 반려
+    @GetMapping("/report/refuse")
+    public String ReportRefuse(int reportNum, Principal principal) {
+
+    	MemberDto mdto = mservice.getMember(principal.getName());
+    	ReportDto rdto = rservice.getById(reportNum);
+    	rservice.refuseReport(rdto, mdto);
+    	
+    	return "redirect:/approval/process";
     }
 
+    //지출결의서 반려
+    @GetMapping("/expense/refuse")
+    public String ExpenseRefuse(int expenseNum, Principal principal) {
+    	
+    	MemberDto mdto = mservice.getMember(principal.getName());
+    	ExpenseDto edto = eservice.getById(expenseNum);
+    	eservice.refuseExpense(edto, mdto);
+    	
+    	return "redirect:/approval/process";
+    }
+    
+    //휴가신청서 반려
+    @GetMapping("/vacation/refuse")
+    public String VacationRefuse(int vacationNum, Principal principal) {
+    	
+    	MemberDto mdto = mservice.getMember(principal.getName());
+    	VacationDto vdto = vservice.getById(vacationNum);
+    	vservice.refuseVacation(vdto, mdto);
+    	
+    	return "redirect:/approval/process";
+    }
 }

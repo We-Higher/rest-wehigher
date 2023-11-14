@@ -60,7 +60,7 @@
 				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="12"
                       data-dsl="{{label:draftDept}}" data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"
-                      data-value="" data-autotype="">[[${m.deptCode}]]</span>
+                      data-value="" data-autotype="">[[${m.deptName}]]</span>
 			</td>
 		</tr>
 	</tbody>
@@ -80,10 +80,12 @@
                              <input type="text" id="approvalList1" name="approval1" value=""
                                     style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red"
                                     readonly text="등록"></td>
+                             <input type="hidden" id="app1username" name="app1username" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly></td>
 					     <td style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" id="ap2">
                              <input type="text" id="approvalList2" name="approval2" value=""
                                     style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red"
                                     readonly></td>
+                             <input type="hidden" id="app2username" name="app2username" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly></td>
 					 </tr>
 				 </table>
 			</td>
@@ -109,7 +111,7 @@
 				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="4" data-dsl="{{text}}"
                       data-wrapper=""
                       style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 11pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"
-                      data-value="">[[${m.deptCode}]]</span>
+                      data-value="">[[${m.deptName}]]</span>
 			</td>
 		</tr>
 		<tr>
@@ -121,7 +123,7 @@
 				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="5" data-dsl="{{text}}"
                       data-wrapper=""
                       style="width: 100%; font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 11pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"
-                      data-value="">[[${m.companyRank}]]</span>
+                      data-value="">[[${m.companyRankName}]]</span>
 			</td>
 		</tr>
 		<tr>

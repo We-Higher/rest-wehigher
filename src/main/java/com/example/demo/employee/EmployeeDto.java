@@ -18,6 +18,7 @@ public class EmployeeDto {
 
 	private Long id;  //employee 시퀀스
     private String name; // 이름
+    private String username; // 아이디
     private String newNo; // 사번
     private int deptCode; // 부서 코드
     private String deptName; // 부서명

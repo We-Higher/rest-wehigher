@@ -7,6 +7,8 @@
 </head>
 <div layout:fragment="content">
     <form action="/approval/expense/approve" method="post">
+		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+		<input type="hidden" th:name="expenseNum" th:value="${edto.expenseNum}"/>
         <div style="font-family: 돋움; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
   <span style="font-family: 돋움; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
 
@@ -19,8 +21,13 @@
 	<tbody>
 		<tr>
 			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 60px; text-align: center; color: black; font-size: 25px; font-weight: bold; vertical-align: middle;"
-                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l">
+                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${edto.rstatus != -1}">
 지출결의서
+			</td>
+			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 60px; text-align: center; color: black; font-size: 25px; font-weight: bold; vertical-align: middle;"
+                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${edto.rstatus == -1}">
+지출결의서
+			<img src="/img/refuse.png" style="position:absolute; width:130px; height:130px; margin-left:-510px; margin-top:-70px"/>
 			</td>
 		</tr>
 		<tr>
@@ -52,7 +59,7 @@
 				<span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="0"
                       data-dsl="{{label:draftUser}}" data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
-                      data-value="" data-autotype="">[[${edto.member.deptCode}]]</span>
+                      data-value="" data-autotype="">[[${edto.member.deptName}]]</span>
 			</td>
 		</tr>
 		<tr>
@@ -90,10 +97,23 @@
 					     <td>팀장</td>
 					     <td>부서장</td>
 					     </tr>
-					 <tr>
+					 <tr style="text-align: center">
 					     <td style="width: 70px; height:40px; font-size: 12px; text-align: center;">[[${edto.member.name}]]</td>
-					     <td style="width: 70px; height:40px; font-size: 12px; text-align: center;">[[${edto.approval1}]]</td>
-					     <td style="width: 70px; height:40px; font-size: 12px; text-align: center;">[[${edto.approval2}]]</td>
+					     
+					     <td style="width: 70px" height="40px; " th:if="${edto.status == 0}">[[${edto.approval1}]]</td>
+					     <td style="width: 70px" height="40px;" th:if="${edto.status == 0}">[[${edto.approval2}]]</td>
+					     	
+					     <td style="width: 70px" height="40px;" th:if="${edto.status == 1}">[[${edto.approval1}]]
+					     <img src="/img/approve.png" style="position:absolute; width:90px; height:70px; margin-left:-60px; margin-top:-27px" />
+					     </td>
+					     <td style="width: 70px" height="40px;" th:if="${edto.status == 1}">[[${edto.approval2}]]</td>
+					     
+					     <td style="width: 70px" height="40px;" th:if="${edto.status == 2}">[[${edto.approval1}]]
+					     <img src="/img/approve.png" style="position:absolute; width:90px; height:70px; margin-left:-60px; margin-top:-27px" />
+					     </td>
+					     <td style="width: 70px" height="40px;" th:if="${edto.status == 2}">[[${edto.approval2}]]
+					     <img src="/img/approve.png" style="position:absolute; width:90px; height:70px; margin-left:-60px; margin-top:-27px" />
+					     </td>
 					 </tr>
 				 </table>
     </td>
@@ -155,7 +175,7 @@
                     <p style="font-family: &quot;맑은 고딕&quot;, monospace; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;">
                 <span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="6" data-dsl="{{text}}"
                       data-wrapper="" style="width: 100%; font-family: &quot;맑은 고딕&quot;, monospace; font-size: 10pt;"
-                      data-value="" data-autotype="">[[${edto.member.deptCode}]]</span>
+                      data-value="" data-autotype="">[[${edto.member.deptName}]]</span>
                     </p>
                 </td>
             </tr>
@@ -293,6 +313,7 @@
                 <strong style="color: black;">* 영수증 별도 제출</strong></span>
             <input type="submit" value="결재" style="margin-left: 620px; margin-top: 5px">
             <input type="button" value="보류" style="margin-left: 5px; margin-top: 5px" id="defer">
+            <a th:href="@{/approval/expense/refuse(expenseNum=${edto.expenseNum })}">반려</a>
     </form>
 </div>
 </div>

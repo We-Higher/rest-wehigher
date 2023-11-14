@@ -27,6 +27,12 @@ public class Vacation {
     private String endDate; //휴가 종료일
     private String reason; //휴가사유
     private String wdate; //작성일
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int status;     //결재 상태
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int rstatus;     //반려 상태
     private String approval1;  //1차 결재자
     private String approval2;  //2차 결재자
+    private String app1username;  //1차 결재자 username
+    private String app2username;  //2차 결재자 username
 }
