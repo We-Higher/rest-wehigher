@@ -62,7 +62,7 @@ public class ScheduleController {
         System.out.println(param.get(0).get("start"));
         System.out.println(param.get(0).get("end"));
 
-        String title = (String) param.get(0).get("title"); // 이름 받아오기
+        String title = (String) param.get(0).get("title");
         String startDateString = (String) param.get(0).get("start");
         String endDateString = (String) param.get(0).get("end");
 

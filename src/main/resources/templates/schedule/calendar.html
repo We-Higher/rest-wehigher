@@ -35,12 +35,11 @@
                             },
                             editable: true,
                             selectable: true,
-                            droppable: true, // this allows things to be dropped onto the calendar
+                            droppable: true,
+                            dayMaxEvents: true,
 
                             drop: function (arg) {
-                                // is the "remove after drop" checkbox checked?
                                 if (document.getElementById('drop-remove').checked) {
-                                    // if so, remove the element from the "Draggable Events" list
                                     arg.draggedEl.parentNode.removeChild(arg.draggedEl);
                                 }
                             },
@@ -57,8 +56,8 @@
                                     var obj = new Object();     // Json 을 담기 위해 Object 선언
 
                                     obj.title = title;
-                                    obj.start = arg.start;
-                                    obj.end = arg.end;
+                                    obj.start = new Date(arg.start.setHours(arg.start.getHours()+9));
+                                    obj.end = new Date(arg.end.setHours(arg.end.getHours()+9));
                                     events.push(obj);
 
                                     var jsondata = JSON.stringify(events);
@@ -75,13 +74,7 @@
                                             data: JSON.stringify(events),
                                             contentType: 'application/json',
                                             success: function (data) {
-                                                calendar.addEvent({
-                                                    id: data.id,
-                                                    title: title,
-                                                    start: arg.start,
-                                                    end: arg.end,
-                                                    allDay: arg.allDay,
-                                                })
+                                                location.reload()
                                             },
                                             error: function (e) {
                                                 console.log(e)
@@ -104,6 +97,39 @@
                              */
                             eventDrop: function (info) {
                                 console.log(info);
+                                if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
+                                    //확인 클릭시
+                                    var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                                    var obj = new Object();
+
+                                    obj.title = info.event._def.title;
+                                    obj.start = info.event._instance.range.start;
+                                    obj.end = info.event._instance.range.end;
+                                    events.push(obj);
+
+                                    console.log(events);
+                                    console.log(info.event._def.extendedProps.cal_Id)
+                                    let calId = info.event._def.extendedProps.cal_Id
+                                    $(function eidtData() {
+                                        $.ajax({
+                                            url: "/schedule/edit/" + calId,
+                                            method: "PATCH",
+                                            beforeSend : function(xhr){
+                                                xhr.setRequestHeader(header, token);
+                                            },
+                                            dataType: "json",
+                                            data: JSON.stringify(events),
+                                            contentType: 'application/json',
+                                        })
+                                    })
+                                }else{
+                                    info.revert();
+                                }
+                            },
+
+                            //드래그로 시간 수정
+                            eventResize: function (info){
+                                console.log(info)
                                 if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
                                     //확인 클릭시
                                     var events = new Array(); // Json 데이터를 받기 위한 배열 선언
