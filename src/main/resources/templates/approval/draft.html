@@ -16,7 +16,7 @@
         <tr th:each="e: ${elist}">
             <td>지출결의서</td>
             <td>[[${e.member.name}]]</td>
-            <td><a th:href="@{/approval/expense/edit(expenseNum=${e.expenseNum})}">[[${e.title}]]</a></td>
+            <td><a th:href="@{/approval/expense/editread(expenseNum=${e.expenseNum})}">[[${e.title}]]</a></td>
             <td>[[${e.wdate}]]</td>
 			<td th:if="${e.rstatus == -1}">반려</td>
             <td th:if="${e.status >=0 && e.status < 2 && e.rstatus==0}">결재중</td>
@@ -25,7 +25,7 @@
         <tr th:each="r:${rlist}">
             <td>품의서</td>
             <td>[[${r.member.name}]]</td>
-            <td><a th:href="@{/approval/report/edit(reportNum=${r.reportNum})}">[[${r.title}]]</a></td>
+            <td><a th:href="@{/approval/report/editread(reportNum=${r.reportNum})}">[[${r.title}]]</a></td>
             <td>[[${r.wdate}]]</td>
             <td th:if="${r.rstatus == -1}">반려</td>
             <td th:if="${r.status >=0 && r.status < 2 && r.rstatus==0}">결재중</td>
@@ -34,7 +34,7 @@
         <tr th:each="v:${vlist}">
             <td>휴가신청서</td>
             <td>[[${v.member.name}]]</td>
-            <td><a th:href="@{/approval/vacation/edit(vacationNum=${v.vacationNum})}">[[${v.member.name}]] 휴가신청</a></td>
+            <td><a th:href="@{/approval/vacation/editread(vacationNum=${v.vacationNum})}">[[${v.member.name}]] 휴가신청</a></td>
             <td>[[${v.wdate}]]</td>
             <td th:if="${v.rstatus == -1}">반려</td>
             <td th:if="${v.status >=0 && v.status < 2 && v.rstatus==0}">결재중</td>

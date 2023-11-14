@@ -20,7 +20,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class BoardDto {
+public class NotifyDto {
 	private int num;
 	private Date wdate;
 	private Date udate;

@@ -21,7 +21,7 @@
 	<tbody>
 		<tr>
 			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 60px; text-align: center; color: black; font-size: 25px; font-weight: bold; vertical-align: middle;"
-                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${edto.rstatus != -1}">
+                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${edto.rstatus != -1 && (edto.status == 0 || edto.status == 1)}">
 지출결의서
 			</td>
 			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 60px; text-align: center; color: black; font-size: 25px; font-weight: bold; vertical-align: middle;"
@@ -37,7 +37,7 @@
 		</tr>
 		<tr>
 			<td style="background: white; padding: 0px !important; border: currentColor; text-align: left; color: black; font-size: 12px; font-weight: normal; vertical-align: top;">
-
+`
 <table style="border: 1px solid rgb(0, 0, 0); font-family: malgun gothic,dotum,arial,tahoma; margin-top: 1px; border-collapse: collapse;"><!-- User -->
         <colgroup>
          <col width="90">
@@ -316,8 +316,6 @@
             </table>
             <span style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;">
                 <strong style="color: black;">* 영수증 별도 제출</strong></span>
-            <input type="submit" value="결재" style="margin-left: 620px; margin-top: 5px">
-            <input type="button" th:onclick="|location.href='@{/approval/expense/refuse(expenseNum=${edto.expenseNum })}'|" value="반려" style="margin-left: 5px; margin-top: 5px" id="defer">
     </form>
 </div>
 </div>

@@ -110,6 +110,29 @@ public class approvalController {
         map.addAttribute("vdto", vdto);
         return "approval/edit/editVacation";
     }
+    
+    @GetMapping("/expense/editread")
+    public String editExpenseRead(ExpenseDto edto, Model map) {
+        edto = eservice.getById(edto.getExpenseNum());
+        map.addAttribute("edto", edto);
+        return "approval/edit/editExpenseRead";
+    }
+
+    @GetMapping("/report/editread")
+    public String editReportRead(ReportDto rdto, Model map) {
+        rdto = rservice.getById(rdto.getReportNum());
+        System.out.println("rdto = " + rdto);
+        map.addAttribute("rdto", rdto);
+        return "approval/edit/editReportRead";
+    }
+
+    @GetMapping("/vacation/editread")
+    public String editVacationRead(VacationDto vdto, Model map) {
+        vdto = vservice.getById(vdto.getVacationNum());
+        System.out.println("vdto = " + vdto);
+        map.addAttribute("vdto", vdto);
+        return "approval/edit/editVacationRead";
+    }
 
     //1차 결재자 선택
     @GetMapping("/approvalList1")
