@@ -43,7 +43,7 @@ public class ReportController {
             init(response);
             PrintWriter out = response.getWriter();
             MemberDto mdto = mservice.getMember(principal.getName());
-            dto.setMember(new Member(mdto.getId(),mdto.getUsername(),mdto.getPwd(),mdto.getName(),mdto.getEmail(),mdto.getPhone(),mdto.getAddress(),mdto.getCompanyName(),mdto.getDeptCode(),mdto.getDeptName(),mdto.getCompanyRank(),mdto.getCompanyRankName(),mdto.getNewNo(),mdto.getComCall(),mdto.getIsMaster(),mdto.getStatus(),mdto.getOriginFname(),mdto.getThumbnailFname(),mdto.getNewMemNo(),mdto.getRemain()));
+            dto.setMember(new Member(mdto.getId(),mdto.getUsername(),mdto.getPwd(),mdto.getName(),mdto.getEmail(),mdto.getPhone(),mdto.getAddress(),mdto.getCompanyName(),mdto.getDeptCode(),mdto.getDeptName(),mdto.getCompanyRank(),mdto.getCompanyRankName(),mdto.getNewNo(),mdto.getComCall(),mdto.getIsMaster(),mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(),mdto.getThumbnailFname(),mdto.getNewMemNo(),mdto.getRemain()));
             rservice.saveReport(dto);
             out.println(String.format("<script>window.close();</script>"));
             out.flush();

@@ -1,5 +1,6 @@
 package com.example.demo.commute;
 
+import com.example.demo.board.BoardDto;
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
@@ -127,7 +128,7 @@ public class CommuteController {
     }
 
     //수정요청 승인
-    @RequestMapping("/approve")
+    /*@RequestMapping("/approve")
     public String approve(int commuteNum) {
         CommuteDto cdto = cservice.get(commuteNum);
         if (cdto.getEditStartTime() != null && cdto.getEditBasicDate() != null) {
@@ -145,6 +146,21 @@ public class CommuteController {
             cdto.setReason("");
             cservice.save(cdto);
         }
+        return "redirect:/commute/editRequestList";
+    }*/
+    
+    //수정요청 승인
+    @RequestMapping("/approve")
+    public String approve(int commuteNum) {
+        CommuteDto cdto = cservice.get(commuteNum);
+        cdto.setStartTime(cdto.getEditStartTime());
+        cdto.setEndTime(cdto.getEditEndTime());
+        cdto.setBasicDate(cdto.getEditBasicDate());
+        cdto.setEditStartTime("");
+        cdto.setEditEndTime("");
+        cdto.setEditBasicDate("");
+        cdto.setReason("");
+        cservice.save(cdto);
         return "redirect:/commute/editRequestList";
     }
 
@@ -168,12 +184,20 @@ public class CommuteController {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime1 = LocalDateTime.now().format(formatter1);
         String formattedTime2 = LocalDateTime.now().format(formatter2);
-        mdto.setStatus(1);
-        mservice.save(mdto);
-        cdto.setBasicDate(formattedTime1);
-        cdto.setStartTime(formattedTime2);
-        cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
-        cservice.save(cdto);
+        CommuteDto cdto2 = cservice.getByDateAndUserName(formattedTime1, principal.getName());
+        System.out.println(cdto2);
+	    if(cdto2==null) {
+	    	mdto.setCstatus(1);
+	    	mservice.save(mdto);	
+	  	    cdto.setBasicDate(formattedTime1);
+	  	    cdto.setStartTime(formattedTime2);
+	  	    cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
+	  	    cservice.save(cdto);
+	    }
+        else {
+        	
+        	System.out.println("이미 출근처리가 완료되었습니다.");
+        }
         return "redirect:/commute/list";
     }
 
@@ -185,12 +209,22 @@ public class CommuteController {
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime1 = LocalDateTime.now().format(formatter1);
         String formattedTime2 = LocalDateTime.now().format(formatter2);
-        mdto.setStatus(0);
-        mservice.save(mdto);
-        cdto.setBasicDate(formattedTime1);
-        cdto.setEndTime(formattedTime2);
-        cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
-        cservice.save(cdto);
+        cdto = cservice.getByDateAndUserName(formattedTime1, principal.getName());
+        System.out.println(cdto.getEndTime());
+        System.out.println(formattedTime2);
+        if(cdto.getEndTime()==null) {
+            mdto.setCstatus(2);
+            mservice.save(mdto);
+	        cdto.setEndTime(formattedTime2);
+	        System.out.println("test " + cdto.getCommuteNum());
+	        System.out.println("test " + cdto);
+	        cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
+	        cservice.save(cdto);
+        }
+        else {
+        	
+        	System.out.println("이미 퇴근처리가 완료되었습니다.");
+        }
         return "redirect:/commute/list";
     }
 }
