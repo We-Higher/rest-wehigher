@@ -2,11 +2,14 @@ package com.example.demo.chat;
 
 import com.example.demo.employee.EmployeeDto;
 import com.example.demo.employee.EmployeeService;
+import com.example.demo.member.Member;
+import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,10 +20,12 @@ public class ChatRoomController {
 
     private final com.example.demo.chat.ChatRoomRepository chatRoomRepository;
     private final EmployeeService eService;
+    private final MemberService memberService;
 
     // 채팅 리스트 화면
     @GetMapping("/room")
-    public String rooms(Model map) {
+    public String rooms(Principal principal, Model map) {
+        Member member = memberService.getMemberBy(principal.getName())
         ArrayList<EmployeeDto> list = eService.getAll();
         map.addAttribute("list", list);
 
@@ -35,8 +40,8 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-        return chatRoomRepository.createChatRoom(name);
+    public ChatRoom createRoom(@RequestParam int memberId) {
+        return chatRoomRepository.createChatRoom(memberId);
     }
     // 채팅방 입장 화면
     @GetMapping("/room/enter/{roomId}")
