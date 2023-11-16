@@ -2,8 +2,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <nav id="sidebar" th:fragment="sidebarFragment">
     <div class="p-4 pt-5">
-<!--        <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a>-->
-        <a href="#" class="img logo rounded-circle mb-5"></a>
+        <a href="#" class="img logo rounded-circle mb-4" style="background-image: url('/img/logo.png');"></a>
         <ul class="list-unstyled components mb-5">
             <li class="active">
                 <a href="#empSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">임직원 관리</a>
@@ -129,7 +128,13 @@
                 <a href="#attSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">근태관리</a>
                 <ul class="collapse list-unstyled" id="attSubmenu">
                     <li>
-                        <a href="#">임직원 목록</a>
+                        <a href="/commute/list">임직원 근태관리</a>
+                    </li>
+                    <li>
+                        <a href="/commute/mycommute">출퇴근 이력</a>
+                    </li>
+                    <li>
+                        <a href="/commute/editRequestList">근태수정 요청목록</a>
                     </li>
                 </ul>
             </li>
