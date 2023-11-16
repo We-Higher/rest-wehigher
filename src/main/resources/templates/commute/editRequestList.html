@@ -53,16 +53,14 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="c:${list}">
+                                     <tr th:each="c:${list}">
                                         <td>[[${c.member.name}]]</td>
                                         <td>[[${c.member.deptName}]]</td>
                                         <td>[[${c.member.companyRankName}]]</td>
                                         <td>[[${c.basicDate}]]</td>
-                                        <td th:if="${c.editStartTime ne null}">[출근] [[${c.startTime}]] →
-                                            [[${c.editStartTime}]]
-                                        </td>
-                                        <td th:if="${c.editEndTime ne null}">[퇴근] [[${c.endTime}]] →
-                                            [[${c.editEndTime}]]
+                                        <td>
+                                        [출근] [[${c.startTime}]] → [[${c.editStartTime}]]<br/>
+                                        [퇴근] [[${c.endTime}]] → [[${c.editEndTime}]]
                                         </td>
                                         <td>[[${c.reason}]]</td>
                                         <td><a th:href="@{/commute/approve(commuteNum=${c.commuteNum})}">승인</a> <a

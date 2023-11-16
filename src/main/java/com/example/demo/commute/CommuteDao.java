@@ -15,4 +15,6 @@ public interface CommuteDao extends JpaRepository<Commute, Integer> {
     List<Commute> findByMemberDeptNameContaining(String deptName);  //부서명으로 검색
 
     List<Commute> findByMemberId(Long id);    //회원번호로 검색
+    
+    Commute findByBasicDateAndMemberUsername(String BasicDate, String Username);
 }

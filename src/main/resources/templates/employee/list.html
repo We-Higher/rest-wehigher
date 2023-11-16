@@ -36,7 +36,7 @@
                                         <th>이메일</th>
                                         <th>내선전화</th>
                                     </tr>
-                                    <tbody>
+									<tbody>
                                     <tr th:each="m : ${list}">
                                         <td th:text="${m.newNo}"></td>
                                         <td><a th:href="@{/member/edit(name=${m.name})}">[[${m.name}]]</a></td>

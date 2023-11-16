@@ -31,4 +31,4 @@ public class Commute {
     private String editStartTime;   //수정 출근시간
     private String editEndTime;     //수정 퇴근시간
     private String editBasicDate;   //수정 기준일
-}
+}	
