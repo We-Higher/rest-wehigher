@@ -39,4 +39,29 @@ public class Member {
     private int newMemNo; // 임시 테이블 사번
     @Column(columnDefinition = "int default 15", nullable = false)
     private int remain; //연차 잔여일
+
+    public Member toEntity(MemberDto memberDto) {
+        return Member.builder()
+                .id(memberDto.getId())
+                .username(memberDto.getUsername())
+                .pwd(memberDto.getPwd())
+                .email(memberDto.getEmail())
+                .phone(memberDto.getPhone())
+                .address(memberDto.getAddress())
+                .companyName(memberDto.getCompanyName())
+                .deptCode(memberDto.getDeptCode())
+                .deptName(memberDto.getDeptName())
+                .companyRank(memberDto.getCompanyRank())
+                .companyRankName(memberDto.getCompanyRankName())
+                .newNo(memberDto.getNewNo())
+                .comCall(memberDto.getComCall())
+                .isMaster(memberDto.getIsMaster())
+                .status(memberDto.getStatus())
+                .cstatus(memberDto.getCstatus())
+                .originFname(memberDto.getOriginFname())
+                .thumbnailFname(memberDto.getThumbnailFname())
+                .newMemNo(memberDto.getNewMemNo())
+                .remain(memberDto.getRemain())
+                .build();
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.demo.member;
 
-import jakarta.persistence.*;
 import lombok.*;
 
 @Setter
@@ -31,4 +30,30 @@ public class MemberDto {
     private int newMemNo; // 임시 테이블 사번
     private int remain; //연차 잔여일
     // TODO multipart 추가
+
+    public MemberDto toDto (Member member) {
+        return MemberDto.builder()
+                .id(member.getId())
+                .username(member.getUsername())
+                .pwd(member.getPwd())
+                .email(member.getEmail())
+                .phone(member.getPhone())
+                .address(member.getAddress())
+                .companyName(member.getCompanyName())
+                .deptCode(member.getDeptCode())
+                .deptName(member.getDeptName())
+                .companyRank(member.getCompanyRank())
+                .companyRankName(member.getCompanyRankName())
+                .newNo(member.getNewNo())
+                .comCall(member.getComCall())
+                .isMaster(member.getIsMaster())
+                .status(member.getStatus())
+                .cstatus(member.getCstatus())
+                .originFname(member.getOriginFname())
+                .thumbnailFname(member.getThumbnailFname())
+                .newMemNo(member.getNewMemNo())
+                .remain(member.getRemain())
+                .build();
+    }
+
 }
