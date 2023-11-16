@@ -13,12 +13,16 @@
 	<tbody>
 		<tr>
 			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: top;"
-                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${vdto.rstatus != -1}">
+                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${vdto.rstatus != -1 && (vdto.status == 0 || vdto.status == 1)}">
 휴가원
 			</td>
 			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: top;"
                 colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${vdto.rstatus == -1}">
 휴가원		<img src="/img/refuse.png" style="position:absolute; width:130px; height:130px; margin-left:-500px; margin-top:-50px"/>
+			</td>
+			<td style="background: white; padding: 0px !important; border: 0px currentColor; height: 90px; text-align: center; color: black; font-size: 36px; font-weight: bold; vertical-align: top;"
+                colspan="2" class="dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l" th:if="${vdto.status == 2}">
+휴가원		<img src="/img/fapprove.png" style="position:absolute; width:130px; height:130px; margin-left:-500px; margin-top:-50px"/>
 			</td>
 		</tr>
 		<tr>
@@ -222,8 +226,6 @@
 </tr>
 </tbody>
 </table>
-	<input type="submit" value="결재" style="margin-left: 713px; margin-top: 5px">
-	<input type="button" th:onclick="|location.href='@{/approval/vacation/refuse(vacationNum=${vdto.vacationNum })}'|" value="반려" style="margin-left: 5px; margin-top: 5px" id="defer">
 </span>
     </form>
     <p style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;">

@@ -25,13 +25,18 @@
 	<tbody>
 		<tr>
 			<td style="padding: 3px; border: 1px solid black; height: 100px !important; font-size: 27px; font-weight: bold; text-align: center; vertical-align: middle; "
-                colspan="2" th:if="${rdto.rstatus != -1}">
+                colspan="2" th:if="${rdto.rstatus != -1 && (rdto.status == 0 || rdto.status == 1)}">
 품 &nbsp;의 &nbsp;서
 			</td>
 			<td style="padding: 3px; border: 1px solid black; height: 100px !important; font-size: 27px; font-weight: bold; text-align: center; vertical-align: middle; "
                 colspan="2" th:if="${rdto.rstatus == -1}">
 품 &nbsp;의 &nbsp;서
 			<img src="/img/refuse.png" style="position:absolute; width:130px; height:130px; margin-left:-250px; margin-top:-90px"/>
+			</td>
+			<td style="padding: 3px; border: 1px solid black; height: 100px !important; font-size: 27px; font-weight: bold; text-align: center; vertical-align: middle; "
+                colspan="2" th:if="${rdto.status == 2}">
+품 &nbsp;의 &nbsp;서
+			<img src="/img/fapprove.png" style="position:absolute; width:130px; height:130px; margin-left:-250px; margin-top:-90px"/>
 			</td>
 			<td style="padding: 10px; height: 20px; margin-left: vertical-align: middle; border: 1px solid black; text-align: center;"
                 colspan="4">
@@ -173,8 +178,6 @@
 	<table style="width: 800px; font-size: 12px; font-family: malgun gothic,dotum,arial,tahoma;">
 		<tbody>
 			<tr>
-				<input type="submit" value="결재" style="margin-left: 715px; margin-top: 5px">			 
-				<input type="button" th:onclick="|location.href='@{/approval/report/refuse(reportNum=${rdto.reportNum })}'|" value="반려" style="margin-left: 5px; margin-top: 5px" id="defer">
 			</tr>
 		</tbody>
 	</table>
