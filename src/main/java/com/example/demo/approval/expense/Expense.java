@@ -27,6 +27,13 @@ public class Expense {
     private String wdate; //작성일
     private String category; //분류
     private String detail; //내역
-    private int sum; //금액
+    private String sum;     //금액
     private String note;    //비고
+    private int status;     //결재 상태
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int rstatus;     //반려 상태
+    private String approval1;  //1차 결재자
+    private String approval2;  //2차 결재자
+    private String app1username;  //1차 결재자 username
+    private String app2username;  //2차 결재자 username
 }

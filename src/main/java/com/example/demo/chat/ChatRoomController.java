@@ -2,7 +2,7 @@ package com.example.demo.chat;
 
 import com.example.demo.employee.EmployeeDto;
 import com.example.demo.employee.EmployeeService;
-import com.example.demo.member.Member;
+import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,7 @@ public class ChatRoomController {
     // 채팅 리스트 화면
     @GetMapping("/room")
     public String rooms(Principal principal, Model map) {
-        Member member = memberService.getMemberBy(principal.getName())
+        MemberDto memberDto = memberService.getMember(principal.getName());
         ArrayList<EmployeeDto> list = eService.getAll();
         map.addAttribute("list", list);
 

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<div layout:fragment="content">
+	<div class="main-content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header card-header-danger">
+							<h4 class="card-title ">자료실</h4>
+							<p class="card-category"><a href="/dataroom/add">글 작성</a></p>
+						</div>
+						<div>
+							<form action="/dataroom/search">
+								<select name="select">
+									<option value="writer">작성자</option>
+									<option value="title">제목</option>
+								</select>
+								<input type="text" name="search" />
+								<input type="submit" value="검색" />
+							</form>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table">
+									<tr class=" text-primary">
+										<th>번호</th>
+										<th>제목</th>
+										<th>작성자</th>
+										<th>등록일</th>
+									</tr>
+									<tbody>
+										<tr th:each="i:${list}">
+											<td th:text="${i.num}"></td>
+											<td><a th:href="@{/dataroom/edit(num=${i.num})}" th:text="${i.title }"></a>
+											</td>
+											<td th:text="${i.writer.name}"></td>
+											<td th:text="${i.wdate }"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

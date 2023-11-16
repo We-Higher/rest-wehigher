@@ -17,6 +17,7 @@
         <link href="/member/css/edit_form.css" rel="stylesheet">
     </th:block>
     <form action="/member/edit" method="POST">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <table border="1" style="text-align: center">
             <tr>
                 <th>아이디</th>

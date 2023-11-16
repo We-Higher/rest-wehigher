@@ -3,6 +3,7 @@ package com.example.demo.schedule;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+@PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/schedule")
@@ -23,7 +25,7 @@ public class ScheduleController {
     }
 
 
-    //글목록
+    //목록
     @RequestMapping("/list")
     @ResponseBody
     public ArrayList<Map<String, Object>> list(ModelMap map) {//map은 자동으로 뷰페이지로 전달됨
@@ -47,13 +49,7 @@ public class ScheduleController {
         return jsonArr;
     }
 
-    //글작성폼
-    @GetMapping("/add")
-    public void addForm() {
-    }
-
-
-    //글작성
+    //일정추가
     @PostMapping("/add")
     @ResponseBody
     public Map addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
@@ -66,14 +62,13 @@ public class ScheduleController {
         System.out.println(param.get(0).get("start"));
         System.out.println(param.get(0).get("end"));
 
-        String title = (String) param.get(0).get("title"); // 이름 받아오기
+        String title = (String) param.get(0).get("title");
         String startDateString = (String) param.get(0).get("start");
         String endDateString = (String) param.get(0).get("end");
 
-
         LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
         LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
-
+        
         ScheduleDto dto = ScheduleDto.builder()
                 .title(title).startDate(startDate).endDate(endDate)
                 .build();
@@ -85,43 +80,32 @@ public class ScheduleController {
 
     }
 
-    //삭제
-    @DeleteMapping("/del/{id}")
+    //일정삭제
+    @GetMapping("/del/{id}")
     public String del(@PathVariable("id") int id) {
         service.del(id);
         return "redirect:/schedule";
     }
 
-    //글번호로검색
-    @GetMapping("/get/{id}")
-    public ModelMap editForm(@PathVariable("id") int id, ModelMap map) {
-        ScheduleDto s = service.get(id);
-        map.addAttribute("s", s);
-        return map;
-    }
+    //수정
+    @PatchMapping("/edit/{id}")
+    @ResponseBody
+    public Map modifyEvent(@PathVariable("id") int id, @RequestBody List<Map<String, Object>> param){
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
-//    //글번호로검색(수정폼)
-//    @GetMapping("/edit")
-//    public void editForm(int id, ModelMap map) {
-//        ScheduleDto s = service.get(id);
-//        map.addAttribute("s", s);
-//    }
-//
-//    //수정완료
-//    @PostMapping("/edit")
-//    public String edit(ScheduleDto s) {
-//        ScheduleDto s2 = service.get(s.getId());
-//        s2.setTitle(s.getTitle());
-//        s2.setStart(s.getStart());
-//        s2.setEnd(s.getEnd());
-//        service.save(s2);
-//        return "redirect:/schedule/canlendar";
-//    }
-//
-//    //삭제
-//    @RequestMapping("/del")
-//    public String del(int id) {
-//        service.del(id);
-//        return "redirect:/schedule/canlendar";
-//    }
+        ScheduleDto origin = service.get(id);
+
+        String startDateString = (String) param.get(0).get("start");
+        String endDateString = (String) param.get(0).get("end");
+
+        LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
+        LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+
+        ScheduleDto dto = ScheduleDto.builder()
+                .id(id).title(origin.getTitle()).startDate(startDate).endDate(endDate)
+                .build();
+        ScheduleDto s = service.save(dto);
+
+        return null;
+    }
 }

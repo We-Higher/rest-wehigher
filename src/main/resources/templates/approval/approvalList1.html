@@ -1,0 +1,48 @@
+<meta charset="UTF-8">
+<html lang="en">
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        function selectEmployee(button) {
+            let name = button.parentElement.parentElement.querySelector(".ename").textContent;
+            opener.document.getElementById("approvalList1").value = name;
+            let username = button.parentElement.parentElement.querySelector(".eusername").textContent;
+            opener.document.getElementById("app1username").value = username;
+            window.close();
+        }
+    </script>
+</head>
+<h2 class="mb-4">임직원 목록</h2>
+    <form action="/approval/approvalList1" method="post">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        
+	    <select name="type">
+            <option value="none">전체</option>
+            <option value="name">이름</option>
+            <option value="newNo">사번</option>
+            <option value="companyRankName">직급</option>
+            <option value="deptName">부서</option>
+	    </select>
+	    <input type="text" name="option">
+	    <input type="submit" value="검색" name="search">
+    </form>
+<table border="1">
+    <tr style="text-align: center">
+        <th style="width: 75px">이름</th>
+        <th style="width: 75px">사번</th>
+        <th style="width: 210px">부서</th>
+        <th style="width: 100px">직급</th>
+        <th style="width: 50px">선택</th>
+    </tr>
+    <tr th:each="e : ${list}" style="text-align: center">
+        <td class="ename">[[${e.name}]]</td>
+        <td>[[${e.newNo}]]</td>
+        <td>[[${e.deptName}]]</td>
+        <td>[[${e.companyRankName}]]</td>
+        <td style="display: none;" class="eusername">[[${e.username}]]</td>
+        <td>
+            <button onclick="selectEmployee(this)">선택</button>
+        </td>
+    </tr>
+</table>
+</html>

@@ -24,7 +24,7 @@ public class EmployeeService {
 		List<Member> list = mdao.findAll();
 		ArrayList<EmployeeDto> list2 = new ArrayList<>();
 		for (Member b : list) {
-			list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getCompanyRank(),
+			list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 					b.getPhone(), b.getEmail(), b.getComCall()));
 		}
 		return list2;
@@ -34,35 +34,34 @@ public class EmployeeService {
 	public ArrayList<EmployeeDto> getByOption(String type, String option) {
 		
 		ArrayList<EmployeeDto> list2 = new ArrayList<>();
-		if(type.equals("name")) {
+		if(type.equals("name")){
 			List<Member> list = mdao.findByNameLike("%" + option +"%");
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getCompanyRank(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;
 		}
 		else if(type.equals("newNo")) {
-			int temp = Integer.parseInt(option);
-			List<Member> list = mdao.findByNewNoLike("%" + temp +"%");
+			List<Member> list = mdao.findByNewNoLike("%" + option +"%");
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getCompanyRank(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;
 		}
-		else if(type.equals("deptCode")) {
-			List<Member> list = mdao.findByDeptCodeLike("%" + option +"%");
+		else if(type.equals("companyRankName")) {
+			List<Member> list = mdao.findByCompanyRankNameLike("%" + option +"%");
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getCompanyRank(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;
 		}
-		else if(type.equals("companyRank")) {
-			List<Member> list = mdao.findByCompanyRankLike("%" + option +"%");
+		else if(type.equals("deptName")) {
+			List<Member> list = mdao.findByDeptNameLike("%" + option +"%");
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getCompanyRank(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
 			return list2;
@@ -70,33 +69,10 @@ public class EmployeeService {
 		else {
 			List<Member> list = mdao.findAll();
 			for (Member b : list) {
-				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getNewNo(), b.getDeptCode(), b.getCompanyRank(),
+				list2.add(new EmployeeDto(b.getId(), b.getName(), b.getUsername(), b.getNewNo(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(),
 						b.getPhone(), b.getEmail(), b.getComCall()));
 			}
+			return list2;
 		}
-		return list2;
 	}
-
-	// 추가, 수정. dao.save()
-	/*
-	 * public EmployeeDto saveEmployee(EmployeeDto b) { Employee b2 = dao.save(new
-	 * Employee(b.getNum(), b.getWdate(), b.getWriter(), b.getTitle(),
-	 * b.getContent())); return new EmployeeDto(b2.getNum(), b2.getWdate(),
-	 * b2.getWriter(), b2.getTitle(), b2.getContent()); }
-	 * 
-	 * //pk로 검색. dao.findById() public EmployeeDto getEmployee(int num) { Employee b
-	 * = dao.findById(num).orElse(null); return new EmployeeDto(b.getNum(),
-	 * b.getWdate(), b.getWriter(), b.getTitle(), b.getContent()); }
-	 * 
-	 * 
-	 * 
-	 * //pk 기준 삭제. dao.deleteById() public void delEmployee(int num) {
-	 * dao.deleteById(num); }
-	 * 
-	 * //작성자로 검색 public ArrayList<EmployeeDto> getByWriter(String writer){
-	 * List<Employee> list = dao.findByWriter(new Member2(writer, "", "", ""));
-	 * ArrayList<EmployeeDto> list2 = new ArrayList<>(); for(Employee b : list) {
-	 * list2.add(new EmployeeDto(b.getNum(), b.getWdate(), b.getWriter(),
-	 * b.getTitle(), b.getContent())); } return list2; }
-	 */
 }

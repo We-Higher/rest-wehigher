@@ -1,33 +1,33 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>일정달력</title>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 
-    <meta charset="utf-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-
+<th:block layout:fragment="style">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.5/main.min.css"
           integrity="sha512-1P/SRFqI1do4eNtBsGIAqIZIlnmOQkaY7ESI2vkl+q+hl9HSXmdPqotN0McmeZVyR4AWV+NvkP6pKOiVdY/V5A=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
+</th:block>
 
+<th:block layout:fragment="script">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar-scheduler@6.1.9/index.global.min.js"></script>
 
-    <script>
-
+    <script th:inline="javascript">
+        var header = /*[[${_csrf.headerName}]]*/ null;
+        var token = /*[[${_csrf.token}]]*/ null;
         document.addEventListener('DOMContentLoaded', function () {
             $(function () {
                 $.ajax({
-                    url: "/schedule/list", // 변경하기
+                    url: "/schedule/list",
                     method: "GET",
                     dataType: "json",
                     success: function (data) {
-                        console.log(data); // log 로 데이터 찍어주기.
 
                         var calendarEl = document.getElementById('calendar');
 
                         var calendar = new FullCalendar.Calendar(calendarEl, {
-                            // initialView: 'monthGridWeek',
                             headerToolbar: {
                                 left: 'prev,next today',
                                 center: 'title',
@@ -35,28 +35,29 @@
                             },
                             editable: true,
                             selectable: true,
-                            droppable: true, // this allows things to be dropped onto the calendar
+                            droppable: true,
+                            dayMaxEvents: true,
 
                             drop: function (arg) {
-                                // is the "remove after drop" checkbox checked?
                                 if (document.getElementById('drop-remove').checked) {
-                                    // if so, remove the element from the "Draggable Events" list
                                     arg.draggedEl.parentNode.removeChild(arg.draggedEl);
                                 }
                             },
+
+                            /**
+                             * 드래그로 이벤트 추가하기
+                             */
 
                             select: function (arg) { // 캘린더에서 이벤트를 생성할 수 있다.
 
                                 var title = prompt('일정을 입력해주세요.');
                                 if (title) {
-
-
                                     var events = new Array(); // Json 데이터를 받기 위한 배열 선언
                                     var obj = new Object();     // Json 을 담기 위해 Object 선언
 
-                                    obj.title = title; // 이벤트 명칭  ConsoleLog 로 확인 가능.
-                                    obj.start = arg.start; // 시작
-                                    obj.end = arg.end; // 끝
+                                    obj.title = title;
+                                    obj.start = new Date(arg.start.setHours(arg.start.getHours()+9));
+                                    obj.end = new Date(arg.end.setHours(arg.end.getHours()+9));
                                     events.push(obj);
 
                                     var jsondata = JSON.stringify(events);
@@ -66,26 +67,20 @@
                                         $.ajax({
                                             url: "/schedule/add",
                                             method: "POST",
+                                            beforeSend : function(xhr){
+                                                xhr.setRequestHeader(header, token);
+                                            },
                                             dataType: "json",
                                             data: JSON.stringify(events),
                                             contentType: 'application/json',
                                             success: function (data) {
-                                                console.log(data)
-                                                calendar.addEvent({
-                                                    id: data.id,
-                                                    title: title,
-                                                    start: arg.start,
-                                                    end: arg.end,
-                                                    allDay: arg.allDay,
-                                                })
-                                                console.log("저장 성공")
+                                                location.reload()
                                             },
                                             error: function (e) {
                                                 console.log(e)
                                             }
                                         })
                                             .done(function (result) {
-                                                // console.log("저장 성공")
                                             })
                                             .fail(function (request, status, error) {
                                                 console.log(request)
@@ -98,6 +93,74 @@
                             },
 
                             /**
+                             * 드래그로 이벤트 수정하기
+                             */
+                            eventDrop: function (info) {
+                                console.log(info);
+                                if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
+                                    //확인 클릭시
+                                    var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                                    var obj = new Object();
+
+                                    obj.title = info.event._def.title;
+                                    obj.start = info.event._instance.range.start;
+                                    obj.end = info.event._instance.range.end;
+                                    events.push(obj);
+
+                                    console.log(events);
+                                    console.log(info.event._def.extendedProps.cal_Id)
+                                    let calId = info.event._def.extendedProps.cal_Id
+                                    $(function eidtData() {
+                                        $.ajax({
+                                            url: "/schedule/edit/" + calId,
+                                            method: "PATCH",
+                                            beforeSend : function(xhr){
+                                                xhr.setRequestHeader(header, token);
+                                            },
+                                            dataType: "json",
+                                            data: JSON.stringify(events),
+                                            contentType: 'application/json',
+                                        })
+                                    })
+                                }else{
+                                    info.revert();
+                                }
+                            },
+
+                            //드래그로 시간 수정
+                            eventResize: function (info){
+                                console.log(info)
+                                if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
+                                    //확인 클릭시
+                                    var events = new Array(); // Json 데이터를 받기 위한 배열 선언
+                                    var obj = new Object();
+
+                                    obj.title = info.event._def.title;
+                                    obj.start = info.event._instance.range.start;
+                                    obj.end = info.event._instance.range.end;
+                                    events.push(obj);
+
+                                    console.log(events);
+                                    console.log(info.event._def.extendedProps.cal_Id)
+                                    let calId = info.event._def.extendedProps.cal_Id
+                                    $(function eidtData() {
+                                        $.ajax({
+                                            url: "/schedule/edit/" + calId,
+                                            method: "PATCH",
+                                            beforeSend : function(xhr){
+                                                xhr.setRequestHeader(header, token);
+                                            },
+                                            dataType: "json",
+                                            data: JSON.stringify(events),
+                                            contentType: 'application/json',
+                                        })
+                                    })
+                                }else{
+                                    info.revert();
+                                }
+                            },
+
+                            /**
                              * 이벤트 선택해서 삭제하기
                              */
                             eventClick: function (info) {
@@ -105,24 +168,22 @@
                                 console.log(info.event._def.extendedProps.cal_Id)
                                 if (confirm(info.event.title + "일정을 삭제하시겠습니까 ?")) {
                                     // 확인 클릭 시
+                                    console.log(info.event);
+
+                                    let calId = info.event._def.extendedProps.cal_Id
+
+                                    $(function deleteData() {
+                                        $.ajax({
+                                            url: "/schedule/del/" + calId,
+                                            method: "GET",
+                                        })
+                                    })
+
                                     info.event.remove();
                                 }
 
-                                console.log(info.event);
-
-                                let calId = info.event._def.extendedProps.cal_Id
-
-                                // console.log(events);
-                                $(function deleteData() {
-                                    $.ajax({
-                                        url: "/schedule/del/" + calId,
-                                        method: "DELETE",
-                                        // dataType: "json",
-                                        // data: JSON.stringify(obj),
-                                        // contentType: 'application/json',
-                                    })
-                                })
                             },
+
                             /**
                              * data 로 값이 넘어온다. log 값 전달.
                              */
@@ -141,18 +202,14 @@
 
             });
         });
-
     </script>
+</th:block>
 
-</head>
-<body>
-<div id='wrap'>
-
-    <div id='calendar'></div>
-
-    <div style='clear:both'></div>
+<div layout:fragment="content">
+    <div id='wrap'>
+        <div id='calendar'></div>
+        <div style='clear:both'></div>
+    </div>
 </div>
 
-
-</body>
 </html>

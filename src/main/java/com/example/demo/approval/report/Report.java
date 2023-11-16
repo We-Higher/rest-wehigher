@@ -29,4 +29,12 @@ public class Report {
     private String wdate; //기안일
     private String serviceLife; //보존연한
     private String classification; //비밀등급
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int status;     //결재 상태
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int rstatus;     //반려 상태
+    private String approval1;  //1차 결재자
+    private String approval2;  //2차 결재자
+    private String app1username;  //1차 결재자 username
+    private String app2username;  //2차 결재자 username
 }

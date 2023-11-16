@@ -7,21 +7,93 @@
         <link href="/member/css/login_form.css" rel="stylesheet">
     </th:block>
     <form action="/member/join" method="POST">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <table border="1" style="text-align: center">
-            <tr><th>아이디</th><td><input type="text" name="username"></td></tr>
-            <tr><th>패스워드</th><td><input type="text" name="pwd"></td></tr>
-            <tr><th>이름</th><td><input type="text" name="name"></td></tr>
-            <tr><th>회사명</th><td><input type="text" name="companyName"></td></tr>
-            <tr><th>부서명</th><td><input type="text" name="deptCode"></td></tr>
-            <tr><th>직급</th><td><input type="text" name="companyRank"></td></tr>
-            <tr><th>사번</th><td><input type="text" name="newNo"></td></tr>
-            <tr><th>이메일</th><td><input type="email" name="email"></td></tr>
-            <tr><th>주소</th><td><input type="text" name="address"></td></tr>
-            <tr><th>내선전화</th><td><input type="text" name="comCall"></td></tr>
-            <tr><th>휴대전화</th><td><input type="text" name="phone"></td></tr>
-            <tr><th>관리자</th><td><input type="text" name="isMaster"></td></tr>
-            <tr><th>근무여부</th><td><input type="text" name="status"></td></tr>
-            <tr><td colspan="2"><input type="submit" class="btn btn-primary" value="가입"></td></tr>
+            <tr>
+                <th>아이디</th>
+                <td><input type="text" name="username"></td>
+            </tr>
+            <tr>
+                <th>패스워드</th>
+                <td><input type="text" name="pwd"></td>
+            </tr>
+            <tr>
+                <th>이름</th>
+                <td><input type="text" name="name"></td>
+            </tr>
+            <tr>
+                <th>회사명</th>
+                <td><input type="text" name="companyName" value="Co-Operate-Works" readonly></td>
+            </tr>
+            <tr>
+                <th>부서명</th>
+                <td>
+                    <select name="deptCode" style="width:150px;">
+                        <option selected="selected" value="0">총무팀</option>
+                        <option value="1">인사팀</option>
+                        <option value="2">법무팀</option>
+                        <option value="3">마케팅팀</option>
+                        <option value="4">인프라 서비스팀</option>
+                        <option value="5">데이터 서비스팀</option>
+                        <option value="6">네트워크 서비스팀</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>직급</th>
+                <td>
+                    <select name="companyRank" style="width:150px;">
+                        <option selected="selected" value="1">사원</option>
+                        <option value="2">대리</option>
+                        <option value="3">과장</option>
+                        <option value="4">치징</option>
+                        <option value="5">부장</option>
+                        <option value="6">상무</option>
+                        <option value="7">전무</option>
+                        <option value="8">사장</option>
+                        <option value="9">회장</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>사번</th>
+                <td><input type="text" name="newNo"></td>
+            </tr>
+            <tr>
+                <th>이메일</th>
+                <td><input type="email" name="email"></td>
+            </tr>
+            <tr>
+                <th>주소</th>
+                <td><input type="text" name="address"></td>
+            </tr>
+            <tr>
+                <th>내선전화</th>
+                <td><input type="text" name="comCall"></td>
+            </tr>
+            <tr>
+                <th>휴대전화</th>
+                <td><input type="text" name="phone"></td>
+            </tr>
+            <tr>
+                <th>관리자</th>
+                <td>
+                    <select name="isMaster" style="width:150px;">
+                        <option selected="selected" value="0">일반회원</option>
+                        <option value="1">관리자</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <th>근무여부</th>
+                <td><select name="isMaster" style="width:150px;">
+                    <option selected="selected" value="0">근무중</option>
+                    <option value="1">근무X</option>
+                </select></td>
+            </tr>
+            <tr>
+                <td colspan="2"><input type="submit" class="btn btn-primary" value="가입"></td>
+            </tr>
         </table>
     </form>
 </div>
