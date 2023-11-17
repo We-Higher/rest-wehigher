@@ -123,9 +123,11 @@ public class MeetingroomController {
             jsonArr.add(jsonObj);
         }
         return jsonArr;
+    }
 
-    @GetMapping("/meeting/room")
+    //화상회의 접속
+    @GetMapping("/meeting")
     public String room() {
-        return "/meetingroom/room";
+        return "/meetingroom/meeting";
     }
 }
