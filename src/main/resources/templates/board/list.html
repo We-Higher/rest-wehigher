@@ -30,22 +30,22 @@
                                 <table class="table">
                                     <tr class=" text-primary">
                                         <th>글번호</th>
-                                        <th>아이디</th>
                                         <th>이름</th>
                                         <th>직급</th>
                                         <th>제목</th>
-                                        <th>작성일자</th>
-                                        <th>수정일자</th>
+                                        <th>작성일</th>
+                                        <th>수정일</th>
+                                        <th>조회수</th>
                                     </tr>
                                     <tbody>
                                     <tr th:each="b:${list}">
                                         <td th:text="${b.num }"></td>
-                                        <td th:text="${b.member.username }"></td>
                                         <td th:text="${b.member.name }"></td>
                                         <td th:text="${b.member.companyRankName}"></td>
                                         <td><a th:href="@{/board/edit(num=${b.num })}" th:text="${b.title }"></a></td>
                                         <td th:text="${b.wdate }"></td>
                                         <td th:text="${b.udate }"></td>
+                                        <td th:text="${b.cnt }"></td>
                                     </tr>
                                     </tbody>
                                 </table>

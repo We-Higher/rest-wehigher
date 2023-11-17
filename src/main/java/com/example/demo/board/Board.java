@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import com.example.demo.member.Member;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,8 +33,8 @@ public class Board {
 	@SequenceGenerator(name="seq_gen", sequenceName="seq_board1", allocationSize=1)
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_gen")//자동으로 값 할당
 	private int num;
-	private Date wdate;
-	private Date udate;
+	private String wdate;
+	private String udate;
 	
 	@ManyToOne
 	@JoinColumn(nullable=false)//member(id)에 조인. 널 허용 안함
@@ -41,13 +42,6 @@ public class Board {
 	private Member member;
 	private String title;
 	private String content;
-
-	@PrePersist //insert문 실행전 자동 호출
-	public void setDate() {
-		
-		wdate = new Date();
-		udate = new Date();
-	}
-	
-	
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int cnt;
 }

@@ -6,6 +6,9 @@
         function selectEmployee(button) {
             let name = button.parentElement.parentElement.querySelector(".ename").textContent;
             opener.document.getElementById("approvalList1").value = name;
+            let rankname = button.parentElement.parentElement.querySelector(".erankname").textContent;
+            opener.document.getElementById("approval1rankname").innerHTML = rankname;
+            opener.document.getElementById("approval1rank").value = rankname;
             let username = button.parentElement.parentElement.querySelector(".eusername").textContent;
             opener.document.getElementById("app1username").value = username;
             window.close();
@@ -38,7 +41,7 @@
         <td class="ename">[[${e.name}]]</td>
         <td>[[${e.newNo}]]</td>
         <td>[[${e.deptName}]]</td>
-        <td>[[${e.companyRankName}]]</td>
+        <td class="erankname">[[${e.companyRankName}]]</td>
         <td style="display: none;" class="eusername">[[${e.username}]]</td>
         <td>
             <button onclick="selectEmployee(this)">선택</button>

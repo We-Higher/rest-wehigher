@@ -35,6 +35,8 @@ public class Report {
     private int rstatus;     //반려 상태
     private String approval1;  //1차 결재자
     private String approval2;  //2차 결재자
+    private String approval1rank;  //1차 결재자 직급
+    private String approval2rank;  //2차 결재자 직급
     private String app1username;  //1차 결재자 username
     private String app2username;  //2차 결재자 username
 }

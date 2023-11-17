@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-@PreAuthorize("isAuthenticated()")
+@PreAuthorize("hasRole(\"ADMIN\")")
 @Controller
 @RequestMapping("/board")
 public class BoardController {
@@ -28,6 +30,7 @@ public class BoardController {
     private MemberService mservice;
 
     //글목록
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/list")
     public void list(ModelMap map) {
         ArrayList<BoardDto> list = bservice.getAll();
@@ -35,6 +38,7 @@ public class BoardController {
     }
     
     //공지사항 목록
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/notify")
     public void Notifylist(ModelMap map) {
         ArrayList<NotifyDto> list = bservice.getAllnotify();
@@ -42,6 +46,7 @@ public class BoardController {
     }
     
 	//옵션으로 검색
+    @PreAuthorize("isAuthenticated()")
 	@PostMapping("/list")
 	public String getbyOption(String type, Model map, String option) {
 		System.out.println(type);
@@ -51,29 +56,38 @@ public class BoardController {
 		return "/board/list";
 	}
 	
-	//옵션으로 검색
-	/*@PostMapping("/notifylist")
+	//공지사항 옵션으로 검색
+    @PreAuthorize("isAuthenticated()")
+	@PostMapping("/notifylist")
 	public String getbyOption2(String type, Model map, String option) {
 		System.out.println(type);
 		System.out.println(option);
-		ArrayList<NotifyDto> list = bservice.getByOption(type, option);
+		ArrayList<NotifyDto> list = bservice.getByOption2(type, option);
 		map.addAttribute("list", list);
-		return "/board/list";
-	}*/
+		return "/board/notify";
+	}
 
 	//작성폼
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/add")
-    public String addForm() {
+    public String addForm(ModelMap map) {
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = LocalDateTime.now().format(formatter1);
+        map.addAttribute("date", date);
         return "/board/add";
     }
     
 	//공지사항 작성폼
     @GetMapping("/notifyadd")
-    public String notifyaddForm() {
+    public String notifyaddForm(ModelMap map) {
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = LocalDateTime.now().format(formatter1);
+        map.addAttribute("date", date);
         return "/board/notifyadd";
     }
 
     //게시글 작성
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/add")
     public String add(BoardDto b, Principal principal) {
     	int check = 0;
@@ -94,20 +108,25 @@ public class BoardController {
     }
 
     //게시글 수정폼
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/edit")
     public void editForm(int num, ModelMap map) {
         BoardDto b = bservice.getBoard(num);
+        bservice.editCnt(num);
         map.addAttribute("b", b);
     }
     
     //공지사항 수정폼
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/notifyedit")
     public void notifyeditForm(int num, ModelMap map) {
     	NotifyDto b = bservice.getNotify(num);
+    	bservice.editCnt2(num);
         map.addAttribute("b", b);
     }
 
     //게시글 수정완료
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/edit")
     public String edit(BoardDto b) {
     	int check = 1;
@@ -130,6 +149,7 @@ public class BoardController {
     }
 
     //게시글 삭제
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/del")
     public String del(int num) {
         bservice.delBoard(num);

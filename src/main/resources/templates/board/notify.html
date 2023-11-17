@@ -12,7 +12,7 @@
 							<p class="card-category"><a href="/board/notifyadd">공지사항 추가</a></p>
 						</div>
 						<div>
-							<form action="/board/notify" method="post">
+							<form action="/board/notifylist" method="post">
 								<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 								<select name="type">
 									<option value="none">전체</option>
@@ -30,7 +30,8 @@
 										<th>글번호</th>
 										<th>이름</th>
 										<th>제목</th>
-										<th>작성일자</th>
+										<th>작성일</th>
+										<th>조회수</th>
 									</tr>
 									<tbody>
 									<tr th:each="b:${list}">
@@ -39,6 +40,7 @@
 										<td><a th:href="@{/board/notifyedit(num=${b.num })}" th:text="${b.title }"></a>
 										</td>
 										<td th:text="${b.wdate }"></td>
+										<td th:text="${b.cnt }"></td>
 									</tr>
 									</tbody>
 								</table>

@@ -123,8 +123,10 @@
 					 <tr><th colspan="3" style="border: 0px; text-align: center; font-size: 15px;">[결재선]</th></tr>
 					 <tr style="text-align: center; font-size: small">
 					     <td>기안자</td>
-					     <td>팀장</td>
-					     <td>부서장</td>
+					     <td type="text" id="approval1rankname" name="approval1rankname">1차결재자</td>
+					     <input type="hidden" id="approval1rank" name="approval1rank" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly>
+					     <td type="text" id="approval2rankname" name="approval2rankname">2차결재자</td>
+					     <input type="hidden" id="approval2rank" name="approval2rank" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly>
 					     </tr>
 					 <tr>
 					     <td style="width: 70px; height:40px; font-size: 12px; text-align: center;">[[${m.name}]]</td>

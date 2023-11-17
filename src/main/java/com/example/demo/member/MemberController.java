@@ -66,7 +66,7 @@ public class MemberController {
         MemberDto m = service.getMemberByName(dto.getName());
         
         m.setUsername(dto.getUsername());
-        m.setPwd(dto.getPwd());
+        m.setPwd(passwordEncoder.encode(dto.getPwd()));
         m.setName(dto.getName());
         m.setCompanyName(dto.getCompanyName());
         m.setDeptCode(dto.getDeptCode());
@@ -114,6 +114,6 @@ public class MemberController {
         m.setIsMaster(dto.getIsMaster());
         m.setStatus(dto.getStatus());
         service.save(m);
-        return "redirect:/main";
+        return "redirect:/member/logout";
     }
 }

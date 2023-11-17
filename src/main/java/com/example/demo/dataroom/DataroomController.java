@@ -23,6 +23,8 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.security.Principal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/dataroom")
 public class DataroomController {
+
     private final DataroomService service;
 
     @Value("${spring.servlet.multipart.location}")
@@ -45,25 +48,27 @@ public class DataroomController {
     }
 
     @GetMapping("/add")
-    public void addForm(Principal principal) {
+    public void addForm(Principal principal, Model map) {
         System.out.println("principal = " + principal);
         System.out.println("principal.getName() = " + principal.getName());
-
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = LocalDateTime.now().format(formatter1);
+        MemberDto mdto = memberService.getMember(principal.getName());
+        map.addAttribute("date", date);
+        map.addAttribute("name", mdto.getName());
     }
 
     @PostMapping("/add")
     public String add(Principal principal, DataroomDto dto) {
         MultipartFile f = dto.getF();
         String fname = f.getOriginalFilename();
-        System.out.println("principal = " + principal.getName());
-        MemberDto m = memberService.getMember(principal.getName());
-        System.out.println("m = " + m);
+        MemberDto mdto = memberService.getMember(principal.getName());
+        dto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
         File newFile = new File(path + fname);
         try {
             f.transferTo(newFile);
             dto.setFname(fname);
-//            dto.setWriter(new Member(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getCompanyRank(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain()));
-            dto.setWriter(Member.builder().id(m.getId()).build());
+            //dto.setMember(Member.builder().id(mdto.getId()).build());
             service.save(dto);
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
@@ -83,11 +88,12 @@ public class DataroomController {
 
 
     @PostMapping(value = "/edit", consumes = "multipart/form-data")
-    public String edit(@RequestParam("f") MultipartFile file, Principal principal,DataroomDto dto) {
+    public String edit(@RequestParam("f") MultipartFile file, Principal principal, DataroomDto dto) {
         System.out.println(dto.getF());
         MultipartFile f = dto.getF();
         DataroomDto origin = service.getDataroom(dto.getNum());
-        MemberDto m = memberService.getMember(principal.getName());
+        MemberDto mdto = memberService.getMember(principal.getName());
+        dto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
 
         if (f != null && f.getSize() > 0) {
             String fname = f.getOriginalFilename();
@@ -95,7 +101,7 @@ public class DataroomController {
             try {
                 f.transferTo(newFile);
                 dto.setFname(fname);
-                dto.setWriter(Member.builder().id(m.getId()).build());
+                //dto.setMember(Member.builder().id(mdto.getId()).build());
                 File delFile = new File(path + origin.getFname());
                 delFile.delete();
             } catch (IllegalStateException e) {
@@ -114,9 +120,11 @@ public class DataroomController {
     @GetMapping("/del")
     public String del(int num) {
         DataroomDto origin = service.getDataroom(num);
-        File delFile = new File(path + origin.getFname());
-        delFile.delete();
-        service.delDataroom(num);
+	    if(origin!=null) {
+		      File delFile = new File(path + origin.getFname());
+		      delFile.delete();
+		      service.delDataroom(num);
+        }
         return "redirect:/dataroom/list";
     }
 
@@ -141,6 +149,7 @@ public class DataroomController {
             result = new ResponseEntity<byte[]>(
                     FileCopyUtils.copyToByteArray(f), header, HttpStatus.OK
             );
+            service.editCnt(num);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
