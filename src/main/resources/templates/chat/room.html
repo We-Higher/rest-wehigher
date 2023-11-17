@@ -17,6 +17,7 @@
 
 <div layout:fragment="content">
     <div class="d-flex">
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
         <div style="min-width: 200px;">
             <h3>임직원 리스트</h3>
             <table border="1">
@@ -30,11 +31,12 @@
                     <td>홍길동</td> <!-- TODO: 바꾸기 -->
                     <td th:text="${m.deptCode}"></td>
                     <td th:text="${m.companyRank}"></td>
-                    <td class="text-center" style="min-width: 30px;"><input type="checkbox" name="" id="" class="check_empl"></td>
+                    <td class="text-center" style="min-width: 30px;"><input type="checkbox" name="" id=""
+                                                                            class="check_empl"></td>
                 </tr>
             </table>
         </div>
-        <div class="container" id="app">
+        <div class="container" id="app" th:data-login-id="${loginId}">
             <div class="row">
                 <div class="col-md-12">
                     <h3>채팅방 리스트</h3>
@@ -60,17 +62,23 @@
         $(document).ready(function () {
             var room_name = '';
             var chatrooms = [];
+            const memberId = $('#app')[0].dataset.loginId
 
+            const csrftoken = document.querySelector('[name=_csrf]').value
+
+            // 채팅방 목록 출력
             function findAllRoom() {
-                axios.get('/chat/rooms').then(function (response) {
+                axios.get('/chat/rooms/'+memberId)
+                    .then(function (response) {
                     chatrooms = response.data;
                     $('#chatrooms').empty();
                     $.each(chatrooms, function (index, item) {
-                        $('#chatrooms').append(`<li class="list-group-item list-group-item-action" id="${item.roomId}" onclick="enterRoom('${item.roomId}')">${item.name}</li>`);
+                        $('#chatrooms').append(`<li class="list-group-item list-group-item-action" id="${item.roomId}" onclick="enterRoom('${item.roomId}')">${item.roomName}</li>`);
                     });
                 });
             }
 
+            // 채팅방 생성
             function createRoom() {
                 room_name = $('#room_name').val();
                 if (room_name === "") {
@@ -79,24 +87,33 @@
                 } else {
                     var params = new URLSearchParams();
                     params.append("name", room_name);
-                    axios.post('/chat/room', params)
+                    axios
+                        .post('/chat/room',
+                            params,
+                            {
+                                headers: {
+                                    'X-CSRF-TOKEN': csrftoken
+                                }
+                            }
+                        )
                         .then(function (response) {
-                            alert(response.data.name + "방 개설에 성공하였습니다.")
+                            alert(response.data.roomName + "방 개설에 성공하였습니다.")
                             $('#room_name').val('');
                             findAllRoom();
                         })
                         .catch(function (response) {
+                            console.log(response)
                             alert("채팅방 개설에 실패하였습니다.");
                         });
                 }
             }
 
             window.enterRoom = function (roomId) {
-                var sender = prompt('대화명을 입력해 주세요.');
+                var sender = $('#app').data('loginId');
                 if (sender !== "") {
                     localStorage.setItem('wschat.sender', sender);
                     localStorage.setItem('wschat.roomId', roomId);
-                    location.href = "/chat/room/enter/" + roomId;
+                    location.href = "/chat/room/enter/" + roomId; // TODO: 통신해서 join
                 }
             }
 

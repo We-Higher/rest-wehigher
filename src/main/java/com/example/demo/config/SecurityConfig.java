@@ -28,6 +28,7 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/**")
                         )
                         .permitAll()
+                        .anyRequest().permitAll()
                 )
                 .csrf((csrf) -> csrf
                         .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))

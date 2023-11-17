@@ -1,26 +1,31 @@
 package com.example.demo.chat;
 
+import com.example.demo.member.Member;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.UUID;
+import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ChatRoom {
     @Id
-    @SequenceGenerator(name = "seq_gen", sequenceName = "seq_chatroom1", allocationSize = 1) // 시퀀스 생성. 생성한 시퀀스 이름: seq_board
+    @SequenceGenerator(name = "seq_gen", sequenceName = "seq_chatroom1", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_gen")
     int id;
     private String roomId;
-    private int memberId;
+    private String roomName;
 
-    public static ChatRoom create(int memberId) {
-        ChatRoom chatRoom = new ChatRoom();
-        chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.memberId = memberId;
-        return chatRoom;
-    }
+    @ManyToMany
+    Set<Member> participants;
+
+//    public static ChatRoom create(int memberId) {
+//        ChatRoom chatRoom = new ChatRoom();
+//        chatRoom.roomId = UUID.randomUUID().toString();
+//        return chatRoom;
+//    }
 }
