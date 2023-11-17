@@ -148,8 +148,8 @@ public class MemberService {
     	else if(dto.getCompanyRank()==8) dto.setCompanyRankName("대표이사");
     	else if(dto.getCompanyRank()==9) dto.setCompanyRankName("회장");
     	
-        Member m = dao.save(new Member(dto.getId(),dto.getUsername(),dto.getPwd(),dto.getName(),dto.getEmail(),dto.getPhone(),dto.getAddress(),dto.getCompanyName(),dto.getDeptCode(),dto.getDeptName(),dto.getCompanyRank(),dto.getCompanyRankName(),dto.getNewNo(),dto.getComCall(),dto.getIsMaster(),dto.getStatus(),dto.getOriginFname(),dto.getThumbnailFname(),dto.getNewMemNo(),dto.getRemain()));
-        return new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getDeptName(),m.getCompanyRank(),m.getCompanyRankName(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain());
+        Member m = dao.save(new Member(dto.getId(),dto.getUsername(),dto.getPwd(),dto.getName(),dto.getEmail(),dto.getPhone(),dto.getAddress(),dto.getCompanyName(),dto.getDeptCode(),dto.getDeptName(),dto.getCompanyRank(),dto.getCompanyRankName(),dto.getNewNo(),dto.getComCall(),dto.getIsMaster(), dto.getStatus(), dto.getCstatus(), dto.getOriginFname(),dto.getThumbnailFname(),dto.getNewMemNo(),dto.getRemain()));
+        return new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getDeptName(),m.getCompanyRank(),m.getCompanyRankName(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(), m.getCstatus(), m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain());
     }
 
     public void delete(Long id){

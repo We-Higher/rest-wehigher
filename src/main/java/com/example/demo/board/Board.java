@@ -48,4 +48,6 @@ public class Board {
 		wdate = new Date();
 		udate = new Date();
 	}
+	
+	
 }

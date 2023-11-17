@@ -34,6 +34,7 @@ public class Employee {
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="seq_gen")//자동으로 값 할당
 	private int num;
     private String name; // 이름
+    private String username; // 아이디
     private int newNo; // 사번
     private int deptCode; // 부서 코드
     private String deptName; // 부서명

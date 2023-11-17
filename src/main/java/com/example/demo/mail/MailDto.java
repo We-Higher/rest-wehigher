@@ -8,7 +8,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class MailDto {
-    private String address;
+    private String from;
+    private String[] address;
+    private String[] ccAddress;
     private String title;
     private String content;
 }

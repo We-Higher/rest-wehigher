@@ -32,7 +32,8 @@ public class Member {
     @Column(columnDefinition = "int default 0", nullable = false)
     private int isMaster; // 관리자 여부. 0: 일반, 1: Master
     @Column(columnDefinition = "int default 1", nullable = false)
-    private int status; // 사원 근무 여부?
+    private int status; // 사원 근무 여부. 0: 재직 , 1:퇴사
+    private int cstatus; // 사원 출퇴근 관리. 0: 출근, 1: 퇴근
     private String originFname; // 프로필 이미지 원본 파일명
     private String thumbnailFname; // 프로필 이미지 썸네일 파일명
     private int newMemNo; // 임시 테이블 사번

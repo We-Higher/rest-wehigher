@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout}">
+<div layout:fragment="content">
+	<div class="main-content">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header card-header-danger">
+							<h4 class="card-title">반려된 문서</h4>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table">
+									<tr class="text-primary">
+										<th>문서종류</th>
+										<th>기안자</th>
+										<th>제목</th>
+										<th>작성일</th>
+										<th>결재여부</th>
+									</tr>
+									<tbody>
+										<tr th:each="e: ${elist}"
+											th:if="${(#authentication.principal.username == e.member.username && e.rstatus == -1)}">
+											<td>지출결의서</td>
+											<td>[[${e.member.name}]]</td>
+											<td><a
+													th:href="@{/approval/expense/editread(expenseNum=${e.expenseNum})}">[[${e.title}]]</a>
+											</td>
+											<td>[[${e.wdate}]]</td>
+											<td th:if="${e.rstatus == -1}">반려</td>
+										</tr>
+										<tr th:each="r:${rlist}"
+											th:if="${#authentication.principal.username == r.member.username && r.rstatus == -1}">
+											<td>품의서</td>
+											<td>[[${r.member.name}]]</td>
+											<td><a
+													th:href="@{/approval/report/editread(reportNum=${r.reportNum})}">[[${r.title}]]</a>
+											</td>
+											<td>[[${r.wdate}]]</td>
+											<td th:if="${r.rstatus == -1}">반려</td>
+										</tr>
+										<tr th:each="v:${vlist}"
+											th:if="${#authentication.principal.username == v.member.username && v.rstatus == -1}">
+											<td>휴가신청서</td>
+											<td>[[${v.member.name}]]</td>
+											<td><a
+													th:href="@{/approval/vacation/editread(vacationNum=${v.vacationNum})}">[[${v.member.name}]]
+													휴가신청</a></td>
+											<td>[[${v.wdate}]]</td>
+											<td th:if="${v.rstatus == -1}">반려</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</html>

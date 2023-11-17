@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

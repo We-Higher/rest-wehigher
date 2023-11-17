@@ -59,10 +59,12 @@
                              <input type="text" id="approvalList1" name="approval1" value=""
                                     style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red"
                                     readonly text="등록"></td>
+                             <input type="hidden" id="app1username" name="app1username" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly></td>
 					     <td style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" id="ap2">
                              <input type="text" id="approvalList2" name="approval2" value=""
                                     style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red"
                                     readonly></td>
+                             <input type="hidden" id="app2username" name="app2username" value="" style="width: 65px; height:40px; font-size: 12px; text-align: center; color: red" readonly></td>
 					 </tr>
 				 </table>
 			</td>
@@ -76,7 +78,7 @@
                       data-dsl="{{label:draftDept}}" data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"
                       data-value="" data-autotype="">
-					[[${m.deptCode}]]</span>
+					[[${m.deptName}]]</span>
 			</td>
 			<td style="padding: 3px; height: 20px; vertical-align: middle; border: 1px solid black; text-align: center; font-weight: bold;">
 기 안 일
@@ -86,7 +88,7 @@
                       data-dsl="{{label:draftDate}}" data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;"
                       data-value="" data-autotype="">
-					<input type="date" name="wdate"></span>
+					  <input type="date" name="wdate"></span>
 			</td>
 		</tr>
 		<tr>

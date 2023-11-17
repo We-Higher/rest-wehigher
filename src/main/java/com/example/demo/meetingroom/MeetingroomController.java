@@ -1,6 +1,5 @@
 package com.example.demo.meetingroom;
 
-
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -124,5 +123,9 @@ public class MeetingroomController {
             jsonArr.add(jsonObj);
         }
         return jsonArr;
+
+    @GetMapping("/meeting/room")
+    public String room() {
+        return "/meetingroom/room";
     }
 }

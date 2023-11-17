@@ -1,22 +1,83 @@
 package com.example.demo.mail;
 
-import lombok.AllArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeUtility;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.IOUtils;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
+@Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class MailService {
 
-    private JavaMailSender emailSender;
+    private final JavaMailSender emailSender;
 
-    public void sendSimpleMessage(MailDto mailDto) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("tjddnr9553@naver.com");
-        message.setTo(mailDto.getAddress());
-        message.setSubject(mailDto.getTitle());
-        message.setText(mailDto.getContent());
-        emailSender.send(message);
+    public void sendMultipleMessage(MailDto mailDto, MultipartFile file) throws MessagingException, IOException {
+        // file 객체 널 체크
+        if (file == null || file.isEmpty()) {
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            //메일 제목 설정
+            helper.setSubject(mailDto.getTitle().strip());
+
+            //참조자 설정
+            helper.setCc(mailDto.getCcAddress());
+
+            helper.setText(mailDto.getContent().strip(), false);
+
+            helper.setFrom(mailDto.getFrom().strip());
+
+            //수신자 한번에 전송
+            helper.setTo(mailDto.getAddress());
+            emailSender.send(message);
+
+            // 파일이 없는 경우에 대한 처리
+            log.warn("No file provided for email attachment. Sending email without attachment.");
+
+            // 파일이 없다면 첨부 파일을 추가하지 않음
+        } else {
+            // 파일이 있는 경우에는 첨부 파일을 추가
+            MimeMessage message = emailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            //메일 제목 설정
+            helper.setSubject(mailDto.getTitle().strip());
+
+            //참조자 설정
+            helper.setCc(mailDto.getCcAddress());
+
+            helper.setText(mailDto.getContent().strip(), false);
+
+            helper.setFrom(mailDto.getFrom().strip());
+
+            //첨부 파일 설정
+            String fileName = StringUtils.cleanPath(file.getOriginalFilename().strip());
+
+            helper.addAttachment(MimeUtility.encodeText(fileName, "UTF-8", "B"), new ByteArrayResource(IOUtils.toByteArray(file.getInputStream())));
+
+            // 수신자 개별 전송
+            for (String s : mailDto.getAddress()) {
+                s.strip();
+                helper.setTo(s);
+                emailSender.send(message);
+            }
+
+            //수신자 한번에 전송
+            helper.setTo(mailDto.getAddress());
+            emailSender.send(message);
+
+            log.info("Mail with attachment sent successfully.");
+        }
     }
 }

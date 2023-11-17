@@ -2,8 +2,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <nav id="sidebar" th:fragment="sidebarFragment">
     <div class="p-4 pt-5">
-<!--        <a href="#" class="img logo rounded-circle mb-5" style="background-image: url(images/logo.jpg);"></a>-->
-        <a href="#" class="img logo rounded-circle mb-5"></a>
+        <a href="/main" class="img logo rounded-circle mb-4" style="background-image: url('/img/logo.png');"></a>
         <ul class="list-unstyled components mb-5">
             <li class="active">
                 <a href="#empSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">임직원 관리</a>
@@ -30,6 +29,9 @@
             <li class="active">
                 <a href="#boardSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">게시판</a>
                 <ul class="collapse list-unstyled" id="boardSubmenu">
+					<li>
+                        <a href="/board/notify">공지사항</a>
+                    </li>
                     <li>
                         <a href="/board/list">글 목록</a>
                     </li>
@@ -38,9 +40,9 @@
                     </li>
                 </ul>
             </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">전자결재</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
+            <li class="active">
+                <a href="#page1Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">전자결재</a>
+                <ul class="collapse list-unstyled" id="page1Submenu">
                     <li>
                         <a id="report">품의서</a>
                     </li>
@@ -50,6 +52,11 @@
                     <li>
                         <a id="vacation">휴가신청서</a>
                     </li>
+                </ul>
+            </li>
+            <li class="active">
+                <a href="#page2Submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">문서함</a>
+                <ul class="collapse list-unstyled" id="page2Submenu">
                     <li>
                         <a href="/approval/draft">전체 결재문서</a>
                     </li>
@@ -59,16 +66,19 @@
                     <li>
                         <a href="/approval/process">내 결재대기함</a>
                     </li>
+                     <li>
+                        <a href="/approval/myrefuse">내 반려함</a>
+                    </li>
                 </ul>
             </li>
             <li class="active">
                 <a href="#mailSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">메일</a>
                 <ul class="collapse list-unstyled" id="mailSubmenu">
                     <li>
-                        <a href="/mail/send">메일 보내기</a>
+                        <a href="/mail/send2">메일 보내기</a>
                     </li>
                     <li>
-                        <a href="#">받은 메일함</a>
+                        <a href="/mail/list">받은 메일함</a>
                     </li>
                     <li>
                         <a href="#">보낸 메일함</a>
@@ -107,7 +117,7 @@
                 <a href="#roomSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">회의실</a>
                 <ul class="collapse list-unstyled" id="roomSubmenu">
                     <li>
-                        <a href="#">회의실 접속</a>
+                        <a href="/meeting/room">회의실 접속</a>
                     </li>
                     <li>
                         <a href="/meetingroom">회의실 예약</a>
@@ -118,7 +128,13 @@
                 <a href="#attSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">근태관리</a>
                 <ul class="collapse list-unstyled" id="attSubmenu">
                     <li>
-                        <a href="#">임직원 목록</a>
+                        <a href="/commute/list">임직원 근태관리</a>
+                    </li>
+                    <li>
+                        <a href="/commute/mycommute">출퇴근 이력</a>
+                    </li>
+                    <li>
+                        <a href="/commute/editRequestList">근태수정 요청목록</a>
                     </li>
                 </ul>
             </li>

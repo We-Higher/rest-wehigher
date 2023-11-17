@@ -66,10 +66,9 @@ public class ScheduleController {
         String startDateString = (String) param.get(0).get("start");
         String endDateString = (String) param.get(0).get("end");
 
-
         LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
         LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
-
+        
         ScheduleDto dto = ScheduleDto.builder()
                 .title(title).startDate(startDate).endDate(endDate)
                 .build();
