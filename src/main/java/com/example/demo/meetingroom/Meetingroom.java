@@ -1,0 +1,43 @@
+package com.example.demo.meetingroom;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
+import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Setter
+@Getter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Meetingroom {
+    @Id
+    @SequenceGenerator(name="mtr_gen", sequenceName="seq_meetingroom", allocationSize=1)
+    @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="mtr_gen")
+    private int id;
+    private String title;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "start_date")
+    private LocalDateTime startDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
+    @Column(name = "end_date")
+    private LocalDateTime endDate;
+    private int roomId;
+
+    public Meetingroom toEntity(MeetingroomDto dto){
+        return Meetingroom.builder()
+                .id(dto.getId())
+                .title(dto.getTitle())
+                .startDate(dto.getStartDate())
+                .endDate(dto.getEndDate())
+                .roomId(dto.getRoomId())
+                .build();
+    }
+
+}
