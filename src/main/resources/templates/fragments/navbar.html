@@ -19,7 +19,7 @@
                     <a class="nav-link" href="/">Home</a>
                 </li>
                 <li class="nav-item active" sec:authorize="isAuthenticated()">
-                    <a class="nav-link" href="#" th:text="|${#authentication.principal.username} 님|"></a>
+                    <a class="nav-link" href="#" th:text="|${#authentication.principal.name} 님|"></a>
 
                 </li>
                 <li class="nav-item" sec:authorize="isAuthenticated()">

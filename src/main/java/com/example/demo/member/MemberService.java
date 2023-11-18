@@ -1,13 +1,14 @@
 package com.example.demo.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class MemberService {
+public class MemberService implements UserDetailsService {
     private final MemberDao dao;
     private final PasswordEncoder passwordEncoder;
 
@@ -155,5 +156,10 @@ public class MemberService {
     public void delete(Long id){
        dao.deleteById(id);
     }
+
+	@Override
+	public Member loadUserByUsername(String username) throws UsernameNotFoundException {
+		return dao.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username));
+	}
 }
 
