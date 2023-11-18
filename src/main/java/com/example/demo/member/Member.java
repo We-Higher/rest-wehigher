@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -74,7 +75,16 @@ public class Member implements UserDetails {
     // 권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("user"));
+        // 권한들을 담을 빈 리스트
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if ("admin".equals(username)) {
+            authorities.add(new SimpleGrantedAuthority(MemberRole.ADMIN.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
+        }
+
+        return authorities;
     }
 
     // 사용자의 login id를 반환
