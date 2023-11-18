@@ -2,6 +2,12 @@ package com.example.demo.member;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Setter
@@ -9,7 +15,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
+public class Member implements UserDetails {
     @Id
     @SequenceGenerator(name = "seq_gen", sequenceName = "seq_member1", allocationSize = 1)
     // 시퀀스 생성. 생성한 시퀀스 이름: seq_board
@@ -63,5 +69,47 @@ public class Member {
                 .newMemNo(memberDto.getNewMemNo())
                 .remain(memberDto.getRemain())
                 .build();
+    }
+
+    // 권한 반환
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("user"));
+    }
+
+    // 사용자의 login id를 반환
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    // 사용자의 패스워드를 반환
+    @Override
+    public String getPassword() {
+        return pwd;
+    }
+
+    // 계정 만료 여부 반환
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // true : 만료되지 않았음
+    }
+
+    // 계정 잠금 여부 반환
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // true : 잠금되지 않았음
+    }
+
+    // 패스워드의 만료 여부 반환
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // true : 만료되지 않았음
+    }
+
+    // 계정 사용 가능 여부 반환
+    @Override
+    public boolean isEnabled() {
+        return true; // true : 사용 가능
     }
 }
