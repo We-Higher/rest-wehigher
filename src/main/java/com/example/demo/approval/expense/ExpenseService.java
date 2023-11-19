@@ -1,7 +1,5 @@
 package com.example.demo.approval.expense;
 
-import com.example.demo.approval.report.Report;
-import com.example.demo.approval.report.ReportDto;
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 

@@ -1,16 +1,12 @@
 package com.example.demo.employee;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.example.demo.member.Member;
+import com.example.demo.member.MemberDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.member.Member;
-import com.example.demo.member.MemberDao;
-import com.example.demo.member.MemberDto;
-import com.example.demo.employee.EmployeeDto;
-import com.example.demo.employee.Employee;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class EmployeeService {

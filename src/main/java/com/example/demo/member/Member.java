@@ -1,5 +1,6 @@
 package com.example.demo.member;
 
+import com.example.demo.member.dto.MemberJoinDto;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -47,6 +48,7 @@ public class Member implements UserDetails {
     @Column(columnDefinition = "int default 15", nullable = false)
     private int remain; //연차 잔여일
 
+    // MemberDto -> Member
     public Member toEntity(MemberDto memberDto) {
         return Member.builder()
                 .id(memberDto.getId())
@@ -69,6 +71,24 @@ public class Member implements UserDetails {
                 .thumbnailFname(memberDto.getThumbnailFname())
                 .newMemNo(memberDto.getNewMemNo())
                 .remain(memberDto.getRemain())
+                .build();
+    }
+
+    // MemberJoinDto -> Member
+    public Member toEntity (MemberJoinDto memberJoinDto) {
+        return Member.builder()
+                .username(memberJoinDto.getUsername())
+                .pwd(memberJoinDto.getPwd())
+                .name(memberJoinDto.getName())
+                .email(memberJoinDto.getEmail())
+                .phone(memberJoinDto.getPhone())
+                .address(memberJoinDto.getAddress())
+                .companyName(memberJoinDto.getCompanyName())
+                .deptCode(memberJoinDto.getDeptCode())
+                .newNo(memberJoinDto.getNewNo())
+                .comCall(memberJoinDto.getComCall())
+                .isMaster(memberJoinDto.getIsMaster())
+                .status(memberJoinDto.getStatus())
                 .build();
     }
 
