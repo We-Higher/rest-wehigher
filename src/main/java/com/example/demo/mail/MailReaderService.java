@@ -18,8 +18,8 @@ public class MailReaderService {
     @Value("${spring.mail.password}")
     private String pwd;
 
-    @Value("${spring.mail.location}")
-    private String saveDirectory;
+//    @Value("${spring.mail.location}")
+//    private String saveDirectory;
 
     /**
      * Google gmail에 접근하여 지정한 기간 내에 모든 메일 가져오기

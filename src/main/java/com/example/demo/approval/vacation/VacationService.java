@@ -65,7 +65,7 @@ public class VacationService {
             ScheduleDto sdto = ScheduleDto.builder()
                     .title(dto.getMember().getName() + "" + dto.getMember().getCompanyRankName() + "휴가").startDate(startDate).endDate(endDate)
                     .build();
-            sdao.save(new Schedule(sdto.getId(), sdto.getTitle(), sdto.getStartDate(), sdto.getEndDate(), sdto.getClassName()));
+            sdao.save(new Schedule(sdto.getId(),sdto.getMember(), sdto.getTitle(), sdto.getStartDate(), sdto.getEndDate()));
             return new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(), v.getWdate(), v.getStatus(), v.getRstatus(), v.getApproval1(), v.getApproval2(), v.getApproval1rank(), v.getApproval2rank(), v.getApp1username(), v.getApp2username());
     	}
     	else {

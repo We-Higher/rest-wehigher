@@ -1,9 +1,13 @@
 package com.example.demo.schedule;
 
+import com.example.demo.member.Member;
+import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +22,7 @@ import java.util.*;
 @RequestMapping("/schedule")
 public class ScheduleController {
     private final ScheduleService service;
+    private final MemberService memberService;
 
     @RequestMapping("")
     public String schedule() {
@@ -29,23 +34,26 @@ public class ScheduleController {
     @RequestMapping("/list")
     @ResponseBody
     public ArrayList<Map<String, Object>> list(ModelMap map) {//map은 자동으로 뷰페이지로 전달됨
-        ArrayList<ScheduleDto> listAll = service.getAll();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
+
+        ArrayList<ScheduleDto> list = service.getByMember(member);
 
         JSONObject jsonObj = new JSONObject();
         JSONArray jsonArr = new JSONArray();
 
         HashMap<String, Object> hash = new HashMap<>();
 
-        for (int i = 0; i < listAll.size(); i++) {
-            hash.put("cal_Id",listAll.get(i).getId());
-            hash.put("title", listAll.get(i).getTitle());
-            hash.put("start", listAll.get(i).getStartDate());
-            hash.put("end", listAll.get(i).getEndDate());
-            hash.put("className", listAll.get(i).getClassName());
+        for (int i = 0; i < list.size(); i++) {
+            hash.put("cal_Id", list.get(i).getId());
+            hash.put("title", list.get(i).getTitle());
+            hash.put("start", list.get(i).getStartDate());
+            hash.put("end", list.get(i).getEndDate());
 
             jsonObj = new JSONObject(hash);
             jsonArr.add(jsonObj);
         }
+
         return jsonArr;
     }
 
@@ -56,26 +64,22 @@ public class ScheduleController {
 
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
-        System.out.println("param = " + param);
-        System.out.println(param.get(0));
-        System.out.println(param.get(0).get("title"));
-        System.out.println(param.get(0).get("start"));
-        System.out.println(param.get(0).get("end"));
-
         String title = (String) param.get(0).get("title");
         String startDateString = (String) param.get(0).get("start");
         String endDateString = (String) param.get(0).get("end");
 
         LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
         LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
-        
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
+
         ScheduleDto dto = ScheduleDto.builder()
-                .title(title).startDate(startDate).endDate(endDate)
+                .member(member).title(title).startDate(startDate).endDate(endDate)
                 .build();
         ScheduleDto s = service.save(dto);
 
         Map<String, String> map = new HashMap<>();
-        map.put("id" , s.getId()+"");
+        map.put("id", s.getId() + "");
         return map;
 
     }
@@ -90,7 +94,7 @@ public class ScheduleController {
     //수정
     @PatchMapping("/edit/{id}")
     @ResponseBody
-    public Map modifyEvent(@PathVariable("id") int id, @RequestBody List<Map<String, Object>> param){
+    public Map modifyEvent(@PathVariable("id") int id, @RequestBody List<Map<String, Object>> param) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
         ScheduleDto origin = service.get(id);
