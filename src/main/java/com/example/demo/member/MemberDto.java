@@ -36,6 +36,7 @@ public class MemberDto {
                 .id(member.getId())
                 .username(member.getUsername())
                 .pwd(member.getPwd())
+                .name(member.getName())
                 .email(member.getEmail())
                 .phone(member.getPhone())
                 .address(member.getAddress())
