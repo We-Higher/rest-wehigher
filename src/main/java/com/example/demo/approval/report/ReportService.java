@@ -1,11 +1,5 @@
 package com.example.demo.approval.report;
 
-import com.example.demo.approval.expense.Expense;
-import com.example.demo.approval.expense.ExpenseDto;
-import com.example.demo.approval.vacation.Vacation;
-import com.example.demo.approval.vacation.VacationDto;
-import com.example.demo.member.Member;
-import com.example.demo.member.MemberDao;
 import com.example.demo.member.MemberDto;
 
 import org.springframework.beans.factory.annotation.Autowired;

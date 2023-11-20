@@ -1,5 +1,6 @@
 package com.example.demo.member;
 
+import com.example.demo.member.dto.MemberJoinDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,11 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.security.Principal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 @PreAuthorize("hasRole(\"ADMIN\")")
 @RequiredArgsConstructor
@@ -27,21 +23,6 @@ public class MemberController {
     public String loginForm() {
         return "member/login_form";
     }
-
-//    @PostMapping("/login")
-//    public String login(String username, String pwd, HttpSession session) {
-//
-//        String path = "member/login_Form";
-//        MemberDto m = service.getMember(username);
-//        System.out.println("m = " + m);
-//        if (Objects.nonNull(m) && pwd.equals(m.getPwd())) {
-//            session.setAttribute("username", m);
-//            session.setAttribute("loginId", m.getName());
-//            System.out.println(m.getName());
-//            path = "redirect:/";
-//        }
-//        return path;
-//    }
     
     @GetMapping("/join")
     public String joinForm() {
@@ -49,8 +30,8 @@ public class MemberController {
     }
 
     @PostMapping("/join")
-    public String join(MemberDto dto) {
-        service.create(dto);
+    public String join(MemberJoinDto memberJoinDto) {
+        service.create(memberJoinDto);
         return "redirect:/employee/list";
     }
 
@@ -66,7 +47,7 @@ public class MemberController {
         MemberDto m = service.getMemberByName(dto.getName());
         
         m.setUsername(dto.getUsername());
-        m.setPwd(passwordEncoder.encode(dto.getPwd()));
+        m.setPwd(dto.getPwd());
         m.setName(dto.getName());
         m.setCompanyName(dto.getCompanyName());
         m.setDeptCode(dto.getDeptCode());
@@ -114,6 +95,6 @@ public class MemberController {
         m.setIsMaster(dto.getIsMaster());
         m.setStatus(dto.getStatus());
         service.save(m);
-        return "redirect:/member/logout";
+        return "redirect:/main";
     }
 }

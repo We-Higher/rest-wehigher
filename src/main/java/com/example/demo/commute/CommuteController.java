@@ -1,6 +1,5 @@
 package com.example.demo.commute;
 
-import com.example.demo.board.BoardDto;
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;

@@ -1,7 +1,15 @@
 package com.example.demo.member;
 
+import com.example.demo.member.dto.MemberJoinDto;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Setter
@@ -9,7 +17,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Member {
+public class Member implements UserDetails {
     @Id
     @SequenceGenerator(name = "seq_gen", sequenceName = "seq_member1", allocationSize = 1)
     // 시퀀스 생성. 생성한 시퀀스 이름: seq_board
@@ -39,4 +47,99 @@ public class Member {
     private int newMemNo; // 임시 테이블 사번
     @Column(columnDefinition = "int default 15", nullable = false)
     private int remain; //연차 잔여일
+
+    // MemberDto -> Member
+    public Member toEntity(MemberDto memberDto) {
+        return Member.builder()
+                .id(memberDto.getId())
+                .username(memberDto.getUsername())
+                .pwd(memberDto.getPwd())
+                .email(memberDto.getEmail())
+                .phone(memberDto.getPhone())
+                .address(memberDto.getAddress())
+                .companyName(memberDto.getCompanyName())
+                .deptCode(memberDto.getDeptCode())
+                .deptName(memberDto.getDeptName())
+                .companyRank(memberDto.getCompanyRank())
+                .companyRankName(memberDto.getCompanyRankName())
+                .newNo(memberDto.getNewNo())
+                .comCall(memberDto.getComCall())
+                .isMaster(memberDto.getIsMaster())
+                .status(memberDto.getStatus())
+                .cstatus(memberDto.getCstatus())
+                .originFname(memberDto.getOriginFname())
+                .thumbnailFname(memberDto.getThumbnailFname())
+                .newMemNo(memberDto.getNewMemNo())
+                .remain(memberDto.getRemain())
+                .build();
+    }
+
+    // MemberJoinDto -> Member
+    public Member toEntity (MemberJoinDto memberJoinDto) {
+        return Member.builder()
+                .username(memberJoinDto.getUsername())
+                .pwd(memberJoinDto.getPwd())
+                .name(memberJoinDto.getName())
+                .email(memberJoinDto.getEmail())
+                .phone(memberJoinDto.getPhone())
+                .address(memberJoinDto.getAddress())
+                .companyName(memberJoinDto.getCompanyName())
+                .deptCode(memberJoinDto.getDeptCode())
+                .newNo(memberJoinDto.getNewNo())
+                .comCall(memberJoinDto.getComCall())
+                .isMaster(memberJoinDto.getIsMaster())
+                .status(memberJoinDto.getStatus())
+                .build();
+    }
+
+    // 권한 반환
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        // 권한들을 담을 빈 리스트
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        if ("admin".equals(username)) {
+            authorities.add(new SimpleGrantedAuthority(MemberRole.ADMIN.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
+        }
+
+        return authorities;
+    }
+
+    // 사용자의 login id를 반환
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    // 사용자의 패스워드를 반환
+    @Override
+    public String getPassword() {
+        return pwd;
+    }
+
+    // 계정 만료 여부 반환
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // true : 만료되지 않았음
+    }
+
+    // 계정 잠금 여부 반환
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // true : 잠금되지 않았음
+    }
+
+    // 패스워드의 만료 여부 반환
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // true : 만료되지 않았음
+    }
+
+    // 계정 사용 가능 여부 반환
+    @Override
+    public boolean isEnabled() {
+        return true; // true : 사용 가능
+    }
 }

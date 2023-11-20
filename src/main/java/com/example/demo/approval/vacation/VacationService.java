@@ -1,17 +1,10 @@
 package com.example.demo.approval.vacation;
 
-import com.example.demo.approval.expense.Expense;
-import com.example.demo.approval.expense.ExpenseDto;
-import com.example.demo.approval.report.Report;
-import com.example.demo.approval.report.ReportDto;
 import com.example.demo.member.MemberDto;
 import com.example.demo.schedule.ScheduleService;
 import com.example.demo.schedule.Schedule;
 import com.example.demo.schedule.ScheduleDao;
 
-import lombok.RequiredArgsConstructor;
-
-import com.example.demo.schedule.ScheduleDao;
 import com.example.demo.schedule.ScheduleDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
