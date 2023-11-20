@@ -14,29 +14,29 @@ public class ExpenseService {
     private ExpenseDao dao;
 
     public ExpenseDto saveExpense(ExpenseDto dto) {
-        Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApp1username(), dto.getApp2username()));
-        return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApp1username(), e.getApp2username());
+        Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApproval1rank(), dto.getApproval2rank(), dto.getApp1username(), dto.getApp2username()));
+        return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username());
     }
 
     public ArrayList<ExpenseDto> getAll(){
         ArrayList<Expense> list = (ArrayList<Expense>) dao.findAll();
         ArrayList<ExpenseDto> list2 = new ArrayList<>();
         for(Expense e : list){
-            list2.add(new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApp1username(), e.getApp2username()));
+            list2.add(new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username()));
         }
         return list2;
     }
 
     public ExpenseDto getById(int num){
         Expense e = dao.getById(num);
-        return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApp1username(), e.getApp2username());
+        return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username());
     }
 
     public ArrayList<ExpenseDto> getByMember(Member m){
         ArrayList<Expense> list = dao.findByMember(m);
         ArrayList<ExpenseDto> list2 = new ArrayList<>();
         for(Expense e : list){
-            list2.add(new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApp1username(), e.getApp2username()));
+            list2.add(new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username()));
         }
         return list2;
     }
@@ -51,8 +51,8 @@ public class ExpenseService {
     	}
     	else System.out.println("결제할 수 없습니다.");
     	
-    	Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApp1username(), dto.getApp2username()));
-        return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(),e.getRstatus(),e.getApproval1(),e.getApproval2(), e.getApp1username(), e.getApp2username());
+    	Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApproval1rank(), dto.getApproval2rank(), dto.getApp1username(), dto.getApp2username()));
+        return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(),e.getRstatus(),e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username());
     }
     
     public ExpenseDto refuseExpense(ExpenseDto dto, MemberDto mdto) {
@@ -65,7 +65,7 @@ public class ExpenseService {
     	}
     	else System.out.println("반려할 수 없습니다.");
     	
-    	Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApp1username(), dto.getApp2username()));
-        return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(),e.getRstatus(),e.getApproval1(),e.getApproval2(), e.getApp1username(), e.getApp2username());
+    	Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApproval1rank(), dto.getApproval2rank(), dto.getApp1username(), dto.getApp2username()));
+        return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(),e.getRstatus(),e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username());
     }
 }

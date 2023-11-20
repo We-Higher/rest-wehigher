@@ -17,9 +17,10 @@ import lombok.ToString;
 @ToString
 public class NotifyDto {
 	private int num;
-	private Date wdate;
-	private Date udate;
+	private String wdate;
+	private String udate;
 	private Member member;
 	private String title;
 	private String content;
+	private int cnt;
 }

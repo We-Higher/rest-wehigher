@@ -41,7 +41,7 @@ public class approvalController {
         response.setContentType("text/html; charset=utf-8");
         response.setCharacterEncoding("utf-8");
     }
-
+    
     @GetMapping("/draft")
     public void list(Model map) {
         ArrayList<ExpenseDto> elist = eservice.getAll();

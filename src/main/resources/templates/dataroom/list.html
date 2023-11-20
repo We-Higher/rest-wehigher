@@ -29,14 +29,15 @@
 										<th>제목</th>
 										<th>작성자</th>
 										<th>등록일</th>
+										<th>다운로드수</th>
 									</tr>
 									<tbody>
 										<tr th:each="i:${list}">
 											<td th:text="${i.num}"></td>
-											<td><a th:href="@{/dataroom/edit(num=${i.num})}" th:text="${i.title }"></a>
-											</td>
-											<td th:text="${i.writer.name}"></td>
+											<td><a th:href="@{/dataroom/edit(num=${i.num})}" th:text="${i.title }"></a></td>
+											<td th:text="${i.member.name}"></td>
 											<td th:text="${i.wdate }"></td>
+											<td th:text="${i.cnt }"></td>
 										</tr>
 									</tbody>
 								</table>
