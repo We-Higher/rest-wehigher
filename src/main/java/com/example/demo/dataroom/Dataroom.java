@@ -14,7 +14,6 @@ import java.util.Date;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-
 public class Dataroom {
     @Id
     @SequenceGenerator(name="seq_gen", sequenceName="seq_dataroom", allocationSize=1)
@@ -24,16 +23,11 @@ public class Dataroom {
     @ManyToOne
     @JoinColumn(nullable=false)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private Member writer;
-    private Date wdate;
+    private Member member;
+    private String wdate;
     private String title;
     private String content;
     private String fname;
     @Column(columnDefinition = "int default 0", nullable = false)
     private int cnt;
-
-    @PrePersist
-    public void setDate() {
-        wdate = new Date();
-    }
 }

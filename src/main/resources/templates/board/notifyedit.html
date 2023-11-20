@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{layout}">
+	layout:decorate="~{layout}">
 <div layout:fragment="content">
+
 	<head>
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
@@ -14,38 +15,41 @@
 			});
 		</script>
 	</head>
+
 	<body>
-	<h3>공지사항 상세페이지</h3>
-	<form action="/board/notifyedit" method="post">
-		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-		<table border="1">
-			<tr>
-				<th>글번호</th>
-				<td><input type="text" name="num" th:value="${b.num }" readonly></td>
-			</tr>
-			<tr>
-				<th>작성일</th>
-				<td><input type="text" th:value="${b.wdate }" readonly></td>
-			</tr>
-			<tr>
-				<th>작성자</th>
-				<td><input type="text" th:value="${b.member.username }" readonly></td>
-			</tr>
-			<tr>
-				<th>제목</th>
-				<td><input type="text" name="title" th:value="${b.title }"></td>
-			</tr>
-			<tr>
-				<th>내용</th>
-				<td><textarea rows="10" cols="30" name="content" th:text="${b.content }"
-				 th:readonly="${#authentication.principal.username == b.member.username ? 'false' : 'readonly'}"></textarea></td>
-			</tr>
-			<tr th:if="${#authentication.principal.username} == ${b.member.username}">
-				<th>편집</th>
-				<td><input type="submit" value="수정"><input type="button" id="del" value="삭제"></td>
-			</tr>
-		</table>
-	</form>
+		<h3>공지사항 상세페이지</h3>
+		<form action="/board/notifyedit" method="post">
+			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+			<table border="1">
+				<tr>
+					<th>글번호</th>
+					<td><input type="text" name="num" th:value="${b.num }" readonly></td>
+				</tr>
+				<tr>
+					<th>작성자</th>
+					<td><input type="text" th:value="${b.member.name }" readonly></td>
+				</tr>
+				<tr>
+					<th>작성일</th>
+					<td><input type="text" th:value="${b.wdate }" readonly></td>
+				</tr>
+
+				<tr>
+					<th>제목</th>
+					<td><input type="text" name="title" th:value="${b.title }"></td>
+				</tr>
+				<tr>
+					<th>내용</th>
+					<td><textarea rows="10" cols="30" name="content" th:text="${b.content }"
+							th:readonly="${#authentication.principal.username == b.member.username ? 'false' : 'readonly'}"></textarea>
+					</td>
+				</tr>
+				<tr th:if="${#authentication.principal.username} == ${b.member.username}">
+					<th>편집</th>
+					<td><input type="submit" value="수정"><input type="button" id="del" value="삭제"></td>
+				</tr>
+			</table>
+		</form>
 	</body>
 </div>
 

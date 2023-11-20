@@ -14,9 +14,8 @@ import java.util.Date;
 @NoArgsConstructor
 public class DataroomDto {
     private int num;
-    private Member writer;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss.SSS")
-    private Date wdate;
+    private Member member;
+    private String wdate;
     private String title;
     private String content;
     private String fname;
@@ -26,7 +25,7 @@ public class DataroomDto {
     public static DataroomDto of(Dataroom dataroom) {
         return new DataroomDto(
                 dataroom.getNum(),
-                dataroom.getWriter(),
+                dataroom.getMember(),
                 dataroom.getWdate(),
                 dataroom.getTitle(),
                 dataroom.getContent(),
