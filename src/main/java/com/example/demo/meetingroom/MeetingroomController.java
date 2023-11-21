@@ -35,10 +35,10 @@ public class MeetingroomController {
         JSONArray jsonArr = new JSONArray();
 
         HashMap<String, Object> hash = new HashMap<>();
-
         for (int i = 0; i < listAll.size(); i++) {
+            System.out.println("listAll.get(i).getRoomId()+\"회의실-\"+listAll.get(i).getTitle() = " + listAll.get(i).getRoomId()+"회의실-"+listAll.get(i).getTitle());
             hash.put("cal_Id", listAll.get(i).getId());
-            hash.put("title", listAll.get(i).getTitle());
+            hash.put("title", listAll.get(i).getRoomId()+"회의실-"+listAll.get(i).getTitle());
             hash.put("start", listAll.get(i).getStartDate());
             hash.put("end", listAll.get(i).getEndDate());
 
@@ -106,7 +106,12 @@ public class MeetingroomController {
     @GetMapping("/list/{roomId}")
     @ResponseBody
     public ArrayList<Map<String, Object>> findbyroomId(ModelMap map, @PathVariable("roomId") int roomId) {
-        ArrayList<MeetingroomDto> list = service.getByRoomId(roomId);
+        ArrayList<MeetingroomDto> list=null;
+        if(roomId == 0){
+            list = service.getAll();
+        } else{
+            list = service.getByRoomId(roomId);
+        }
 
         JSONObject jsonObj = new JSONObject();
         JSONArray jsonArr = new JSONArray();
@@ -115,10 +120,10 @@ public class MeetingroomController {
 
         for (int i = 0; i < list.size(); i++) {
             hash.put("cal_Id", list.get(i).getId());
-            hash.put("title", list.get(i).getTitle());
+            hash.put("title", list.get(i).getRoomId()+"회의실-"+list.get(i).getTitle());
             hash.put("start", list.get(i).getStartDate());
             hash.put("end", list.get(i).getEndDate());
-
+            hash.put("roomId", list.get(i).getRoomId());
             jsonObj = new JSONObject(hash);
             jsonArr.add(jsonObj);
         }
