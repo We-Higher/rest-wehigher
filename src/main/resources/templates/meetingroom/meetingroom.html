@@ -5,6 +5,7 @@
       layout:decorate="~{layout}">
 
 <th:block layout:fragment="style">
+    <link rel="stylesheet" href="/css/schedule/calendar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.5/main.min.css"
           integrity="sha512-1P/SRFqI1do4eNtBsGIAqIZIlnmOQkaY7ESI2vkl+q+hl9HSXmdPqotN0McmeZVyR4AWV+NvkP6pKOiVdY/V5A=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
@@ -36,9 +37,9 @@
                         var calendarEl = document.getElementById('calendar');
                         var calendar = new FullCalendar.Calendar(calendarEl, {
                             headerToolbar: {
-                                left: 'prev,next today',
+                                left: 'prev next today',
                                 center: 'title',
-                                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                                right:'timeGridWeek,timeGridDay',
                             },
                             initialView: 'timeGridWeek',
                             editable: true,
@@ -53,7 +54,7 @@
                             },
                             select: function (arg) {
                                 // 캘린더에서 이벤트를 생성할 수 있다.
-                                var title = prompt('일정을 입력해주세요.');
+                                var title = prompt('회의 일정을 입력해주세요.');
                                 if (title) {
                                     var events = new Array();
                                     var obj = new Object();
@@ -172,6 +173,7 @@
                                 }
                             },
                             events: data,
+
                         });
                         calendar.render();
                     },
@@ -181,11 +183,13 @@
                 });
             });
         }
+        showRoomId(0)
     </script>
 </th:block>
 
 <div layout:fragment="content">
     <ul>
+        <a class="room-link" data-room-id="0">전체보기</a>
         <a class="room-link" data-room-id="1">회의실1</a>
         <a class="room-link" data-room-id="2">회의실2</a>
         <a class="room-link" data-room-id="3">회의실3</a>

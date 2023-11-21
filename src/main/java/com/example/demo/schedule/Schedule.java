@@ -1,8 +1,11 @@
 package com.example.demo.schedule;
 
+import com.example.demo.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -18,6 +21,9 @@ public class Schedule {
     @SequenceGenerator(name="sch_gen", sequenceName="seq_schedule1", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="sch_gen")
     private int id;
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Member member;
     private String title;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -29,5 +35,4 @@ public class Schedule {
     private LocalDateTime endDate;
     @Column(columnDefinition = "int default 0", nullable = false)
     private int cnt;
-    private String className;
 }
