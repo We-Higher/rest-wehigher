@@ -12,10 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.member.Member;
-
-import jakarta.servlet.http.HttpServletResponse;
-
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -41,7 +37,7 @@ public class ScheduleController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
 
-        ArrayList<ScheduleDto> list = service.getByMember(member);
+        ArrayList<ScheduleDto> listAll = service.getByMember(member);
 
         JSONObject jsonObj = new JSONObject();
         JSONArray jsonArr = new JSONArray();
