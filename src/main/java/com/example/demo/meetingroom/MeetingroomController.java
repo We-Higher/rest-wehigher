@@ -1,9 +1,13 @@
 package com.example.demo.meetingroom;
 
+import com.example.demo.member.Member;
+import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +22,7 @@ import java.util.*;
 @RequestMapping("/meetingroom")
 public class MeetingroomController {
     private final MeetingroomService service;
+    private final MemberService memberService;
 
     @RequestMapping("")
     public String schedule() {
@@ -36,7 +41,6 @@ public class MeetingroomController {
 
         HashMap<String, Object> hash = new HashMap<>();
         for (int i = 0; i < listAll.size(); i++) {
-            System.out.println("listAll.get(i).getRoomId()+\"회의실-\"+listAll.get(i).getTitle() = " + listAll.get(i).getRoomId()+"회의실-"+listAll.get(i).getTitle());
             hash.put("cal_Id", listAll.get(i).getId());
             hash.put("title", listAll.get(i).getRoomId()+"회의실-"+listAll.get(i).getTitle());
             hash.put("start", listAll.get(i).getStartDate());
@@ -58,12 +62,14 @@ public class MeetingroomController {
         String startDateString = (String) param.get(0).get("start");
         String endDateString = (String) param.get(0).get("end");
 
-
         LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
         LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
+
         MeetingroomDto dto = MeetingroomDto.builder()
-                .title(title).startDate(startDate).endDate(endDate).roomId(roomId)
+                .member(member).title(title).startDate(startDate).endDate(endDate).roomId(roomId)
                 .build();
         MeetingroomDto s = service.save(dto);
 
@@ -75,15 +81,36 @@ public class MeetingroomController {
 
     //일정삭제
     @GetMapping("/del/{id}")
-    public String del(@PathVariable("id") int id) {
-        service.del(id);
-        return "redirect:/meetingroom";
+    @ResponseBody
+    public ModelMap del(@PathVariable("id") int id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
+
+        MeetingroomDto origin = service.get(id);
+
+        ModelMap map = new ModelMap();
+        boolean flag = true;
+
+        if(member.getId().equals(origin.getMember().getId())){
+            service.del(id);
+        }
+        else if(member.getIsMaster()==1){
+            service.del(id);
+        }
+        else{
+            String msg = "본인 예약만 삭제할 수 있습니다.";
+            map.put("msg",msg);
+            flag = false;
+        }
+        map.put("flag",flag);
+
+        return map;
     }
 
     //수정
     @PatchMapping("/edit/{id}")
     @ResponseBody
-    public Map modifyEvent(@PathVariable("id") int id, @RequestBody List<Map<String, Object>> param) {
+    public ModelMap modifyEvent(@PathVariable("id") int id, @RequestBody List<Map<String, Object>> param) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
         MeetingroomDto origin = service.get(id);
@@ -94,12 +121,30 @@ public class MeetingroomController {
         LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
         LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
 
-        MeetingroomDto dto = MeetingroomDto.builder()
-                .id(id).title(origin.getTitle()).startDate(startDate).endDate(endDate)
-                .build();
-        MeetingroomDto s = service.save(dto);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
 
-        return null;
+        MeetingroomDto dto = MeetingroomDto.builder()
+                .id(id).member(member).title(origin.getTitle()).startDate(startDate).endDate(endDate)
+                .build();
+
+        ModelMap map = new ModelMap();
+        boolean flag = true;
+
+        if(member.getId().equals(origin.getMember().getId())){
+            MeetingroomDto s = service.save(dto);
+        }
+        else if(member.getIsMaster()==1){
+            MeetingroomDto s = service.save(dto);
+        }
+        else{
+            String msg = "본인 예약만 수정할 수 있습니다.";
+            map.put("msg",msg);
+            flag = false;
+        }
+        map.put("flag",flag);
+
+        return map;
     }
 
     //방 아이디

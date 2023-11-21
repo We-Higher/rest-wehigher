@@ -1,8 +1,11 @@
 package com.example.demo.meetingroom;
 
+import com.example.demo.member.Member;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -19,6 +22,11 @@ public class Meetingroom {
     @SequenceGenerator(name="mtr_gen", sequenceName="seq_meetingroom", allocationSize=1)
     @GeneratedValue(strategy= GenerationType.SEQUENCE, generator="mtr_gen")
     private int id;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Member member;
+
     private String title;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
@@ -33,6 +41,7 @@ public class Meetingroom {
     public Meetingroom toEntity(MeetingroomDto dto){
         return Meetingroom.builder()
                 .id(dto.getId())
+                .member(dto.getMember())
                 .title(dto.getTitle())
                 .startDate(dto.getStartDate())
                 .endDate(dto.getEndDate())
