@@ -1,11 +1,8 @@
 package com.example.demo.dataroom;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.example.demo.member.Member;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -78,6 +75,9 @@ public class DataroomService {
         }
         if (Objects.equals("title", referenceSearch.getSelect())) {
             list = dao.findByTitleContains(referenceSearch.getSearch());
+        }
+        if (Objects.equals("none", referenceSearch.getSelect())) {
+            list = dao.findAll();
         }
         return list.stream()
                 .map(DataroomDto::of)
