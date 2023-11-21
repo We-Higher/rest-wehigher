@@ -8,7 +8,7 @@
                     <div class="card">
                         <div class="card-header card-header-danger">
                             <h4 class="card-title ">임직원 목록</h4>
-                            <p class="card-category"><a href="/member/join">임직원 추가</a></p>
+                            <p class="card-category" th:if="${#authentication.principal.isMaster == 1}"><a href="/member/join">임직원 추가</a></p>
                         </div>
                         <div>
                             <form action="/employee/list" method="post">
@@ -39,7 +39,8 @@
 									<tbody>
                                     <tr th:each="m : ${list}">
                                         <td th:text="${m.newNo}"></td>
-                                        <td><a th:href="@{/member/edit(name=${m.name})}">[[${m.name}]]</a></td>
+                                        <td th:if="${#authentication.principal.isMaster == 1}"><a th:href="@{/member/edit(name=${m.name})}">[[${m.name}]]</a></td>
+                                        <td th:if="${#authentication.principal.isMaster == 0}" th:text="${m.name}"></td>
                                         <td th:text="${m.companyRankName}"></td>
                                         <td th:text="${m.deptName}"></td>
                                         <td th:text="${m.phone}"></td>

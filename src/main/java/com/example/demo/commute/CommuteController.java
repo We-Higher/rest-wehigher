@@ -113,6 +113,7 @@ public class CommuteController {
     }
 
     //출퇴근기록 수정요청목록
+    @PreAuthorize("hasRole(\"ADMIN\")")
     @GetMapping("/editRequestList")
     public String edit(Model map) {
         ArrayList<CommuteDto> list = cservice.getAll();
@@ -177,7 +178,7 @@ public class CommuteController {
 
     //출근
     @PostMapping("/attendance")
-    public String attendance(Principal principal, CommuteDto cdto, Model map) {
+    public String attendance(HttpServletResponse response, Principal principal, CommuteDto cdto, Model map) throws IOException {
         MemberDto mdto = mservice.getMember(principal.getName());
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
@@ -195,14 +196,17 @@ public class CommuteController {
 	    }
         else {
         	
-        	System.out.println("이미 출근처리가 완료되었습니다.");
+            init(response);
+            PrintWriter out = response.getWriter();
+            out.write("<script>alert('"+"이미 출근처리가 완료되었습니다."+"');location.href='"+"/commute/list"+"';</script>");
+            out.flush();
         }
-        return "redirect:/commute/list";
+	    return "redirect:/commute/list";
     }
 
     //퇴근
     @PostMapping("/quit")
-    public String quit(Principal principal, CommuteDto cdto) {
+    public String quit(HttpServletResponse response, Principal principal, CommuteDto cdto) throws IOException {
         MemberDto mdto = mservice.getMember(principal.getName());
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm");
@@ -222,7 +226,11 @@ public class CommuteController {
         }
         else {
         	
-        	System.out.println("이미 퇴근처리가 완료되었습니다.");
+            init(response);
+            PrintWriter out = response.getWriter();
+            out.write("<script>alert('"+"이미 퇴근처리가 완료되었습니다."+"');location.href='"+"/commute/list"+"';</script>");
+            out.flush();
+            //out.close();
         }
         return "redirect:/commute/list";
     }

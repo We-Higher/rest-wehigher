@@ -3,15 +3,24 @@ package com.example.demo.approval.expense;
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 @Service
 public class ExpenseService {
     @Autowired
     private ExpenseDao dao;
+    
+    public static void init(HttpServletResponse response) {
+        response.setContentType("text/html; charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+    }
 
     public ExpenseDto saveExpense(ExpenseDto dto) {
         Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApproval1rank(), dto.getApproval2rank(), dto.getApp1username(), dto.getApp2username()));
@@ -41,7 +50,7 @@ public class ExpenseService {
         return list2;
     }
     
-    public ExpenseDto approveExpense(ExpenseDto dto, MemberDto mdto) {
+    public ExpenseDto approveExpense(HttpServletResponse response, ExpenseDto dto, MemberDto mdto) throws IOException {
     	
     	if(dto.getRstatus()==0 && dto.getStatus()==0 && dto.getApp1username().equals(mdto.getUsername())){
     		dto.setStatus(1);
@@ -49,13 +58,18 @@ public class ExpenseService {
     	else if(dto.getRstatus()==0 && dto.getStatus()==1 && dto.getApp2username().equals(mdto.getUsername())){
     		dto.setStatus(2);
     	}
-    	else System.out.println("결제할 수 없습니다.");
+    	else {
+    		
+            PrintWriter out = response.getWriter();
+            out.write("<script>alert('"+"결재할 수 없습니다."+"');location.href='"+"/approval/process"+"';</script>");
+            out.flush();
+    	}
     	
     	Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApproval1rank(), dto.getApproval2rank(), dto.getApp1username(), dto.getApp2username()));
         return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(),e.getRstatus(),e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username());
     }
     
-    public ExpenseDto refuseExpense(ExpenseDto dto, MemberDto mdto) {
+    public ExpenseDto refuseExpense(HttpServletResponse response, ExpenseDto dto, MemberDto mdto) throws IOException {
     	
     	if(dto.getRstatus()==0 && dto.getStatus()==0 && dto.getApp1username().equals(mdto.getUsername())){
     		dto.setRstatus(-1);
@@ -63,7 +77,12 @@ public class ExpenseService {
     	else if(dto.getRstatus()==0 && dto.getStatus()==1 && dto.getApp2username().equals(mdto.getUsername())){
     		dto.setRstatus(-1);
     	}
-    	else System.out.println("반려할 수 없습니다.");
+    	else {
+    		
+            PrintWriter out = response.getWriter();
+            out.write("<script>alert('"+"반려할 수 없습니다."+"');location.href='"+"/approval/process"+"';</script>");
+            out.flush();
+    	}
     	
     	Expense e = dao.save(new Expense(dto.getExpenseNum(),dto.getMember(),dto.getTitle(),dto.getContent(),dto.getWdate(),dto.getCategory(),dto.getDetail(),dto.getSum(),dto.getNote(), dto.getStatus(), dto.getRstatus(), dto.getApproval1(), dto.getApproval2(), dto.getApproval1rank(), dto.getApproval2rank(), dto.getApp1username(), dto.getApp2username()));
         return new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(),e.getRstatus(),e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username());

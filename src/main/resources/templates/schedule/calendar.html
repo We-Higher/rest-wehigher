@@ -110,6 +110,7 @@
                                     console.log(events);
                                     console.log(info.event._def.extendedProps.cal_Id)
                                     let calId = info.event._def.extendedProps.cal_Id
+                                    
                                     $(function eidtData() {
                                         $.ajax({
                                             url: "/schedule/edit/" + calId,
@@ -122,6 +123,7 @@
                                             contentType: 'application/json',
                                         })
                                     })
+                                    location.reload()
                                 }else{
                                     info.revert();
                                 }
@@ -155,6 +157,7 @@
                                             contentType: 'application/json',
                                         })
                                     })
+                                    location.reload()
                                 }else{
                                     info.revert();
                                 }
@@ -178,10 +181,9 @@
                                             method: "GET",
                                         })
                                     })
-
-                                    info.event.remove();
+                                    //info.event.remove();
                                 }
-
+								location.reload()
                             },
 
                             /**
@@ -190,8 +192,6 @@
                             events: data,
 
                         });
-
-
                         calendar.render();
                     },
                     fail: function (jqXHR, textStatus) {

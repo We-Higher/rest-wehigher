@@ -27,8 +27,7 @@ public class Schedule {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     @Column(name = "end_date")
     private LocalDateTime endDate;
-
+    @Column(columnDefinition = "int default 0", nullable = false)
+    private int cnt;
     private String className;
-
-
 }

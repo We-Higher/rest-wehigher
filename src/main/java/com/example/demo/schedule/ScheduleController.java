@@ -4,9 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.member.Member;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -41,6 +47,7 @@ public class ScheduleController {
             hash.put("title", listAll.get(i).getTitle());
             hash.put("start", listAll.get(i).getStartDate());
             hash.put("end", listAll.get(i).getEndDate());
+            hash.put("check", listAll.get(i).getCnt());
             hash.put("className", listAll.get(i).getClassName());
 
             jsonObj = new JSONObject(hash);
@@ -104,7 +111,27 @@ public class ScheduleController {
         ScheduleDto dto = ScheduleDto.builder()
                 .id(id).title(origin.getTitle()).startDate(startDate).endDate(endDate)
                 .build();
-        ScheduleDto s = service.save(dto);
+        
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Member loginMember = (Member) authentication.getPrincipal();
+    	if(origin.getCnt()==0) {
+    		ScheduleDto s = service.save(dto);
+    	}
+    	else {
+    		
+    		if(loginMember.getIsMaster()==0) {
+    			
+                /*PrintWriter out = response.getWriter();
+                out.write("<script>alert('"+"관리자만 삭제 가능합니다."+"');location.href='"+"/schedule"+"';</script>");
+                out.flush();*/
+    			System.out.println("관리자만 변경 가능합니다.");
+    		}
+    		else {
+    			
+    			ScheduleDto s = service.save(dto);
+    		}
+    		
+    	}
 
         return null;
     }
