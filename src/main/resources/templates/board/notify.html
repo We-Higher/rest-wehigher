@@ -9,7 +9,7 @@
 					<div class="card">
 						<div class="card-header card-header-danger">
 							<h4 class="card-title ">Co-Operate-Works 공지사항</h4>
-							<p class="card-category"><a href="/board/notifyadd">공지사항 추가</a></p>
+							<p class="card-category"><a href="/board/notifyadd" th:if="${#authentication.principal.isMaster == 1}">공지사항 추가</a></p>
 						</div>
 						<div>
 							<form action="/board/notifylist" method="post">

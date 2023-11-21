@@ -5,10 +5,10 @@
       layout:decorate="~{layout}">
 
 <th:block layout:fragment="style">
-    <link rel="stylesheet" href="/css/schedule/calendar.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.5/main.min.css"
           integrity="sha512-1P/SRFqI1do4eNtBsGIAqIZIlnmOQkaY7ESI2vkl+q+hl9HSXmdPqotN0McmeZVyR4AWV+NvkP6pKOiVdY/V5A=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="/css/schedule/calendar.css">
 </th:block>
 
 <th:block layout:fragment="script">
@@ -111,6 +111,7 @@
                                     console.log(events);
                                     console.log(info.event._def.extendedProps.cal_Id)
                                     let calId = info.event._def.extendedProps.cal_Id
+                                    
                                     $(function eidtData() {
                                         $.ajax({
                                             url: "/schedule/edit/" + calId,
@@ -123,6 +124,7 @@
                                             contentType: 'application/json',
                                         })
                                     })
+                                    location.reload()
                                 }else{
                                     info.revert();
                                 }
@@ -156,6 +158,7 @@
                                             contentType: 'application/json',
                                         })
                                     })
+                                    location.reload()
                                 }else{
                                     info.revert();
                                 }
@@ -179,10 +182,9 @@
                                             method: "GET",
                                         })
                                     })
-
-                                    info.event.remove();
+                                    //info.event.remove();
                                 }
-
+								location.reload()
                             },
 
                             /**
@@ -191,8 +193,6 @@
                             events: data,
 
                         });
-
-
                         calendar.render();
                     },
                     fail: function (jqXHR, textStatus) {
@@ -212,5 +212,4 @@
         <div style='clear:both'></div>
     </div>
 </div>
-
 </html>

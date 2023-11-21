@@ -16,4 +16,5 @@ public class ScheduleDto {
     private String title;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private int cnt;
 }

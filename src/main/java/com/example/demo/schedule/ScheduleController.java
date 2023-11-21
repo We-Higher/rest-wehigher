@@ -12,6 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import com.example.demo.member.Member;
+
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -44,11 +48,13 @@ public class ScheduleController {
 
         HashMap<String, Object> hash = new HashMap<>();
 
-        for (int i = 0; i < list.size(); i++) {
-            hash.put("cal_Id", list.get(i).getId());
-            hash.put("title", list.get(i).getTitle());
-            hash.put("start", list.get(i).getStartDate());
-            hash.put("end", list.get(i).getEndDate());
+
+        for (int i = 0; i < listAll.size(); i++) {
+            hash.put("cal_Id",listAll.get(i).getId());
+            hash.put("title", listAll.get(i).getTitle());
+            hash.put("start", listAll.get(i).getStartDate());
+            hash.put("end", listAll.get(i).getEndDate());
+            hash.put("check", listAll.get(i).getCnt());
 
             jsonObj = new JSONObject(hash);
             jsonArr.add(jsonObj);
@@ -108,7 +114,27 @@ public class ScheduleController {
         ScheduleDto dto = ScheduleDto.builder()
                 .id(id).title(origin.getTitle()).startDate(startDate).endDate(endDate)
                 .build();
-        ScheduleDto s = service.save(dto);
+        
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Member loginMember = (Member) authentication.getPrincipal();
+    	if(origin.getCnt()==0) {
+    		ScheduleDto s = service.save(dto);
+    	}
+    	else {
+    		
+    		if(loginMember.getIsMaster()==0) {
+    			
+                /*PrintWriter out = response.getWriter();
+                out.write("<script>alert('"+"관리자만 삭제 가능합니다."+"');location.href='"+"/schedule"+"';</script>");
+                out.flush();*/
+    			System.out.println("관리자만 변경 가능합니다.");
+    		}
+    		else {
+    			
+    			ScheduleDto s = service.save(dto);
+    		}
+    		
+    	}
 
         return null;
     }

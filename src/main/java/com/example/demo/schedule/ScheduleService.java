@@ -2,25 +2,42 @@ package com.example.demo.schedule;
 
 import com.example.demo.member.Member;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.member.Member;
+
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class ScheduleService {
+	
     private final ScheduleDao dao;
+    
+    //자바에서 script 사용하기
+    public static void init(HttpServletResponse response) {
+        response.setContentType("text/html; charset=utf-8");
+        response.setCharacterEncoding("utf-8");
+    }
 
     //추가,수정
     public ScheduleDto save(ScheduleDto dto) {
-        Schedule entity = dao.save(new Schedule(dto.getId(), dto.getMember(), dto.getTitle(), dto.getStartDate(), dto.getEndDate()));
-        return new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate());
+        Schedule entity = dao.save(new Schedule(dto.getId(), dto.getMember(), dto.getTitle(), dto.getStartDate(), dto.getEndDate(), dto.getCnt()));
+        return new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(), entity.getCnt());
     }
 
     public ScheduleDto get(int id) {
         Schedule entity = dao.findById(id).orElse(null);
-        return new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate());
+        return new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(), entity.getCnt());
     }
 
     // 전체 리스트
@@ -28,7 +45,7 @@ public class ScheduleService {
         List<Schedule> s = dao.findAll();
         ArrayList<ScheduleDto> list = new ArrayList<>();
         for(Schedule entity:s) {
-            list.add(new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate()));
+            list.add(new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(), entity.getCnt()));
         }
         return list;
     }
@@ -38,13 +55,34 @@ public class ScheduleService {
         List<Schedule> ms=dao.findByMemberOrMemberId(member, 1L);
         ArrayList<ScheduleDto> list =new ArrayList<>();
         for(Schedule entity:ms) {
-            list.add(new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate()));
+            list.add(new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(), entity.getCnt()));
         }
         return list;
     }
 
     //삭제
     public void del(int id) {
-        dao.deleteById(id);
+    	
+    	Schedule entity = dao.findById(id).orElse(null);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Member loginMember = (Member) authentication.getPrincipal();
+    	if(entity.getCnt()==0) {
+    		dao.deleteById(id);
+    	}
+    	else {
+    		
+    		if(loginMember.getIsMaster()==0) {
+    			
+                /*PrintWriter out = response.getWriter();
+                out.write("<script>alert('"+"관리자만 삭제 가능합니다."+"');location.href='"+"/schedule"+"';</script>");
+                out.flush();*/
+    			System.out.println("관리자만 삭제 가능합니다.");
+    		}
+    		else {
+    			
+    			dao.deleteById(id);
+    		}
+    		
+    	}
     }
 }

@@ -68,10 +68,12 @@ public class BoardController {
 	//작성폼
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/add")
-    public String addForm(ModelMap map) {
+    public String addForm(Principal principal, ModelMap map) {
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = LocalDateTime.now().format(formatter1);
+        MemberDto mdto = mservice.getMember(principal.getName());
         map.addAttribute("date", date);
+        map.addAttribute("name", mdto.getName());
         return "/board/add";
     }
     

@@ -125,7 +125,7 @@ public class BoardService {
     		
             DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             String formattedTime1 = LocalDateTime.now().format(formatter1);
-            b.setWdate(formattedTime1);
+            b.setUdate(formattedTime1);
     		Board b2 = dao.save(new Board(b.getNum(), b.getWdate(), b.getUdate(), b.getMember(), b.getTitle(), b.getContent(), b.getCnt()));
             return new BoardDto(b2.getNum(), b2.getWdate(), b2.getUdate(), b2.getMember(), b2.getTitle(), b2.getContent(), b2.getCnt());
     	}
