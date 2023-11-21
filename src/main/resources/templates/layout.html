@@ -34,9 +34,11 @@
     <!-- sidebar -->
     <nav th:replace="~{fragments/sidebar :: sidebarFragment}"></nav>
 
-    <!-- main content -->
+    <!-- main & nav -->
     <div id="content" class="p-4 p-md-5">
+        <!-- nav bar -->
         <nav th:replace="~{fragments/navbar :: navbarFragment}"></nav>
+        <!-- main content -->
         <th:block layout:fragment="content"></th:block>
     </div>
 </div>

@@ -1,18 +1,18 @@
 $(document).ready(function () {
     var room_name = '';
     var chatrooms = [];
-    const memberId = $('#app')[0].dataset.loginId
+    const userId = $('#app').data('user-id')
 
     const csrftoken = document.querySelector('[name=_csrf]').value
 
     // 채팅방 목록 출력
     function findAllRoom() {
-        axios.get('/chat/rooms/'+memberId)
+        axios.get('/chat/rooms/'+userId)
             .then(function (response) {
                 chatrooms = response.data;
                 $('#chatrooms').empty();
                 $.each(chatrooms, function (index, item) {
-                    $('#chatrooms').append(`<li class="list-group-item list-group-item-action" id="${item.roomId}" onclick="enterRoom('${item.roomId}')">${item.roomName}</li>`);
+                    $('#chatrooms').append(`<a href="/chat/room/enter/${item.id}"><li class="list-group-item list-group-item-action" id="${item.id}">${item.roomName}</li></a>`);
                 });
             });
     }
@@ -24,8 +24,12 @@ $(document).ready(function () {
             alert("방 제목을 입력해 주십시요.");
             return;
         } else {
-            var params = new URLSearchParams();
-            params.append("name", room_name);
+            var params = new URLSearchParams()
+            let participants = document.querySelectorAll('input[name="participants"]:checked')
+            let participantsArray = Array.from(participants).map(c => c.value)
+
+            params.append("name", room_name)
+            params.append("participants", participantsArray)
             axios
                 .post('/chat/room',
                     params,
@@ -44,15 +48,6 @@ $(document).ready(function () {
                     console.log(response)
                     alert("채팅방 개설에 실패하였습니다.");
                 });
-        }
-    }
-
-    window.enterRoom = function (roomId) {
-        var sender = $('#app').data('loginId');
-        if (sender !== "") {
-            localStorage.setItem('wschat.sender', sender);
-            localStorage.setItem('wschat.roomId', roomId);
-            location.href = "/chat/room/enter/" + roomId; // TODO: 통신해서 join
         }
     }
 

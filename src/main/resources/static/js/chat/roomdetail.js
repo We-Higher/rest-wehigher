@@ -2,25 +2,53 @@ var sock = new SockJS("/ws-stomp");
 var ws = Stomp.over(sock);
 var reconnect = 0;
 
-var roomId = localStorage.getItem('wschat.roomId');
-var sender = localStorage.getItem('wschat.sender');
+// var roomId = localStorage.getItem('wschat.roomId');
+let roomId = $('#app').data('room-pk');
+let sender = $('#app').data('sender-name')
+let senderPk = $('#app').data('sender-pk')
+const csrftoken = document.querySelector('[name=_csrf]').value
 var message = '';
-var messages = [];
+// var messages = [];
 
-function findRoom() {
-    axios.get('/chat/room/'+roomId).then(function(response) {
-        $('#roomName').text(response.data.name);
-    });
-}
+// function findRoom() {
+//     axios.get('/chat/room/'+roomId).then(function(response) {
+//         $('#roomName').text(response.data.name);
+//     });
+// }
 
 function sendMessage() {
     message = $('#messageInput').val();
-    ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomId:roomId, sender:sender, message:message}));
-    $('#messageInput').val('');
+    let params = new URLSearchParams()
+    params.append("type", "TALK")
+    params.append("room", roomId)
+    params.append("sender", senderPk)
+    params.append("message", message)
+    axios
+        .post('/chat/message/add',
+            params,
+            {
+                headers: {'X-CSRF-TOKEN': csrftoken}
+            }
+        )
+        .then(function (response) {
+            ws.send("/pub/chat/message", {}, JSON.stringify({
+                type: 'TALK',
+                roomId: roomId,
+                sender: sender,
+                message: message,
+                senderPk: senderPk,
+                roomPk: roomId
+            }))
+            $('#messageInput').val('');
+        })
+        .catch(function (response) {
+            console.log(response)
+            alert("메세지 저장에 실패하였습니다.");
+        });
 }
 
 function recvMessage(recv) {
-    messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
+    // messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
     $('#messages').append('<li class="list-group-item">' + recv.sender + ' - ' + recv.message + '</li>');
 }
 
@@ -30,7 +58,7 @@ function connect() {
             var recv = JSON.parse(message.body);
             recvMessage(recv);
         });
-        ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomId:roomId, sender:sender}));
+        // ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomId:roomId, sender:sender}));
     }, function(error) {
         if(reconnect++ <= 5) {
             setTimeout(function() {
@@ -44,7 +72,7 @@ function connect() {
 }
 
 $(document).ready(function() {
-    findRoom();
+    // findRoom();
     $('#sendMessageButton').click(sendMessage);
     connect();
 });

@@ -24,15 +24,15 @@
                     <th></th>
                 </tr>
                 <tr th:each="m : ${list}">
-                    <td>홍길동</td> <!-- TODO: 바꾸기 -->
+                    <td th:text="${m.name}"></td>
                     <td th:text="${m.deptCode}"></td>
                     <td th:text="${m.companyRank}"></td>
-                    <td class="text-center" style="min-width: 30px;"><input type="checkbox" name="" id=""
+                    <td class="text-center" style="min-width: 30px;"><input type="checkbox" name="participants" th:id="${m.id}" th:value="${m.id}"
                                                                             class="check_empl"></td>
                 </tr>
             </table>
         </div>
-        <div class="container" id="app" th:data-login-id="${loginId}">
+        <div class="container" id="app" th:data-user-id="${#authentication.principal.id}"  th:data-sender-name="${#authentication.principal.name}">
             <div class="row">
                 <div class="col-md-12">
                     <h3>채팅방 리스트</h3>
