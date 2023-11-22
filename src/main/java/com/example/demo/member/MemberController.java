@@ -38,16 +38,17 @@ public class MemberController {
     
     @GetMapping("/join")
     public String joinForm(MemberDto dto) {
-    	
         return "member/join";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/join")
     public String join(MemberJoinDto memberJoinDto) {
         service.create(memberJoinDto);
         return "redirect:/employee/list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/edit")
     public String editForm( String name, Model map) {
         MemberDto dto = service.getMemberByName(name);
@@ -55,10 +56,10 @@ public class MemberController {
         return "member/edit";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/edit")
     public String edit(MemberDto dto) {
         MemberDto m = service.getMemberByName(dto.getName());
-        
         m.setUsername(dto.getUsername());
         m.setPwd(passwordEncoder.encode(dto.getPwd()));
         m.setName(dto.getName());
@@ -76,20 +77,21 @@ public class MemberController {
         return "redirect:/employee/list";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping("/del")
-    public String delete(Long id){
+    public String delete(Long id) {
         service.delete(id);
         return "redirect:/employee/list";
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/mypage")
     public String mypageForm(String name, Model map) {
         MemberDto dto = service.getMember(name);
         map.addAttribute("m", dto);
-        return "member/mypage";
+        return "member/mypage_new";
     }
-    
+
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/pwdedit")
     public String pwdedit(HttpServletResponse response, MemberDto dto) throws IOException {
