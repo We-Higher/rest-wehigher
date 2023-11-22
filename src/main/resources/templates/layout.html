@@ -22,7 +22,6 @@
     <th:block layout:fragment="style"></th:block>
 
 </head>
-
 <!-- Sidebar -->
 <div class="sidebar" th:replace="~{fragments/sidebar_new :: sidebarFragment}"></div>
 
@@ -32,8 +31,8 @@
 <!-- Main content -->
 <div class="main-content">
     <!--begin::Wrapper-->
-    <div class="wrapper d-flex flex-column flex-column-auto" id="kt_wrapper">
-        <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disabled">
+    <div style="min-height: 100vh;" class="wrapper d-flex flex-column flex-column-auto" id="kt_wrapper">
+        <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disabled flex-grow-1">
         <th:block layout:fragment="content"></th:block>
         </body>
     </div>
@@ -41,7 +40,6 @@
 
 <!-- Footer -->
 <div class="footer" th:replace="~{fragments/footer :: footerFragment}"></div>
-
 <!-- content JavaScript -->
 <th:block layout:fragment="script"></th:block>
 
