@@ -1,5 +1,7 @@
 package com.example.demo.dataroom;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +17,5 @@ public interface DataroomDao extends JpaRepository<Dataroom,Integer> {
     void updateCnt(@Param("num") int num);
     List<Dataroom> findByMemberNameContains(String writer);//작성자로 검색
     List<Dataroom> findByTitleContains(String title);//제목으로 검색
+    Page<Dataroom> findAll(Pageable pageable);
 }

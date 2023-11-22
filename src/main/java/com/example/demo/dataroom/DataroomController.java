@@ -5,6 +5,7 @@ import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,9 @@ public class DataroomController {
     private final MemberService memberService;
 
     @RequestMapping("/list")
-    public void list(Model m) {
+    public void list(Model m, @RequestParam(value="page", defaultValue="1") int page) {
+        Page<Dataroom> paging = this.service.getList(page-1);
+        m.addAttribute("paging", paging);
         ArrayList<DataroomDto> list = service.getAll();
         m.addAttribute("list", list);
     }
