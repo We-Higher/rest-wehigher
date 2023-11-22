@@ -25,6 +25,7 @@
 						<div class="card-body">
 							<div class="table-responsive">
 								<table class="table">
+
 									<tr class=" text-primary">
 										<th>번호</th>
 										<th>제목</th>
@@ -33,7 +34,7 @@
 										<th>다운로드수</th>
 									</tr>
 									<tbody>
-										<tr th:each="i:${list}">
+										<tr th:each="i: ${paging}">
 											<td th:text="${i.num}"></td>
 											<td><a th:href="@{/dataroom/edit(num=${i.num})}" th:text="${i.title }"></a></td>
 											<td th:text="${i.member.name}"></td>
@@ -42,6 +43,30 @@
 										</tr>
 									</tbody>
 								</table>
+
+								<!-- 페이징처리 시작 -->
+								<div th:if="${!paging.isEmpty()}">
+									<ul class="pagination justify-content-center">
+										<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+											<a class="page-link"
+											   th:href="@{|?page=${paging.number}|}">
+												<span>이전</span>
+											</a>
+										</li>
+										<li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
+											th:if="${page >= paging.number-4 and page <= paging.number+4}"
+											th:classappend="${page == paging.number+1} ? 'active'"
+											class="page-item">
+											<a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+										</li>
+										<li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+											<a class="page-link" th:href="@{|?page=${paging.number+2}|}">
+												<span>다음</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+								<!-- 페이징처리 끝 -->
 							</div>
 						</div>
 					</div>

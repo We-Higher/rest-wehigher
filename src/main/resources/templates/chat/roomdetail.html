@@ -4,89 +4,57 @@
       layout:decorate="~{layout}">
 
 <th:block layout:fragment="style">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="/webjars/bootstrap/4.3.1/dist/css/bootstrap.min.css">
-
     <!-- JavaScript -->
     <script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
     <script src="/webjars/sockjs-client/1.1.2/dist/sockjs.min.js"></script>
     <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </th:block>
-
+<!-- TODO: View 꾸미기 -->
 <div layout:fragment="content">
-    <div class="container" id="app">
-        <div>
-            <h2 id="roomName"></h2>
+    <div class="container">
+        <h2 id="roomName" th:text="${chatRoom.roomName}"></h2>
+    </div>
+    <div class="d-flex container">
+        <div style="min-width: 200px;">
+            <h3>참여자 리스트</h3>
+            <table border="1">
+                <tr>
+                    <th>이름</th>
+                    <th>부서</th>
+                    <th>직급</th>
+                </tr>
+                <tr th:each="m : ${chatRoom.participants}">
+                    <td th:text="${m.name}"></td>
+                    <td th:text="${m.deptCode}"></td>
+                    <td th:text="${m.companyRank}"></td>
+                </tr>
+            </table>
         </div>
-        <div class="input-group">
-            <div class="input-group-prepend">
-                <label class="input-group-text">내용</label>
+        <div class="flex-grow-1" id="app" th:data-room-id="${chatRoom.roomId}" th:data-room-pk="${chatRoom.id}"
+             th:data-sender-pk="${#authentication.principal.id}"
+             th:data-sender-name="${#authentication.principal.name}">
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            <ul class="list-group" id="messages">
+                <th:block th:each="c : ${clist}">
+                    <li class="list-group-item" th:text="|${c.sender.name} - ${c.message}|"></li>
+                </th:block>
+            </ul>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">내용</label>
+                </div>
+                <input type="text" class="form-control" id="messageInput">
+                <div class="input-group-append">
+                    <button class="btn btn-primary" type="button" id="sendMessageButton">보내기</button>
+                </div>
             </div>
-            <input type="text" class="form-control" id="messageInput">
-            <div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="sendMessageButton">보내기</button>
-            </div>
+            <div></div>
         </div>
-        <ul class="list-group" id="messages">
-        </ul>
-        <div></div>
     </div>
 </div>
 
 <th:block layout:fragment="script">
-    <script th:inline="javascript">
-        var sock = new SockJS("/ws-stomp");
-        var ws = Stomp.over(sock);
-        var reconnect = 0;
-
-        var roomId = localStorage.getItem('wschat.roomId');
-        var sender = localStorage.getItem('wschat.sender');
-        var message = '';
-        var messages = [];
-
-        function findRoom() {
-            axios.get('/chat/room/'+roomId).then(function(response) {
-                $('#roomName').text(response.data.name);
-            });
-        }
-
-        function sendMessage() {
-            message = $('#messageInput').val();
-            ws.send("/pub/chat/message", {}, JSON.stringify({type:'TALK', roomId:roomId, sender:sender, message:message}));
-            $('#messageInput').val('');
-        }
-
-        function recvMessage(recv) {
-            messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
-            $('#messages').prepend('<li class="list-group-item">' + recv.sender + ' - ' + recv.message + '</li>');
-        }
-
-        function connect() {
-            ws.connect({}, function(frame) {
-                ws.subscribe("/sub/chat/room/"+roomId, function(message) {
-                    var recv = JSON.parse(message.body);
-                    recvMessage(recv);
-                });
-                ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomId:roomId, sender:sender}));
-            }, function(error) {
-                if(reconnect++ <= 5) {
-                    setTimeout(function() {
-                        console.log("connection reconnect");
-                        sock = new SockJS("/ws-stomp");
-                        ws = Stomp.over(sock);
-                        connect();
-                    },10*1000);
-                }
-            });
-        }
-
-        $(document).ready(function() {
-            findRoom();
-            $('#sendMessageButton').click(sendMessage);
-            connect();
-        });
-    </script>
+    <script src="/js/chat/roomdetail.js" type='text/javascript'></script>
 </th:block>
 
 </html>
