@@ -52,6 +52,11 @@ $(document).ready(function () {
     }
 
     $('#createRoom').on('click', createRoom);
-
+    $('#room_name').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            createRoom();
+        }
+    });
     findAllRoom();
 });

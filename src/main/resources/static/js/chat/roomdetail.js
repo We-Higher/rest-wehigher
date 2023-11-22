@@ -18,33 +18,37 @@ var message = '';
 
 function sendMessage() {
     message = $('#messageInput').val();
-    let params = new URLSearchParams()
-    params.append("type", "TALK")
-    params.append("room", roomId)
-    params.append("sender", senderPk)
-    params.append("message", message)
-    axios
-        .post('/chat/message/add',
-            params,
-            {
-                headers: {'X-CSRF-TOKEN': csrftoken}
-            }
-        )
-        .then(function (response) {
-            ws.send("/pub/chat/message", {}, JSON.stringify({
-                type: 'TALK',
-                roomId: roomId,
-                sender: sender,
-                message: message,
-                senderPk: senderPk,
-                roomPk: roomId
-            }))
-            $('#messageInput').val('');
-        })
-        .catch(function (response) {
-            console.log(response)
-            alert("메세지 저장에 실패하였습니다.");
-        });
+    if (message !== "") {
+        let params = new URLSearchParams()
+        params.append("type", "TALK")
+        params.append("room", roomId)
+        params.append("sender", senderPk)
+        params.append("message", message)
+        axios
+            .post('/chat/message/add',
+                params,
+                {
+                    headers: {'X-CSRF-TOKEN': csrftoken}
+                }
+            )
+            .then(function (response) {
+                ws.send("/pub/chat/message", {}, JSON.stringify({
+                    type: 'TALK',
+                    roomId: roomId,
+                    sender: sender,
+                    message: message,
+                    senderPk: senderPk,
+                    roomPk: roomId
+                }))
+                $('#messageInput').val('');
+            })
+            .catch(function (response) {
+                console.log(response)
+                alert("메세지 저장에 실패하였습니다.");
+            });
+    } else {
+        alert("내용을 입력해 주세요.");
+    }
 }
 
 function recvMessage(recv) {
@@ -53,26 +57,33 @@ function recvMessage(recv) {
 }
 
 function connect() {
-    ws.connect({}, function(frame) {
-        ws.subscribe("/sub/chat/room/"+roomId, function(message) {
+    ws.connect({}, function (frame) {
+        ws.subscribe("/sub/chat/room/" + roomId, function (message) {
             var recv = JSON.parse(message.body);
             recvMessage(recv);
         });
         // ws.send("/pub/chat/message", {}, JSON.stringify({type:'ENTER', roomId:roomId, sender:sender}));
-    }, function(error) {
-        if(reconnect++ <= 5) {
-            setTimeout(function() {
+    }, function (error) {
+        if (reconnect++ <= 5) {
+            setTimeout(function () {
                 console.log("connection reconnect");
                 sock = new SockJS("/ws-stomp");
                 ws = Stomp.over(sock);
                 connect();
-            },10*1000);
+            }, 10 * 1000);
         }
     });
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     // findRoom();
     $('#sendMessageButton').click(sendMessage);
+    $('#messageInput').keypress(function(event){
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13'){
+            sendMessage();
+        }
+    });
+
     connect();
 });

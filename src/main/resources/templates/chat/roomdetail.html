@@ -35,7 +35,9 @@
              th:data-sender-name="${#authentication.principal.name}">
             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             <ul class="list-group" id="messages">
-
+                <th:block th:each="c : ${clist}">
+                    <li class="list-group-item" th:text="|${c.sender.name} - ${c.message}|"></li>
+                </th:block>
             </ul>
             <div class="input-group">
                 <div class="input-group-prepend">

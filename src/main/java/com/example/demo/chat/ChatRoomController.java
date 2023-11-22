@@ -28,12 +28,14 @@ public class ChatRoomController {
     private final MemberService memberService;
     private final ChatRoomService chatRoomService;
     private final ChatRoomDao chatRoomDao;
+    private final ChatMessageService chatMessageService;
 
     // 채팅 리스트 화면 view
     @GetMapping("/room")
     public String rooms(Principal principal, Model map) {
         MemberDto memberDto = memberService.getMember(principal.getName());
         ArrayList<EmployeeDto> list = eService.getAll();
+
         map.addAttribute("list", list);
         map.addAttribute("loginId", memberDto.getId());
 
@@ -76,9 +78,10 @@ public class ChatRoomController {
     @GetMapping("/room/enter/{roomId}")
     public String roomDetail(Model model, @PathVariable int roomId) {
         ChatRoom chatRoom = chatRoomService.getById(roomId);
+        List<ChatMessage> clist = chatMessageService.getByRoomId(roomId);
 
-//        model.addAttribute("roomId", roomId);
         model.addAttribute("chatRoom", chatRoom);
+        model.addAttribute("clist", clist);
         return "/chat/roomdetail";
     }
 
