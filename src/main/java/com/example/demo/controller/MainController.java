@@ -23,7 +23,7 @@ public class MainController {
     
     @RequestMapping("/")
     public String Home(HttpSession session) {
-        return "redirect:/main";
+        return "member/login_form";
     }
 
     @RequestMapping("/main")
