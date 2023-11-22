@@ -1,79 +1,79 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout}">
+      layout:decorate="~{layout}">
 <div layout:fragment="content">
-	<div class="main-content">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-md-12">
-					<div class="card">
-						<div class="card-header card-header-danger">
-							<h4 class="card-title ">자료실</h4>
-							<p class="card-category"><a href="/dataroom/add">글 작성</a></p>
-						</div>
-						<div>
-							<form action="/dataroom/search">
-								<select name="select">
-									<option value="none">전체</option>
-									<option value="writer">작성자</option>
-									<option value="title">제목</option>
-								</select>
-								<input type="text" name="search" />
-								<input type="submit" value="검색" />
-							</form>
-						</div>
-						<div class="card-body">
-							<div class="table-responsive">
-								<table class="table">
+    <div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-danger">
+                            <h4 class="card-title ">자료실</h4>
+                            <p class="card-category"><a href="/dataroom/add">글 작성</a></p>
+                        </div>
+                        <div>
+                            <form action="/dataroom/search">
+                                <select name="select">
+                                    <option value="none">전체</option>
+                                    <option value="writer">작성자</option>
+                                    <option value="title">제목</option>
+                                </select>
+                                <input type="text" name="search"/>
+                                <input type="submit" value="검색"/>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table">
 
-									<tr class=" text-primary">
-										<th>번호</th>
-										<th>제목</th>
-										<th>작성자</th>
-										<th>등록일</th>
-										<th>다운로드수</th>
-									</tr>
-									<tbody>
-										<tr th:each="i: ${paging}">
-											<td th:text="${i.num}"></td>
-											<td><a th:href="@{/dataroom/edit(num=${i.num})}" th:text="${i.title }"></a></td>
-											<td th:text="${i.member.name}"></td>
-											<td th:text="${i.wdate }"></td>
-											<td th:text="${i.cnt }"></td>
-										</tr>
-									</tbody>
-								</table>
+                                    <tr class=" text-primary">
+                                        <th>번호</th>
+                                        <th>제목</th>
+                                        <th>작성자</th>
+                                        <th>등록일</th>
+                                        <th>다운로드수</th>
+                                    </tr>
+                                    <tbody>
+                                    <tr th:each="i: ${paging}">
+                                        <td th:text="${i.num}"></td>
+                                        <td><a th:href="@{/dataroom/edit(num=${i.num})}" th:text="${i.title }"></a></td>
+                                        <td th:text="${i.member.name}"></td>
+                                        <td th:text="${i.wdate }"></td>
+                                        <td th:text="${i.cnt }"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
 
-								<!-- 페이징처리 시작 -->
-								<div th:if="${!paging.isEmpty()}">
-									<ul class="pagination justify-content-center">
-										<li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
-											<a class="page-link"
-											   th:href="@{|?page=${paging.number}|}">
-												<span>이전</span>
-											</a>
-										</li>
-										<li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
-											th:if="${page >= paging.number-4 and page <= paging.number+4}"
-											th:classappend="${page == paging.number+1} ? 'active'"
-											class="page-item">
-											<a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
-										</li>
-										<li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-											<a class="page-link" th:href="@{|?page=${paging.number+2}|}">
-												<span>다음</span>
-											</a>
-										</li>
-									</ul>
-								</div>
-								<!-- 페이징처리 끝 -->
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                                <!-- 페이징처리 시작 -->
+                                <div th:if="${!paging.isEmpty()}">
+                                    <ul class="pagination justify-content-center">
+                                        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{|?page=${paging.number}|}">
+                                                <span>이전</span>
+                                            </a>
+                                        </li>
+                                        <li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
+                                            th:if="${page >= paging.number-4 and page <= paging.number+4}"
+                                            th:classappend="${page == paging.number+1} ? 'active'"
+                                            class="page-item">
+                                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                        </li>
+                                        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=${paging.number+2}|}">
+                                                <span>다음</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- 페이징처리 끝 -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 </html>

@@ -6,6 +6,7 @@ import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,6 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 
 @PreAuthorize("isAuthenticated()")
 @RequiredArgsConstructor
@@ -132,12 +132,13 @@ public class DataroomController {
     }
 
     @GetMapping("/search")
-    public String searchReferenceList(ReferenceSearch referenceSearch,
-                                      Model model) {
-        List<DataroomDto> listReference = service.getSearchReference(referenceSearch);
-        model.addAttribute("list", listReference);
+    public String searchReferenceList(ReferenceSearch referenceSearch, Pageable pageable, Model model) {
+        Page<DataroomDto> listReference = service.getSearchReference(referenceSearch, pageable);
+        model.addAttribute("paging", listReference);
+        System.out.println("listReference = " + listReference);
         return "dataroom/list";
     }
+
 
     @RequestMapping("/down")
     public ResponseEntity<byte[]> down(String fname, int num) {
