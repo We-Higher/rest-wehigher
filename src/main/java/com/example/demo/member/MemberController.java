@@ -1,20 +1,21 @@
 package com.example.demo.member;
 
 import com.example.demo.member.dto.MemberJoinDto;
-
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-
-import java.io.IOException;
-import java.io.PrintWriter;
-
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import java.io.IOException;
+import java.io.PrintWriter;
 
 @PreAuthorize("hasRole(\"ADMIN\")")
 @RequiredArgsConstructor
@@ -33,7 +34,12 @@ public class MemberController {
     @PreAuthorize("isAnonymous()")
     @GetMapping("/login")
     public String loginForm() {
-        return "member/login_form";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (!(auth instanceof AnonymousAuthenticationToken) && auth.isAuthenticated()) {
+            return "redirect:/main";
+        } else {
+            return "member/login_form";
+        }
     }
     
     @GetMapping("/join")
