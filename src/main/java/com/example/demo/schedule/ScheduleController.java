@@ -36,34 +36,63 @@ public class ScheduleController {
     public ArrayList<Map<String, Object>> list(ModelMap map) {//map은 자동으로 뷰페이지로 전달됨
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member member = (Member) authentication.getPrincipal();
+        if(member.getIsMaster()==1){
 
-        ArrayList<ScheduleDto> listAll = service.getByMember(member);
+            ArrayList<ScheduleDto> listAll3 = service.getAll();
 
-        JSONObject jsonObj = new JSONObject();
-        JSONArray jsonArr = new JSONArray();
+            JSONObject jsonObj = new JSONObject();
+            JSONArray jsonArr = new JSONArray();
 
-        HashMap<String, Object> hash = new HashMap<>();
-
-
-        for (int i = 0; i < listAll.size(); i++) {
-            hash.put("cal_Id",listAll.get(i).getId());
-            hash.put("title", listAll.get(i).getTitle());
-            hash.put("start", listAll.get(i).getStartDate());
-            hash.put("end", listAll.get(i).getEndDate());
-            hash.put("check", listAll.get(i).getCnt());
-
-            jsonObj = new JSONObject(hash);
-            jsonArr.add(jsonObj);
+            HashMap<String, Object> hash = new HashMap<>();
+            for (int i = 0; i < listAll3.size(); i++) {
+                hash.put("cal_Id", listAll3.get(i).getId());
+                hash.put("title", listAll3.get(i).getTitle());
+                hash.put("start", listAll3.get(i).getStartDate());
+                hash.put("end", listAll3.get(i).getEndDate());
+                hash.put("check", listAll3.get(i).getCnt());
+                jsonObj = new JSONObject(hash);
+                jsonArr.add(jsonObj);
+            }
+            return jsonArr;
         }
+        else {
+            ArrayList<ScheduleDto> listAll = service.getByMember(member);
+            ArrayList<ScheduleDto> listAll2 = service.getByMember(null);
 
-        return jsonArr;
+            JSONObject jsonObj = new JSONObject();
+            JSONArray jsonArr = new JSONArray();
+
+            HashMap<String, Object> hash = new HashMap<>();
+            HashMap<String, Object> hash2 = new HashMap<>();
+
+            for (int i = 0; i < listAll.size(); i++) {
+                hash.put("cal_Id", listAll.get(i).getId());
+                hash.put("title", listAll.get(i).getTitle());
+                hash.put("start", listAll.get(i).getStartDate());
+                hash.put("end", listAll.get(i).getEndDate());
+                hash.put("check", listAll.get(i).getCnt());
+                jsonObj = new JSONObject(hash);
+                jsonArr.add(jsonObj);
+            }
+
+            for (int i = 0; i < listAll2.size(); i++) {
+                hash2.put("cal_Id", listAll2.get(i).getId());
+                hash2.put("title", listAll2.get(i).getTitle());
+                hash2.put("start", listAll2.get(i).getStartDate());
+                hash2.put("end", listAll2.get(i).getEndDate());
+                hash2.put("check", listAll2.get(i).getCnt());
+                jsonObj = new JSONObject(hash2);
+                jsonArr.add(jsonObj);
+            }
+
+            return jsonArr;
+        }
     }
 
     //일정추가
     @PostMapping("/add")
     @ResponseBody
     public Map addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
-
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
         String title = (String) param.get(0).get("title");
@@ -83,7 +112,6 @@ public class ScheduleController {
         Map<String, String> map = new HashMap<>();
         map.put("id", s.getId() + "");
         return map;
-
     }
 
     //일정삭제
@@ -107,30 +135,28 @@ public class ScheduleController {
         LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
         LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member member = (Member) authentication.getPrincipal();
+
         ScheduleDto dto = ScheduleDto.builder()
-                .id(id).title(origin.getTitle()).startDate(startDate).endDate(endDate)
+                .member(member).id(id).title(origin.getTitle()).startDate(startDate).endDate(endDate)
                 .build();
-        
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Member loginMember = (Member) authentication.getPrincipal();
-    	if(origin.getCnt()==0) {
-    		ScheduleDto s = service.save(dto);
-    	}
-    	else {
-    		
-    		if(loginMember.getIsMaster()==0) {
+
+        if (origin.getCnt() == 0) {
+            origin = service.save(dto);
+        } else {
+
+            if (member.getIsMaster() == 0) {
     			
                 /*PrintWriter out = response.getWriter();
                 out.write("<script>alert('"+"관리자만 삭제 가능합니다."+"');location.href='"+"/schedule"+"';</script>");
                 out.flush();*/
-    			System.out.println("관리자만 변경 가능합니다.");
-    		}
-    		else {
-    			
-    			ScheduleDto s = service.save(dto);
-    		}
-    		
-    	}
+                System.out.println("관리자만 변경 가능합니다.");
+            } else {
+
+                ScheduleDto s = service.save(dto);
+            }
+        }
 
         return null;
     }

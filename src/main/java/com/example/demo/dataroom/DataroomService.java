@@ -1,11 +1,11 @@
 package com.example.demo.dataroom;
 
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.example.demo.member.Member;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -21,7 +21,7 @@ public class DataroomService {
     private DataroomDao dao;
 
     public DataroomDto save(DataroomDto dto) {
-    	
+
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String formattedTime1 = LocalDateTime.now().format(formatter1);
     	dto.setWdate(formattedTime1);
@@ -79,9 +79,17 @@ public class DataroomService {
         if (Objects.equals("title", referenceSearch.getSelect())) {
             list = dao.findByTitleContains(referenceSearch.getSearch());
         }
+        if (Objects.equals("none", referenceSearch.getSelect())) {
+            list = dao.findAll();
+        }
         return list.stream()
                 .map(DataroomDto::of)
                 .toList();
+    }
+    //페이지
+    public Page<Dataroom> getList(int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.dao.findAll(pageable);
     }
 
 }
