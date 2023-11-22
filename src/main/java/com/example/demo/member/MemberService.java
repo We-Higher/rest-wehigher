@@ -47,6 +47,11 @@ public class MemberService implements UserDetailsService {
         return new MemberDto().toDto(m);
     }
 
+    public MemberDto getById(long id) {
+        Member m = dao.getById(id);
+        return new MemberDto().toDto(m);
+    }
+
     public MemberDto getMemberByName(String name) {
         Member m = dao.findByName(name);
         if (m == null) {

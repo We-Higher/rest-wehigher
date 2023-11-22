@@ -14,10 +14,6 @@
     <!-- main css -->
     <link rel="stylesheet" href="/css/style.css">
 
-    <!-- content style -->
-    <th:block layout:fragment="style"></th:block>
-
-
     <!-- JQuery -->
     <!--<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -29,15 +25,20 @@
 
     <!-- popper -->
     <script src="/js/popper.js"></script>
+
+    <!-- content style -->
+    <th:block layout:fragment="style"></th:block>
 </head>
 <body>
 <div class="wrapper d-flex align-items-stretch">
     <!-- sidebar -->
     <nav th:replace="~{fragments/sidebar :: sidebarFragment}"></nav>
 
-    <!-- main content -->
+    <!-- main & nav -->
     <div id="content" class="p-4 p-md-5">
+        <!-- nav bar -->
         <nav th:replace="~{fragments/navbar :: navbarFragment}"></nav>
+        <!-- main content -->
         <th:block layout:fragment="content"></th:block>
     </div>
 </div>

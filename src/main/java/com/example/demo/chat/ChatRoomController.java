@@ -6,12 +6,17 @@ import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Controller
@@ -22,12 +27,15 @@ public class ChatRoomController {
     private final EmployeeService eService;
     private final MemberService memberService;
     private final ChatRoomService chatRoomService;
+    private final ChatRoomDao chatRoomDao;
+    private final ChatMessageService chatMessageService;
 
-    // 채팅 리스트 화면
+    // 채팅 리스트 화면 view
     @GetMapping("/room")
     public String rooms(Principal principal, Model map) {
         MemberDto memberDto = memberService.getMember(principal.getName());
         ArrayList<EmployeeDto> list = eService.getAll();
+
         map.addAttribute("list", list);
         map.addAttribute("loginId", memberDto.getId());
 
@@ -38,10 +46,7 @@ public class ChatRoomController {
     @GetMapping("/rooms/{participantId}")
     @ResponseBody
     public List<ChatRoom> getByParticipantId(@PathVariable("participantId") long participantId) {
-        System.out.println("participantId = " + participantId);
-        List<ChatRoom> result = chatRoomService.getByParticipantId(participantId);
-        result.forEach(room -> System.out.println("room = " + room));
-        return result;
+        return chatRoomService.getByParticipantId(participantId);
     }
 
     // 모든 채팅방 목록 반환
@@ -54,12 +59,11 @@ public class ChatRoomController {
     // 채팅방 생성
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(Principal principal, @RequestParam("name") String roomName) {
-        System.out.println(111);
-        Set<Member> participants = new HashSet<>();
-        MemberDto memberDto = memberService.getMember(principal.getName());
-        Member member = new Member().toEntity(memberDto);
-        participants.add(member);
+    public ChatRoom createRoom(@RequestParam("name") String roomName, @RequestParam("participants") Set<Member> participants) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member loginMember = (Member) authentication.getPrincipal();
+
+        participants.add(loginMember);
 
         ChatRoom chatRoom = ChatRoom.builder()
                 .roomId(UUID.randomUUID().toString())
@@ -70,17 +74,21 @@ public class ChatRoomController {
         return chatRoomService.create(chatRoom);
     }
 
-    // 채팅방 입장 화면
+    // 채팅방 입장 화면 view
     @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
+    public String roomDetail(Model model, @PathVariable int roomId) {
+        ChatRoom chatRoom = chatRoomService.getById(roomId);
+        List<ChatMessage> clist = chatMessageService.getByRoomId(roomId);
+
+        model.addAttribute("chatRoom", chatRoom);
+        model.addAttribute("clist", clist);
         return "/chat/roomdetail";
     }
 
     // 특정 채팅방 조회
     @GetMapping("/room/{roomId}")
     @ResponseBody
-    public ChatRoom roomInfo(@PathVariable String roomId) {
-        return chatRoomRepository.findRoomById(roomId);
+    public ChatRoom roomInfo(@PathVariable int roomId) {
+        return chatRoomDao.getById(roomId);
     }
 }

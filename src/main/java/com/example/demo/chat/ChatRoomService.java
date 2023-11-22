@@ -23,4 +23,7 @@ public class ChatRoomService {
         return chatRoomDao.findByParticipants_Id(participantId);
     }
 
+    public ChatRoom getById(int id) {
+        return chatRoomDao.getById(id);
+    }
 }
