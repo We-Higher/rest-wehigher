@@ -23,7 +23,7 @@
         console.log($('.room-link'))
         console.log($('.room-link')[0].dataset.roomId)
 
-        $('.room-link').on('click',function() {
+        $('.room-link').on('click', function () {
             showRoomId(this.dataset.roomId);
         })
 
@@ -39,7 +39,7 @@
                             headerToolbar: {
                                 left: 'prev next today',
                                 center: 'title',
-                                right:'timeGridWeek,timeGridDay',
+                                right: 'timeGridWeek,timeGridDay',
                             },
                             initialView: 'timeGridWeek',
                             editable: true,
@@ -115,13 +115,19 @@
                                             beforeSend: function (xhr) {
                                                 xhr.setRequestHeader(header, token);
                                             },
+                                            success: function (res) {
+                                                if (res.flag) {
+                                                    info.revert();
+                                                } else {
+                                                    alert(res.msg);
+                                                }
+                                            },
                                             dataType: "json",
                                             data: JSON.stringify(events),
                                             contentType: 'application/json',
                                         })
                                     })
-                                } else {
-                                    info.revert();
+                                    location.reload()
                                 }
                             },
                             eventResize: function (info) {
@@ -145,13 +151,19 @@
                                             beforeSend: function (xhr) {
                                                 xhr.setRequestHeader(header, token);
                                             },
+                                            success: function (res) {
+                                                if (res.flag) {
+                                                    info.revert();
+                                                } else {
+                                                    alert(res.msg);
+                                                }
+                                            },
                                             dataType: "json",
                                             data: JSON.stringify(events),
                                             contentType: 'application/json',
                                         })
                                     })
-                                } else {
-                                    info.revert();
+                                    location.reload()
                                 }
                             },
                             eventClick: function (info) {
@@ -165,11 +177,17 @@
                                     $(function deleteData() {
                                         $.ajax({
                                             url: "/meetingroom/del/" + calId,
+                                            dataType: "JSON",
                                             method: "GET",
+                                            success: function (res) {
+                                                if (res.flag) {
+                                                    info.event.remove();
+                                                } else {
+                                                    alert(res.msg);
+                                                }
+                                            }
                                         })
                                     })
-
-                                    info.event.remove();
                                 }
                             },
                             events: data,
@@ -183,6 +201,7 @@
                 });
             });
         }
+
         showRoomId(0)
     </script>
 </th:block>
