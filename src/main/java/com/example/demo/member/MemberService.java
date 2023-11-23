@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService implements UserDetailsService {
@@ -91,6 +93,10 @@ public class MemberService implements UserDetailsService {
     @Override
     public Member loadUserByUsername(String username) throws UsernameNotFoundException {
         return dao.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username));
+    }
+
+    public ArrayList<Member> getByIdNot(Long id) {
+        return dao.findByIdNot(id);
     }
 }
 
