@@ -4,11 +4,6 @@
     <base href="">
     <meta charset="utf-8"/>
     <title>Jet Theme | Keenthemes</title>
-    <meta name="description"
-          content="Jet admin dashboard live demo. Check out all the features of the admin panel. A large number of settings, additional services and widgets."/>
-    <meta name="keywords"
-          content="Jet theme, bootstrap, bootstrap 5, admin themes, free admin themes, bootstrap admin, bootstrap dashboard"/>
-    <link rel="canonical" href="Https://preview.keenthemes.com/jet-free"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,600,700"/>
     <link href="/css/style.bundle.css" rel="stylesheet" type="text/css"/>
@@ -27,6 +22,18 @@
                 <!--begin::Col-->
                 <div class="col-xxl-4">
                     <!--begin::Engage Widget 1-->
+                    <!--  출퇴근-->
+                    <form action="/commute/attendance" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="submit" value="출근" id="attendance">
+                        <!--        <input type="submit" value="출근" id="attendance" th:if="${mdto.status == 0}">-->
+                    </form>
+                    <form action="/commute/quit" method="post">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                        <input type="submit" value="퇴근" id="quit">
+                        <!--        <input type="submit" value="퇴근" id="quit" th:if="${mdto.status == 1}">-->
+                    </form>
+
                     <div class="card card-xxl-stretch">
                         <!--begin::Card body-->
                         <div class="card-body d-flex flex-column justify-content-between h-100">

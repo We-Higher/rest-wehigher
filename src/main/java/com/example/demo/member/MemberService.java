@@ -90,6 +90,23 @@ public class MemberService implements UserDetailsService {
         dao.deleteById(id);
     }
 
+    public ArrayList<MemberDto> getAll(){
+        ArrayList<Member> list = (ArrayList<Member>) dao.findAll();
+        ArrayList<MemberDto> list2 = new ArrayList<>();
+        for(Member m : list){
+            list2.add(new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getDeptName(),m.getCompanyRank(),m.getCompanyRankName(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getCstatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain()));
+        }
+        return list2;
+    }
+
+    public ArrayList<MemberDto> getByNameLike(String name){
+        ArrayList<Member> list = (ArrayList<Member>) dao.findByNameLike(name);
+        ArrayList<MemberDto> list2 = new ArrayList<>();
+        for(Member m : list){
+            list2.add(new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getDeptName(),m.getCompanyRank(),m.getCompanyRankName(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getCstatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain()));
+        }
+        return list2;
+    }
     @Override
     public Member loadUserByUsername(String username) throws UsernameNotFoundException {
         return dao.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username));

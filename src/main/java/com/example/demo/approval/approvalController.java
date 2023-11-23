@@ -147,7 +147,7 @@ public class approvalController {
     @PostMapping("/approvalList1")
 	public ModelAndView getbyOption(String type, String option) {
     	ModelAndView mav = new ModelAndView("approval/approvalList1");
-		ArrayList<EmployeeDto> list = empservice.getByOption(type, option);
+		ArrayList<MemberDto> list = empservice.getByOption(type, option);
 		mav.addObject("list", list);
 		return mav;
 	}
@@ -165,7 +165,7 @@ public class approvalController {
     @PostMapping("/approvalList2")
 	public ModelAndView getbyOption2(String type, String option) {
     	ModelAndView mav = new ModelAndView("approval/approvalList2");
-		ArrayList<EmployeeDto> list = empservice.getByOption(type, option);
+		ArrayList<MemberDto> list = empservice.getByOption(type, option);
 		mav.addObject("list", list);
 		return mav;
 	}
