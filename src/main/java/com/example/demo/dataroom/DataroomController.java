@@ -82,6 +82,11 @@ public class DataroomController {
         }
         return "redirect:/dataroom/list";
     }
+    @GetMapping("/detail")
+    public void detailForm(int num, Model m) {
+        DataroomDto dto = service.getDataroom(num);
+        m.addAttribute("dto", dto);
+    }
 
     @GetMapping("/edit")
     public void editForm(int num, Model m) {

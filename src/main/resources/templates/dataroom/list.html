@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout}">
+      layout:decorate="~{layout}"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <div layout:fragment="content">
     <div class="main-content">
         <div class="container-fluid">
@@ -9,18 +10,27 @@
                     <div class="card">
                         <div class="card-header card-header-danger">
                             <h4 class="card-title ">자료실</h4>
-                            <p class="card-category"><a href="/dataroom/add">글 작성</a></p>
                         </div>
-                        <div>
-                            <form action="/dataroom/search">
-                                <select name="select">
-                                    <option value="none">전체</option>
-                                    <option value="writer">작성자</option>
-                                    <option value="title">제목</option>
-                                </select>
-                                <input type="text" name="search"/>
-                                <input type="submit" value="검색"/>
-                            </form>
+                        <div class="d-flex justify-content-center">
+                            <div class="col-6">
+                                <form action="/dataroom/search" class="mb-3">
+                                    <div class="input-group">
+                                        <div class="col-md-3">
+                                            <select name="select" class="form-select">
+                                                <option value="none">전체</option>
+                                                <option value="writer">작성자</option>
+                                                <option value="title">제목</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="search" class="form-control" placeholder="검색어를 입력하세요">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit" class="btn btn-primary">검색</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
@@ -36,32 +46,55 @@
                                     <tbody>
                                     <tr th:each="i: ${paging}">
                                         <td th:text="${i.num}"></td>
-                                        <td><a th:href="@{/dataroom/edit(num=${i.num})}" th:text="${i.title }"></a></td>
+                                        <td><a th:href="@{/dataroom/detail(num=${i.num})}" th:text="${i.title }"></a></td>
                                         <td th:text="${i.member.name}"></td>
                                         <td th:text="${i.wdate }"></td>
                                         <td th:text="${i.cnt }"></td>
                                     </tr>
                                     </tbody>
                                 </table>
-
+                                <!-- 글 작성 버튼 -->
+                                <div class="text-end" sec:authorize="hasRole('ADMIN')">
+                                    <a href="/dataroom/add" class="btn btn-primary">글 작성</a>
+                                </div>
                                 <!-- 페이징처리 시작 -->
                                 <div th:if="${!paging.isEmpty()}">
                                     <ul class="pagination justify-content-center">
+
+                                        <!-- 처음 링크 -->
+                                        <li class="page-item" th:classappend="${paging.first} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=1|}">
+                                                <span>처음</span>
+                                            </a>
+                                        </li>
+                                        <!-- 이전 링크 -->
                                         <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
                                             <a class="page-link"
                                                th:href="@{|?page=${paging.number}|}">
                                                 <span>이전</span>
                                             </a>
                                         </li>
+                                        <!-- 페이지 번호 -->
                                         <li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
                                             th:if="${page >= paging.number-4 and page <= paging.number+4}"
                                             th:classappend="${page == paging.number+1} ? 'active'"
                                             class="page-item">
                                             <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
                                         </li>
+                                        <!-- 생략 기호 -->
+                                        <li th:if="${paging.number+4 < paging.totalPages}" class="page-item disabled">
+                                            <a class="page-link">...</a>
+                                        </li>
+                                        <!-- 다음 기호 -->
                                         <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
                                             <a class="page-link" th:href="@{|?page=${paging.number+2}|}">
                                                 <span>다음</span>
+                                            </a>
+                                        </li>
+                                        <!-- 마지막 링크 -->
+                                        <li class="page-item" th:classappend="${paging.last} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=${paging.totalPages}|}">
+                                                <span>마지막</span>
                                             </a>
                                         </li>
                                     </ul>
