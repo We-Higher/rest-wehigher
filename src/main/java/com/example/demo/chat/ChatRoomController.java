@@ -1,9 +1,7 @@
 package com.example.demo.chat;
 
-import com.example.demo.employee.EmployeeDto;
 import com.example.demo.employee.EmployeeService;
 import com.example.demo.member.Member;
-import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -24,7 +21,6 @@ import java.util.UUID;
 public class ChatRoomController {
 
     private final com.example.demo.chat.ChatRoomRepository chatRoomRepository;
-    private final EmployeeService eService;
     private final MemberService memberService;
     private final ChatRoomService chatRoomService;
     private final ChatRoomDao chatRoomDao;
@@ -32,12 +28,12 @@ public class ChatRoomController {
 
     // 채팅 리스트 화면 view
     @GetMapping("/room")
-    public String rooms(Principal principal, Model map) {
-        MemberDto memberDto = memberService.getMember(principal.getName());
-        ArrayList<EmployeeDto> list = eService.getAll();
+    public String rooms(Model map) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member loginMember = (Member) authentication.getPrincipal();
+        ArrayList<Member> list = memberService.getByIdNot(loginMember.getId());
 
         map.addAttribute("list", list);
-        map.addAttribute("loginId", memberDto.getId());
 
         return "chat/room";
     }
