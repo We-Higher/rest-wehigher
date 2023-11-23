@@ -1,14 +1,14 @@
 package com.example.demo.commute;
 
-import com.example.demo.member.MemberDao;
-
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -20,12 +20,13 @@ public class CommuteService {
         Commute c = cdao.findById(commuteNum).orElse(null);
         return new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate());
     }
-    
+
     public CommuteDto getByDateAndUserName(String BasicDate, String Username) {
         Commute c = cdao.findByBasicDateAndMemberUsername(BasicDate, Username);
-        if(c!=null) return new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate());
+        if (c != null)
+            return new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate());
         else return null;
-        
+
     }
 
 
@@ -43,41 +44,27 @@ public class CommuteService {
         return new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate());
     }
 
-    public ArrayList<CommuteDto> getByOption(String type, String option) {
-        ArrayList<CommuteDto> list2 = new ArrayList<>();
+    public Page<CommuteDto> getByOption(String type, String option, Pageable pageable) {
+        Page<Commute> list;
         if (type.equals("basicDate")) {
-            List<Commute> list = cdao.findByBasicDateLike(option);
-            for (Commute c : list) {
-                list2.add(new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate()));
-            }
-            return list2;
+            list = cdao.findByBasicDateLike(option, pageable);
         } else if (type.equals("name")) {
-            List<Commute> list = cdao.findByMemberNameContaining(option);
-            for (Commute c : list) {
-                list2.add(new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate()));
-            }
-            return list2;
+            list = cdao.findByMemberNameContaining(option, pageable);
         } else if (type.equals("deptName")) {
-            List<Commute> list = cdao.findByMemberDeptNameContaining(option);
-            for (Commute c : list) {
-                list2.add(new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate()));
-            }
-            return list2;
+            list = cdao.findByMemberDeptNameContaining(option, pageable);
         } else {
-            List<Commute> list = cdao.findAll();
-            for (Commute c : list) {
-                list2.add(new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate()));
-            }
-            return list2;
+            list = cdao.findAll(pageable);
         }
+        return list.map(CommuteDto::of);
     }
 
-    public ArrayList<CommuteDto> getByMemberId(Long id) {
-        ArrayList<CommuteDto> list2 = new ArrayList<>();
-        List<Commute> list = cdao.findByMemberId(id);
-        for (Commute c : list) {
-            list2.add(new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate()));
-        }
-        return list2;
+    public Page<CommuteDto> getByMemberId(Long id, Pageable pageable) {
+        Page<Commute> list = cdao.findByMemberId(id, pageable);
+        return list.map(CommuteDto::of);
+    }
+
+    public Page<Commute> getList(int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.cdao.findAll(pageable);
     }
 }

@@ -5,12 +5,15 @@ import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,7 +39,9 @@ public class CommuteController {
 
     //근태관리
     @GetMapping("/list")
-    public String list(Model map, Principal principal) {
+    public String list(Model map, Principal principal, @RequestParam(value = "page", defaultValue = "1") int page) {
+        Page<Commute> paging = this.cservice.getList(page-1);
+        map.addAttribute("paging",paging);
         ArrayList<CommuteDto> list = cservice.getAll();
         MemberDto mdto = mservice.getMember(principal.getName());
         map.addAttribute("mdto", mdto);
@@ -46,12 +51,13 @@ public class CommuteController {
 
     //옵션으로 검색(전체 출퇴근 관리)
     @PostMapping("/list")
-    public String getByOption(String type, Model map, String option1, String option2) {
+    public String getByOption(String type, Model map, String option1, String option2, Pageable pageable) {
+
         if (!option1.isEmpty()) {
-            ArrayList<CommuteDto> list1 = cservice.getByOption(type, option1);
+            Page<CommuteDto> list1 = cservice.getByOption(type, option1,pageable);
             map.addAttribute("list", list1);
         } else if (!option2.isEmpty()) {
-            ArrayList<CommuteDto> list2 = cservice.getByOption(type, option2);
+            Page<CommuteDto> list2 = cservice.getByOption(type, option2,pageable);
             map.addAttribute("list", list2);
         }
         return "/commute/list";
@@ -59,25 +65,24 @@ public class CommuteController {
 
     //나의 출퇴근 기록
     @GetMapping("/mycommute")
-    public String mycommute(Model map, Principal principal) {
+    public String mycommute(Model map, Principal principal,Pageable pageable) {
         MemberDto mdto = mservice.getMember(principal.getName());
-        ArrayList<CommuteDto> list = cservice.getByMemberId(mdto.getId());
+        Page<CommuteDto> list = cservice.getByMemberId(mdto.getId(),pageable);
         map.addAttribute("list", list);
         return "/commute/mycommute";
     }
 
     //옵션으로 검색(내 출퇴근 이력)
     @PostMapping("/mycommute")
-    public String getByMycommut(String type, Model map, String option, Principal principal) {
-        ArrayList<CommuteDto> list2 = new ArrayList<>();
+    public String getByMycommut(String type, Model map, String option, Principal principal,Pageable pageable) {
         MemberDto mdto = mservice.getMember(principal.getName());
-        ArrayList<CommuteDto> list = cservice.getByOption(type, option);
+        Page<CommuteDto> list = cservice.getByOption(type, option,pageable);
         for (CommuteDto cdto : list) {
             if (mdto.getId() == cdto.getMember().getId()) {
-                list2.add(new CommuteDto(cdto.getCommuteNum(), cdto.getMember(), cdto.getBasicDate(), cdto.getStartTime(), cdto.getEndTime(), cdto.getReason(), cdto.getEditStartTime(), cdto.getEditEndTime(), cdto.getEditBasicDate()));
+                list.map(commuteDto -> commuteDto);
             }
         }
-        map.addAttribute("list", list2);
+        map.addAttribute("list", list);
         return "/commute/mycommute";
     }
 

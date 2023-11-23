@@ -43,23 +43,28 @@ public class DataroomController {
     private final MemberService memberService;
 
     @RequestMapping("/list")
-    public void list(Model m, @RequestParam(value="page", defaultValue="1") int page) {
-        Page<Dataroom> paging = this.service.getList(page-1);
+    public void list(Model m, @RequestParam(value = "page", defaultValue = "1") int page, Principal principal, Model map) {
+        Page<Dataroom> paging = this.service.getList(page - 1);
         m.addAttribute("paging", paging);
         ArrayList<DataroomDto> list = service.getAll();
         m.addAttribute("list", list);
-    }
-
-    @GetMapping("/add")
-    public void addForm(Principal principal, Model map) {
-        System.out.println("principal = " + principal);
-        System.out.println("principal.getName() = " + principal.getName());
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = LocalDateTime.now().format(formatter1);
         MemberDto mdto = memberService.getMember(principal.getName());
         map.addAttribute("date", date);
         map.addAttribute("name", mdto.getName());
     }
+
+//    @GetMapping("/add")
+//    public void addForm(Principal principal, Model map) {
+//        System.out.println("principal = " + principal);
+//        System.out.println("principal.getName() = " + principal.getName());
+//        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//        String date = LocalDateTime.now().format(formatter1);
+//        MemberDto mdto = memberService.getMember(principal.getName());
+//        map.addAttribute("date", date);
+//        map.addAttribute("name", mdto.getName());
+//    }
 
     @PostMapping("/add")
     public String add(Principal principal, DataroomDto dto) {
@@ -82,6 +87,7 @@ public class DataroomController {
         }
         return "redirect:/dataroom/list";
     }
+
     @GetMapping("/detail")
     public void detailForm(int num, Model m) {
         DataroomDto dto = service.getDataroom(num);
@@ -128,15 +134,15 @@ public class DataroomController {
     @GetMapping("/del")
     public String del(int num) {
         DataroomDto origin = service.getDataroom(num);
-	    if(origin!=null) {
-		      File delFile = new File(path + origin.getFname());
-		      delFile.delete();
-		      service.delDataroom(num);
+        if (origin != null) {
+            File delFile = new File(path + origin.getFname());
+            delFile.delete();
+            service.delDataroom(num);
         }
         return "redirect:/dataroom/list";
     }
 
-    @GetMapping("/search")
+    @PostMapping("/search")
     public String searchReferenceList(ReferenceSearch referenceSearch, Pageable pageable, Model model) {
         Page<DataroomDto> listReference = service.getSearchReference(referenceSearch, pageable);
         model.addAttribute("paging", listReference);
