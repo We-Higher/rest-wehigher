@@ -113,7 +113,6 @@ public class CommuteController {
     }
 
     //출퇴근기록 수정요청목록
-    @PreAuthorize("hasRole(\"ADMIN\")")
     @GetMapping("/editRequestList")
     public String edit(Model map) {
         ArrayList<CommuteDto> list = cservice.getAll();
@@ -198,10 +197,10 @@ public class CommuteController {
         	
             init(response);
             PrintWriter out = response.getWriter();
-            out.write("<script>alert('"+"이미 출근처리가 완료되었습니다."+"');location.href='"+"/commute/list"+"';</script>");
+            out.write("<script>alert('"+"이미 출근처리가 완료되었습니다."+"');location.href='"+"/main"+"';</script>");
             out.flush();
         }
-	    return "redirect:/commute/list";
+	    return "redirect:/main";
     }
 
     //퇴근
@@ -228,10 +227,10 @@ public class CommuteController {
         	
             init(response);
             PrintWriter out = response.getWriter();
-            out.write("<script>alert('"+"이미 퇴근처리가 완료되었습니다."+"');location.href='"+"/commute/list"+"';</script>");
+            out.write("<script>alert('"+"이미 퇴근처리가 완료되었습니다."+"');location.href='"+"/main"+"';</script>");
             out.flush();
             //out.close();
         }
-        return "redirect:/commute/list";
+        return "redirect:/main";
     }
 }

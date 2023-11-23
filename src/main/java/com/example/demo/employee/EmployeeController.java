@@ -1,5 +1,7 @@
 package com.example.demo.employee;
 
+import com.example.demo.member.MemberDto;
+import com.example.demo.member.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,11 +21,13 @@ public class EmployeeController {
 
 	@Autowired
 	private EmployeeService service;
+	@Autowired
+	private MemberService mservice;
 	
 	// 임직원 목록
 	@GetMapping("/list")
 	public void list(ModelMap map) {
-		ArrayList<EmployeeDto> list = service.getAll();
+		ArrayList<MemberDto> list = mservice.getAll();
 		map.addAttribute("list", list);
 	}
 	
@@ -32,9 +36,9 @@ public class EmployeeController {
 	public String getbyOption(String type, Model map, String option) {
 		System.out.println(type);
 		System.out.println(option);
-		ArrayList<EmployeeDto> list = service.getByOption(type, option);
+		ArrayList<MemberDto> list = service.getByOption(type, option);
 		map.addAttribute("list", list);
-		return "Employee/list";
+		return "employee/list";
 	}
 }
 
