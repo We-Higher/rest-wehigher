@@ -108,9 +108,9 @@ public class MeetingroomController {
     }
 
     //수정
-    @PatchMapping("/edit/{id}")
+    @PatchMapping("/edit/{id}/{roomId}")
     @ResponseBody
-    public ModelMap modifyEvent(@PathVariable("id") int id, @RequestBody List<Map<String, Object>> param) {
+    public ModelMap modifyEvent(@PathVariable("id") int id, @PathVariable("roomId") int roomId, @RequestBody List<Map<String, Object>> param) {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
         MeetingroomDto origin = service.get(id);
@@ -125,7 +125,7 @@ public class MeetingroomController {
         Member member = (Member) authentication.getPrincipal();
 
         MeetingroomDto dto = MeetingroomDto.builder()
-                .id(id).member(member).title(origin.getTitle()).startDate(startDate).endDate(endDate)
+                .id(id).member(member).title(origin.getTitle()).startDate(startDate).endDate(endDate).roomId(roomId)
                 .build();
 
         ModelMap map = new ModelMap();
