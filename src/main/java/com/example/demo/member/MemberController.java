@@ -3,6 +3,7 @@ package com.example.demo.member;
 import com.example.demo.member.dto.MemberJoinDto;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,11 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 @PreAuthorize("hasRole(\"ADMIN\")")
 @RequiredArgsConstructor
 @Controller
 @RequestMapping("/member")
+@Slf4j
 public class MemberController {
     private final MemberService service;
     private final PasswordEncoder passwordEncoder;
@@ -50,6 +53,8 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/join")
     public String join(MemberJoinDto memberJoinDto) {
+        System.out.println("memberJoinDto = " + memberJoinDto);
+        log.info("memberJoinDto : {}", memberJoinDto);
         service.create(memberJoinDto);
         return "redirect:/employee/list";
     }
@@ -65,6 +70,8 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/edit")
     public String edit(MemberDto dto) {
+        System.out.println("dto.getDeptCode() = " + dto.getDeptCode());
+        System.out.println("dto.getDeptName() = " + dto.getDeptName());
         MemberDto m = service.getMemberByName(dto.getName());
         m.setUsername(dto.getUsername());
         m.setPwd(passwordEncoder.encode(dto.getPwd()));
@@ -121,5 +128,12 @@ public class MemberController {
         out.write("<script>alert('"+"비밀번호가 변경되었습니다. 다시 로그인해주세요."+"');location.href='"+"/member/logout"+"';</script>");
         out.flush();
         return "redirect:/member/logout";
+    }
+
+    @PostMapping("/nameLike")
+    public String nameLike(String name, Model map){
+        ArrayList<MemberDto> list = service.getByNameLike(name);
+        map.addAttribute("list",list);
+        return "main";
     }
 }

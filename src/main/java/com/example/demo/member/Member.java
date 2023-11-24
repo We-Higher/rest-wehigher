@@ -106,6 +106,13 @@ public class Member implements UserDetails {
             authorities.add(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
         }
 
+        if (isMaster == 1) {
+            authorities.add(new SimpleGrantedAuthority(MemberRole.ADMIN.getValue()));
+        } else {
+            authorities.add(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
+        }
+
+
         return authorities;
     }
 

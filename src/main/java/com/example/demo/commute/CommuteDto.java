@@ -1,5 +1,7 @@
 package com.example.demo.commute;
 
+import com.example.demo.dataroom.Dataroom;
+import com.example.demo.dataroom.DataroomDto;
 import com.example.demo.member.Member;
 import lombok.*;
 
@@ -18,4 +20,18 @@ public class CommuteDto {
     private String editStartTime;   //수정 출근시간
     private String editEndTime;     //수정 퇴근시간
     private String editBasicDate;   //수정 기준일
+
+    public static CommuteDto of(Commute commute) {
+        return new CommuteDto(
+                commute.getCommuteNum(),
+                commute.getMember(),
+                commute.getBasicDate(),
+                commute.getStartTime(),
+                commute.getEndTime(),
+                commute.getReason(),
+                commute.getEditStartTime(),
+                commute.getEditEndTime(),
+                commute.getEditBasicDate()
+        );
+    }
 }
