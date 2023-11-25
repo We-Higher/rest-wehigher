@@ -3,9 +3,10 @@ var ws = Stomp.over(sock);
 var reconnect = 0;
 
 // var roomId = localStorage.getItem('wschat.roomId');
-let roomId = $('#app').data('room-pk');
-let sender = $('#app').data('sender-name')
-let senderPk = $('#app').data('sender-pk')
+let dataDiv = $('#kt_content')
+let roomId = dataDiv.data('room-pk')
+let sender = dataDiv.data('sender-name')
+let senderPk = dataDiv.data('sender-pk')
 const csrftoken = document.querySelector('[name=_csrf]').value
 var message = '';
 // var messages = [];
@@ -53,7 +54,15 @@ function sendMessage() {
 
 function recvMessage(recv) {
     // messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
-    $('#messages').append('<li class="list-group-item">' + recv.sender + ' - ' + recv.message + '</li>');
+    // $('#messages').append('<li class="list-group-item">' + recv.sender + ' - ' + recv.message + '</li>');
+    if (sender === recv.sender) {
+        $('#messages').append(makeMessageOut(recv))
+    } else {
+        $('#messages').append(makeMessageIn(recv))
+    }
+    // TODO: scroll
+    // TODO: recv객체...
+    // TODO: in/out 분기 수정..
 }
 
 function connect() {
@@ -75,15 +84,54 @@ function connect() {
     });
 }
 
+function makeMessageIn(recv) {
+    let msgDiv = $('<div/>', {class: 'd-flex justify-content-start mb-10'})
+    let wrapDiv = $('<div/>', {class: 'd-flex flex-column align-items-start'})
+    let userDiv = $('<div/>', {class: 'd-flex align-items-center mb-2'})
+        .append($('<div/>', {class: 'symbol  symbol-35px symbol-circle'})
+            .append($('<img/>').attr('alt', 'Pic').attr('src', '/img/default.png')))
+        .append($('<div/>', {class: 'ms-3'})
+            .append($('<a/>', {class: 'fs-5 fw-bolder text-gray-900 text-hover-primary me-1'}).attr('href', '#').text(recv.sender))
+            .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text('Just now')))
+    let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-info text-dark fw-bold mw-lg-400px text-start'}).attr('data-kt-element', 'message-text').text(recv.message)
+
+    msgDiv.append(wrapDiv.append(userDiv).append(textDiv))
+
+    return msgDiv
+}
+
+function makeMessageOut(recv) {
+    let msgDiv = $('<div/>', {class: 'd-flex justify-content-end mb-10'})
+    let wrapDiv = $('<div/>', {class: 'd-flex flex-column align-items-end'})
+    let userDiv = $('<div/>', {class: 'd-flex align-items-center mb-2'})
+        .append($('<div/>', {class: 'me-3'})
+            .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text('Just now'))
+            .append($('<a/>', {class: 'fs-5 fw-bolder text-gray-900 text-hover-primary ms-1'}).attr('href', '#').text(recv.sender)))
+        .append($('<div/>', {class: 'symbol  symbol-35px symbol-circle'})
+            .append($('<img/>').attr('alt', 'Pic').attr('src', '/img/default.png')))
+    let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-primary text-dark fw-bold mw-lg-400px text-end'}).attr('data-kt-element', 'message-text').text(recv.message)
+
+    msgDiv.append(wrapDiv.append(userDiv).append(textDiv))
+
+    return msgDiv
+}
+
 $(document).ready(function () {
     // findRoom();
     $('#sendMessageButton').click(sendMessage);
-    $('#messageInput').keypress(function(event){
+    $('#messageInput').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){
+        if (keycode == '13' && !event.shiftKey) {
             sendMessage();
         }
     });
+    $('#messageInput').keydown(function(event){
+        if(event.altKey && event.which == 83) { // 83 is the keyCode for 's'
+            sendMessage();
+            // event.preventDefault(); // Prevents the default action
+        }
+    });
+
 
     connect();
 });
