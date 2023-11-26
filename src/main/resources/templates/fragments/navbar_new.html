@@ -52,6 +52,17 @@
             <!--end::Wrapper-->
             <!--begin::Toolbar wrapper-->
             <div class="d-flex align-items-stretch flex-shrink-0">
+                <!--  출퇴근-->
+                <form action="/commute/attendance" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="submit" value="출근" id="attendance">
+                    <!--        <input type="submit" value="출근" id="attendance" th:if="${mdto.status == 0}">-->
+                </form>
+                <form action="/commute/quit" method="post">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input type="submit" value="퇴근" id="quit">
+                    <!--        <input type="submit" value="퇴근" id="quit" th:if="${mdto.status == 1}">-->
+                </form>
                 <!--begin::Search-->
                 <div class="d-flex align-items-stretch ms-1 ms-lg-3">
                     <!--begin::Search-->

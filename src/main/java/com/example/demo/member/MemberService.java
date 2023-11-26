@@ -2,6 +2,9 @@ package com.example.demo.member;
 
 import com.example.demo.member.dto.MemberJoinDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -90,23 +93,20 @@ public class MemberService implements UserDetailsService {
         dao.deleteById(id);
     }
 
-    public ArrayList<MemberDto> getAll(){
+    public ArrayList<MemberDto> getAll() {
         ArrayList<Member> list = (ArrayList<Member>) dao.findAll();
         ArrayList<MemberDto> list2 = new ArrayList<>();
-        for(Member m : list){
-            list2.add(new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getDeptName(),m.getCompanyRank(),m.getCompanyRankName(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getCstatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain()));
+        for (Member m : list) {
+            list2.add(new MemberDto(m.getId(), m.getUsername(), m.getPwd(), m.getName(), m.getEmail(), m.getPhone(), m.getAddress(), m.getCompanyName(), m.getDeptCode(), m.getDeptName(), m.getCompanyRank(), m.getCompanyRankName(), m.getNewNo(), m.getComCall(), m.getIsMaster(), m.getStatus(), m.getCstatus(), m.getOriginFname(), m.getThumbnailFname(), m.getNewMemNo(), m.getRemain(),m.getMonthMember()));
         }
         return list2;
     }
 
-    public ArrayList<MemberDto> getByNameLike(String name){
-        ArrayList<Member> list = (ArrayList<Member>) dao.findByNameLike(name);
-        ArrayList<MemberDto> list2 = new ArrayList<>();
-        for(Member m : list){
-            list2.add(new MemberDto(m.getId(),m.getUsername(),m.getPwd(),m.getName(),m.getEmail(),m.getPhone(),m.getAddress(),m.getCompanyName(),m.getDeptCode(),m.getDeptName(),m.getCompanyRank(),m.getCompanyRankName(),m.getNewNo(),m.getComCall(),m.getIsMaster(),m.getStatus(),m.getCstatus(),m.getOriginFname(),m.getThumbnailFname(),m.getNewMemNo(),m.getRemain()));
-        }
-        return list2;
+    public Page<MemberDto> getByNameLike(String name, Pageable pageable) {
+        Page<Member> list = dao.findByNameLike(name, pageable);
+        return list.map(MemberDto::of);
     }
+
     @Override
     public Member loadUserByUsername(String username) throws UsernameNotFoundException {
         return dao.findByUsername(username).orElseThrow(() -> new IllegalArgumentException(username));
@@ -115,5 +115,16 @@ public class MemberService implements UserDetailsService {
     public ArrayList<Member> getByIdNot(Long id) {
         return dao.findByIdNot(id);
     }
+
+    public Page<Member> getList(int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.dao.findAll(pageable);
+    }
+
+    public Page<Member> getListMain(int page) {
+        Pageable pageable = PageRequest.of(page, 5);
+        return this.dao.findAll(pageable);
+    }
+
 }
 

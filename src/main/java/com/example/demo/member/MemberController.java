@@ -1,9 +1,15 @@
 package com.example.demo.member;
 
 import com.example.demo.member.dto.MemberJoinDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,13 +17,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 @PreAuthorize("hasRole(\"ADMIN\")")
 @RequiredArgsConstructor
@@ -27,7 +32,7 @@ import java.util.ArrayList;
 public class MemberController {
     private final MemberService service;
     private final PasswordEncoder passwordEncoder;
-    
+
     //자바에서 script 사용하기
     public static void init(HttpServletResponse response) {
         response.setContentType("text/html; charset=utf-8");
@@ -44,7 +49,7 @@ public class MemberController {
             return "member/login_form";
         }
     }
-    
+
     @GetMapping("/join")
     public String joinForm(MemberDto dto) {
         return "member/join";
@@ -61,7 +66,7 @@ public class MemberController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/edit")
-    public String editForm( String name, Model map) {
+    public String editForm(String name, Model map) {
         MemberDto dto = service.getMemberByName(name);
         map.addAttribute("m", dto);
         return "member/edit";
@@ -125,15 +130,30 @@ public class MemberController {
         service.save(m);
         init(response);
         PrintWriter out = response.getWriter();
-        out.write("<script>alert('"+"비밀번호가 변경되었습니다. 다시 로그인해주세요."+"');location.href='"+"/member/logout"+"';</script>");
+        out.write("<script>alert('" + "비밀번호가 변경되었습니다. 다시 로그인해주세요." + "');location.href='" + "/member/logout" + "';</script>");
         out.flush();
         return "redirect:/member/logout";
     }
 
     @PostMapping("/nameLike")
-    public String nameLike(String name, Model map){
-        ArrayList<MemberDto> list = service.getByNameLike(name);
-        map.addAttribute("list",list);
+    public String nameLike(String name, Model map, Pageable pageable) {
+        Page<MemberDto> list = service.getByNameLike(name, pageable);
+        map.addAttribute("list", list);
         return "main";
     }
+
+    @PostMapping("/monthMember")
+    public String monthMember(@RequestParam(value = "selectedMembers", required = false) List<Long> selectedMemberIds) {
+        ArrayList<MemberDto> list = service.getAll();
+        for (MemberDto dto : list) {
+            if (selectedMemberIds != null && selectedMemberIds.contains(dto.getId())) {
+                dto.setMonthMember(1);
+            } else {
+                dto.setMonthMember(0);
+            }
+            service.save(dto);
+        }
+        return "redirect:/main";
+    }
+
 }

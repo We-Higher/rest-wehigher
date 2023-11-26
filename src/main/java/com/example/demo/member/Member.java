@@ -47,6 +47,7 @@ public class Member implements UserDetails {
     private int newMemNo; // 임시 테이블 사번
     @Column(columnDefinition = "int default 15", nullable = false)
     private int remain; //연차 잔여일
+    private int monthMember;
 
     // MemberDto -> Member
     public Member toEntity(MemberDto memberDto) {
@@ -72,6 +73,7 @@ public class Member implements UserDetails {
                 .thumbnailFname(memberDto.getThumbnailFname())
                 .newMemNo(memberDto.getNewMemNo())
                 .remain(memberDto.getRemain())
+                .monthMember(memberDto.getMonthMember())
                 .build();
     }
 

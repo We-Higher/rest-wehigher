@@ -1,5 +1,7 @@
 package com.example.demo.member;
 
+import com.example.demo.commute.Commute;
+import com.example.demo.commute.CommuteDto;
 import lombok.*;
 
 @Setter
@@ -29,9 +31,10 @@ public class MemberDto {
     private String thumbnailFname; // 프로필 이미지 썸네일 파일명
     private int newMemNo; // 임시 테이블 사번
     private int remain; //연차 잔여일
+    private int monthMember;
     // TODO multipart 추가
 
-    public MemberDto toDto (Member member) {
+    public MemberDto toDto(Member member) {
         return MemberDto.builder()
                 .id(member.getId())
                 .username(member.getUsername())
@@ -54,7 +57,34 @@ public class MemberDto {
                 .thumbnailFname(member.getThumbnailFname())
                 .newMemNo(member.getNewMemNo())
                 .remain(member.getRemain())
+                .monthMember(member.getMonthMember())
                 .build();
     }
 
+    public static MemberDto of(Member member) {
+        return new MemberDto(
+                member.getId(),
+                member.getUsername(),
+                member.getPwd(),
+                member.getName(),
+                member.getEmail(),
+                member.getPhone(),
+                member.getAddress(),
+                member.getCompanyName(),
+                member.getDeptCode(),
+                member.getDeptName(),
+                member.getCompanyRank(),
+                member.getCompanyRankName(),
+                member.getNewNo(),
+                member.getComCall(),
+                member.getIsMaster(),
+                member.getStatus(),
+                member.getCstatus(),
+                member.getOriginFname(),
+                member.getThumbnailFname(),
+                member.getNewMemNo(),
+                member.getRemain(),
+                member.getMonthMember()
+        );
+    }
 }
