@@ -30,9 +30,9 @@ public class ChatRoomController {
     public String rooms(Model map) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Member loginMember = (Member) authentication.getPrincipal();
-        ArrayList<Member> list = memberService.getByIdNot(loginMember.getId());
+        ArrayList<Member> mlist = memberService.getByIdNot(loginMember.getId());
 
-        map.addAttribute("list", list);
+        map.addAttribute("mlist", mlist);
 
         return "chat/room";
     }
