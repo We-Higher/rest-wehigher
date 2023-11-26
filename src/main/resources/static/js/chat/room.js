@@ -1,18 +1,20 @@
 $(document).ready(function () {
     var room_name = '';
     var chatrooms = [];
-    const userId = $('#app').data('user-id')
+    let dataDiv = $('#kt_content')
+    const userId = dataDiv.data('user-id')
 
     const csrftoken = document.querySelector('[name=_csrf]').value
 
     // 채팅방 목록 출력
     function findAllRoom() {
-        axios.get('/chat/rooms/'+userId)
+        axios.get('/chat/rooms/' + userId)
             .then(function (response) {
                 chatrooms = response.data;
+                $('#chatrooms-sub-header').text(`${chatrooms.length} 개`)
                 $('#chatrooms').empty();
                 $.each(chatrooms, function (index, item) {
-                    $('#chatrooms').append(`<a href="/chat/room/enter/${item.id}"><li class="list-group-item list-group-item-action" id="${item.id}">${item.roomName}</li></a>`);
+                    $('#chatrooms').append(makeRoom(item));
                 });
             });
     }
@@ -41,8 +43,11 @@ $(document).ready(function () {
                 )
                 .then(function (response) {
                     alert(response.data.roomName + "방 개설에 성공하였습니다.")
-                    $('#room_name').val('');
-                    findAllRoom();
+                    $('#room_name').val('')
+                    participants.forEach(function(participant) {
+                        participant.checked = false;
+                    })
+                    findAllRoom()
                 })
                 .catch(function (response) {
                     console.log(response)
@@ -51,10 +56,22 @@ $(document).ready(function () {
         }
     }
 
+    function makeRoom(item) {
+        let itemDiv = $('<div/>', {class: 'd-flex align-items-sm-center my-9'})
+        let secDiv = $('<div/>', {class: 'd-flex align-items-center flex-row-fluid flex-wrap'})
+        let blockDiv = $('<div/>', {class: 'flex-grow-1 me-2'})
+            .append($('<a/>', {class: 'text-gray-800 text-hover-primary fs-4 fw-bolder'}).attr('href', `/chat/room/enter/${item.id}`).text(item.roomName))
+        let pDiv = $('<span/>', {class: 'badge fs-6 badge-light fw-bold my-2'}).text(`${item.participants.length} 명`)
+
+        itemDiv.append(secDiv.append(blockDiv).append(pDiv))
+
+        return itemDiv
+    }
+
     $('#createRoom').on('click', createRoom);
-    $('#room_name').keypress(function(event){
+    $('#room_name').keypress(function (event) {
         var keycode = (event.keyCode ? event.keyCode : event.which);
-        if(keycode == '13'){
+        if (keycode == '13') {
             createRoom();
         }
     });
