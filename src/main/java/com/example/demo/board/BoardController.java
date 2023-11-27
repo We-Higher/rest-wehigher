@@ -40,8 +40,6 @@ public class BoardController {
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = LocalDateTime.now().format(formatter1);
         map.addAttribute("date", date);
-        ArrayList<BoardDto> list = bservice.getAll();
-        map.addAttribute("list", list);
     }
 
     //공지사항 목록
@@ -53,29 +51,31 @@ public class BoardController {
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = LocalDateTime.now().format(formatter1);
         map.addAttribute("date", date);
-        ArrayList<NotifyDto> list = bservice.getAllnotify();
-        map.addAttribute("list", list);
     }
 
     //옵션으로 검색
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/list")
-    public String getbyOption(String type, Model map, String option, Pageable pageable) {
+    @GetMapping("/searchBoard")
+    public String getbyOption(String type, Model map, String option, @RequestParam(value = "page", defaultValue = "1") int page) {
         System.out.println(type);
         System.out.println(option);
-        Page<BoardDto> list = bservice.getByOption(type, option, pageable);
-        map.addAttribute("list", list);
+        Page<BoardDto> paging = bservice.getByOption(type, option, page - 1);
+        map.addAttribute("paging", paging);
+        map.addAttribute("type", type);
+        map.addAttribute("option", option);
         return "/board/list";
     }
 
     //공지사항 옵션으로 검색
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/notifylist")
-    public String getbyOption2(String type, Model map, String option, Pageable pageable) {
+    @GetMapping("/searchNotify")
+    public String getbyOption2(String type, Model map, String option, @RequestParam(value = "page", defaultValue = "1") int page) {
         System.out.println(type);
         System.out.println(option);
-        Page<NotifyDto> list = bservice.getByOption2(type, option, pageable);
-        map.addAttribute("list", list);
+        Page<NotifyDto> paging = bservice.getByOption2(type, option, page - 1);
+        map.addAttribute("paging", paging);
+        map.addAttribute("type", type);
+        map.addAttribute("option", option);
         return "/board/notify";
     }
 
@@ -106,7 +106,7 @@ public class BoardController {
     public String add(BoardDto b, Principal principal) {
         int check = 0;
         MemberDto mdto = mservice.getMember(principal.getName());
-        b.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(),mdto.getMonthMember()));
+        b.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(), mdto.getMonthMember()));
         bservice.saveBoard(b, check);
         return "redirect:/board/list";
     }
@@ -116,7 +116,7 @@ public class BoardController {
     public String notifyadd(NotifyDto b, Principal principal) {
         int check = 0;
         MemberDto mdto = mservice.getMember(principal.getName());
-        b.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(),mdto.getMonthMember()));
+        b.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(), mdto.getMonthMember()));
         bservice.saveNotify(b, check);
         return "redirect:/board/notify";
     }

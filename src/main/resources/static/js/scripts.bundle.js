@@ -5822,20 +5822,20 @@ $(document).ready(function () {
     })
 
     // 첫 번째 폼 숨기기
-    $("#textOption").hide();
+    // $("#textOption").hide();
 
     // 선택 옵션에 따라 폼 변경
-    $("select[name='type']").change(function () {
-        var selectedOption = $(this).val();
-
-        if (selectedOption === 'basicDate') {
-            $("#dateOption").show();
-            $("#textOption").hide();
-        } else {
-            $("#dateOption").hide();
-            $("#textOption").show();
-        }
-    })
+    // $("select[name='type']").change(function () {
+    //     var selectedOption = $(this).val();
+    //
+    //     if (selectedOption === 'basicDate') {
+    //         $("#dateOption").show();
+    //         $("#textOption").hide();
+    //     } else {
+    //         $("#dateOption").hide();
+    //         $("#textOption").show();
+    //     }
+    // })
 
 });
 

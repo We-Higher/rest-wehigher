@@ -40,12 +40,14 @@ public class EmployeeController {
     }
 
     // 옵션으로 검색
-    @PostMapping("/list")
-    public String getbyOption(String type, Model map, String option, Pageable pageable) {
+    @GetMapping("/search")
+    public String getbyOption(String type, Model map, String option, @RequestParam(value = "page", defaultValue = "1") int page) {
         System.out.println(type);
         System.out.println(option);
-        Page<MemberDto> list = service.getByOption(type, option, pageable);
-        map.addAttribute("list", list);
+        Page<MemberDto> paging = service.getByOption(type, option, page-1);
+        map.addAttribute("paging", paging);
+        map.addAttribute("type", type);
+        map.addAttribute("option", option);
         return "/employee/list";
     }
 }

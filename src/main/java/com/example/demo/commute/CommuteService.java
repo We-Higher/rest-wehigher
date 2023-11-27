@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,13 +48,14 @@ public class CommuteService {
         return new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate());
     }
 
-    public Page<CommuteDto> getByOption(String type, String option, Pageable pageable) {
+    public Page<CommuteDto> getByOption(String type, String option, int page) {
+        Pageable pageable = PageRequest.of(page, 10); // size는 한 페이지에 표시할 데이터 수를 지정합니다.
         Page<Commute> list;
-        if (type.equals("basicDate")) {
+        if (Objects.equals("basicDate", type)) {
             list = cdao.findByBasicDateLike(option, pageable);
-        } else if (type.equals("name")) {
+        } else if (Objects.equals("name", type)) {
             list = cdao.findByMemberNameContaining(option, pageable);
-        } else if (type.equals("deptName")) {
+        } else if (Objects.equals("deptName", type)) {
             list = cdao.findByMemberDeptNameContaining(option, pageable);
         } else {
             list = cdao.findAll(pageable);
@@ -61,10 +63,15 @@ public class CommuteService {
         return list.map(CommuteDto::of);
     }
 
-    public Page<CommuteDto> getByMemberId(Long id, Pageable pageable) {
-        Page<Commute> list = cdao.findByMemberId(id, pageable);
+    public Page<CommuteDto> getByOptionAndMember(String type, String option, Long memberId, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Commute> list = null;
+        if (Objects.equals("basicDate", type)) {
+            list = cdao.findByBasicDateLikeAndMemberId(option, memberId, pageable);
+        }
         return list.map(CommuteDto::of);
     }
+
 
     public Page<Commute> getList(int page) {
         Pageable pageable = PageRequest.of(page, 10);

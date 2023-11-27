@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class EmployeeService {
@@ -30,15 +31,16 @@ public class EmployeeService {
     }
 
     // 옵션으로 검색
-    public Page<MemberDto> getByOption(String type, String option, Pageable pageable) {
+    public Page<MemberDto> getByOption(String type, String option, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
         Page<Member> list;
-        if (type.equals("name")) {
+        if (Objects.equals("name", type)) {
             list = mdao.findByNameLike("%" + option + "%", pageable);
-        } else if (type.equals("newNo")) {
+        } else if (Objects.equals("newNo", type)) {
             list = mdao.findByNewNoLike("%" + option + "%", pageable);
-        } else if (type.equals("companyRankName")) {
+        } else if (Objects.equals("companyRankName", type)) {
             list = mdao.findByCompanyRankNameLike("%" + option + "%", pageable);
-        } else if (type.equals("deptName")) {
+        } else if (Objects.equals("deptName", type)) {
             list = mdao.findByDeptNameLike("%" + option + "%", pageable);
         } else {
             list = mdao.findAll(pageable);

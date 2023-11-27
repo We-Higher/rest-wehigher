@@ -44,12 +44,10 @@ public class MainController {
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping("/main")
-    public String Main(Model map, @RequestParam(value = "page", defaultValue = "1") int page) {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "num")); // id는 Notify 엔티티의 속성입니다. 적절하게 변경해야 합니다.
+    public String Main(Model map) {
+        Pageable pageable = PageRequest.of(0, 6, Sort.by(Sort.Direction.DESC, "num")); // id는 Notify 엔티티의 속성입니다. 적절하게 변경해야 합니다.
         Page<Notify> pagingNotify = this.bservice.getNotifyMain(pageable);
         map.addAttribute("pagingNotify", pagingNotify);
-        Page<Member> pagingMember = this.mservice.getListMain(page - 1);
-        map.addAttribute("pagingMember", pagingMember);
         ArrayList<MemberDto> list = mservice.getAll();
         map.addAttribute("list", list);
         ArrayList<MemberDto> monthMemlist = new ArrayList<>();
