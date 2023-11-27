@@ -2,30 +2,9 @@
 <html lang="en">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#approvalList1").click(function () {
-                var width = 450;
-                var height = 600;
-                var left = (window.innerWidth - width) / 2;
-                var top = (window.innerHeight - height) / 2;
-
-                window.open("/approval/approvalList1", "approvalList_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
-            });
-
-            $("#approvalList2").click(function () {
-                var width = 450;
-                var height = 600;
-                var left = (window.innerWidth - width) / 2;
-                var top = (window.innerHeight - height) / 2;
-
-                window.open("/approval/approvalList2", "approvalList_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
-            });
-        });
-    </script>
 </head>
 <span style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
-	<form action="/vacation" method="post">
+	<form action="/vacation" method="post" onsubmit="return vacationsubmit();">
 		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 <table style="border: 0px solid rgb(0, 0, 0); width: 800px; font-family: malgun gothic, dotum, arial, tahoma; margin-top: 1px; border-collapse: collapse;"><!-- Header --><colgroup><col
         width="310"><col width="490"></colgroup>
@@ -223,4 +202,7 @@
 </form>
 <p style="font-family: &quot;맑은 고딕&quot;; font-size: 10pt; line-height: 20px; margin-top: 0px; margin-bottom: 0px;"><br>
 </p>
+	<th:block layout:fragment="script">
+    <script src="/approval/js/vacation_form.js" type='text/javascript'></script>
+	</th:block>
 </html>
