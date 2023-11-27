@@ -160,21 +160,6 @@ var KTIntro = function () {
         });
     }
 
-    var handleMenuProLinks = function(product) {
-        var clicked = 0;
-
-        KTUtil.on(document.body, '[data-kt-page="pro"]', 'click', function(e) {
-            e.preventDefault();
-            clicked++;
-
-            if (clicked == 3) {
-                handleIntro('kt_' + product + '_explore_show', function() {
-                    KTDrawer.getInstance(document.querySelector('#kt_explore')).show();
-                }, 0);
-            } 
-        });
-    }
-
     var initIntro = function(product) {
         // Handle intro popovers displays
         if (KTUtil.inIframe() === false) {                
@@ -182,10 +167,7 @@ var KTIntro = function () {
             } else if (handleIntro('kt_' + product + '_intro_2', showtIntro2, 1000 * 5)) {
             } else if (handleIntro('kt_' + product + '_intro_3', showtIntro3, 1000 * 5)) {
             }
-        } 
-
-        // Handle menu pro link clicks
-        handleMenuProLinks(product);
+        }
     } 
 
     // Public methods

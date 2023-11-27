@@ -24,7 +24,7 @@
     <!-- page style -->
     <th:block layout:fragment="style"></th:block>
 </head>
-<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disabled">
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disabled" style="height: 100%;">
 <!--Begin::Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FS8GGP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!--End::Google Tag Manager (noscript) -->
@@ -45,7 +45,9 @@
             <!--end::Header-->
 
             <!--begin::Content-->
-            <th:block layout:fragment="content"></th:block>
+            <div style="flex:1;">
+                <th:block layout:fragment="content"></th:block>
+            </div>
             <!--end::Content-->
 
             <!--begin::Footer-->
