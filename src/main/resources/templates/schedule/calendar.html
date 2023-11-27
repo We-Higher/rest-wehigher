@@ -119,13 +119,13 @@
                                             beforeSend : function(xhr){
                                                 xhr.setRequestHeader(header, token);
                                             },
-                                           	success: function (res) {
-                                            	if (res.flag) {
-                                                	info.revert();
-                                                } else {
-                                                	alert(res.msg);
-                                                }
-                                            },
+                                            success: function (res) { 
+                                                if (res.flag) { 
+                                                    info.revert(); 
+                                                  } else { 
+                                                    alert(res.msg); 
+                                                  } 
+                                              }, 
                                             dataType: "json",
                                             data: JSON.stringify(events),
                                             contentType: 'application/json',
@@ -186,20 +186,20 @@
                                     $(function deleteData() {
                                         $.ajax({
                                             url: "/schedule/del/" + calId,
-                                            dataType: "JSON",
+                                            dataType: "JSON", 
                                             method: "GET",
-	                                        success: function (res) {
-                                            	if (res.flag) {
-                                                	info.event.remove();
-                                                } else {
-                                                	alert(res.msg);
-                                                }
-                                            }
+                                            success: function (res) { 
+                                                if (res.flag) { 
+                                                    info.event.remove(); 
+                                                  } else { 
+                                                    alert(res.msg); 
+                                                  } 
+                                            } 
                                         })
                                     })
                                     //info.event.remove();
                                 }
-								//location.reload()
+								location.reload()
                             },
 
                             /**
@@ -223,7 +223,9 @@
 
 <div layout:fragment="content">
     <div id='wrap'>
-        <div id='calendar'></div>
+        <div style="margin-top: 20px;">
+            <div id='calendar' style='width: 80%; margin: auto;'></div>
+        </div>
         <div style='clear:both'></div>
     </div>
 </div>
