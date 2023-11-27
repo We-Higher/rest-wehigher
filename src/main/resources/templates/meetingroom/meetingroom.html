@@ -36,10 +36,35 @@
                     method: "GET",
                     dataType: "json",
                     success: function (data) {
-                        $('.mtab').each(function() {
+                        $('.mtab').each(function () {
                             $(this).removeClass('active');
                         });
-                        $('#mtab'+roomId).addClass('active')
+                        $('#mtab' + roomId).addClass('active')
+
+                        //각 roomId 이벤트 색상
+                        for (var i = 0; i < data.length; i++) {
+                            var event = data[i];
+                            switch (event.roomId) {
+                                case 1:
+                                    event.className = 'room-1';
+                                    break;
+                                case 2:
+                                    event.className = 'room-2';
+                                    break;
+                                case 3:
+                                    event.className = 'room-3';
+                                    break;
+                                case 4:
+                                    event.className = 'room-4';
+                                    break;
+                                case 5:
+                                    event.className = 'room-5';
+                                    break;
+                                case 6:
+                                    event.className = 'room-6';
+                                    break;
+                            }
+                        }
 
                         var calendarEl = document.getElementById('calendar');
                         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -53,6 +78,7 @@
                             selectable: true,
                             droppable: true,
                             dayMaxEvents: true,
+                            eventOverlap: false,
 
                             drop: function (arg) {
                                 if (document.getElementById('drop-remove').checked) {
@@ -61,140 +87,163 @@
                             },
                             select: function (arg) {
                                 // 캘린더에서 이벤트를 생성할 수 있다.
-                                var title = prompt('회의 일정을 입력해주세요.');
-                                if (title) {
-                                    var events = new Array();
-                                    var obj = new Object();
-                                    obj.title = title;
-                                    obj.start = new Date(arg.start.setHours(arg.start.getHours() + 9));
-                                    obj.end = new Date(arg.end.setHours(arg.end.getHours() + 9));
-                                    obj.roomId = roomId;
-                                    events.push(obj);
-                                    var jsondata = JSON.stringify(events);
-                                    console.log(jsondata);
+                                if (roomId === 0) {
+                                    alert('본 방은 읽기 전용입니다.');
+                                    location.reload()
+                                } else{
+                                    var title = prompt('회의 일정을 입력해주세요.');
+                                    if (title) {
+                                        var events = new Array();
+                                        var obj = new Object();
+                                        obj.title = title;
+                                        obj.start = new Date(arg.start.setHours(arg.start.getHours() + 9));
+                                        obj.end = new Date(arg.end.setHours(arg.end.getHours() + 9));
+                                        obj.roomId = roomId;
+                                        events.push(obj);
+                                        var jsondata = JSON.stringify(events);
+                                        console.log(jsondata);
 
-                                    $(function saveData() {
-                                        $.ajax({
-                                            url: "/meetingroom/add/" + roomId,
-                                            method: "POST",
-                                            beforeSend: function (xhr) {
-                                                xhr.setRequestHeader(header, token);
-                                            },
-                                            dataType: "json",
-                                            data: JSON.stringify(events),
-                                            contentType: 'application/json',
-                                            success: function (data) {
-                                                location.reload()
-                                            },
-                                            error: function (e) {
-                                                console.log(e)
-                                            }
-                                        })
-                                            .done(function (result) {
+                                        $(function saveData() {
+                                            $.ajax({
+                                                url: "/meetingroom/add/" + roomId,
+                                                method: "POST",
+                                                beforeSend: function (xhr) {
+                                                    xhr.setRequestHeader(header, token);
+                                                },
+                                                dataType: "json",
+                                                data: JSON.stringify(events),
+                                                contentType: 'application/json',
+                                                success: function (data) {
+                                                    location.reload()
+                                                },
+                                                error: function (e) {
+                                                    console.log(e)
+                                                }
                                             })
-                                            .fail(function (request, status, error) {
-                                                console.log(request)
-                                                console.log(status)
-                                                console.log(error)
-                                            });
-                                    });
-                                    calendar.unselect()
+                                                .done(function (result) {
+                                                })
+                                                .fail(function (request, status, error) {
+                                                    console.log(request)
+                                                    console.log(status)
+                                                    console.log(error)
+                                                });
+                                        });
+                                        calendar.unselect()
+                                    }
                                 }
                             },
                             eventDrop: function (info) {
                                 console.log(info);
-                                if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
-                                    var events = new Array();
-                                    var obj = new Object();
-
-                                    obj.title = info.event._def.title;
-                                    obj.start = info.event._instance.range.start;
-                                    obj.end = info.event._instance.range.end;
-                                    events.push(obj);
-
-                                    console.log(events);
-                                    console.log(info.event._def.extendedProps.cal_Id)
-                                    let calId = info.event._def.extendedProps.cal_Id
-                                    $(function eidtData() {
-                                        $.ajax({
-                                            url: "/meetingroom/edit/" + calId,
-                                            method: "PATCH",
-                                            beforeSend: function (xhr) {
-                                                xhr.setRequestHeader(header, token);
-                                            },
-                                            success: function (res) {
-                                                if (res.flag) {
-                                                    info.revert();
-                                                } else {
-                                                    alert(res.msg);
-                                                }
-                                            },
-                                            dataType: "json",
-                                            data: JSON.stringify(events),
-                                            contentType: 'application/json',
-                                        })
-                                    })
+                                if (roomId === 0) {
+                                    alert('본 방은 읽기 전용입니다.');
                                     location.reload()
+                                } else {
+                                    if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
+                                        var events = new Array();
+                                        var obj = new Object();
+
+                                        obj.title = info.event._def.title;
+                                        obj.start = info.event._instance.range.start;
+                                        obj.end = info.event._instance.range.end;
+                                        obj.roomId = info.event._def.extendedProps.roomId; // roomId 보존
+                                        events.push(obj);
+
+                                        console.log(events);
+                                        console.log(info.event._def.extendedProps.cal_Id)
+                                        let calId = info.event._def.extendedProps.cal_Id
+                                        $(function eidtData() {
+                                            $.ajax({
+                                                url: "/meetingroom/edit/" + calId + "/" + roomId,
+                                                method: "PATCH",
+                                                beforeSend: function (xhr) {
+                                                    xhr.setRequestHeader(header, token);
+                                                },
+                                                success: function (res) {
+                                                    if (res.flag) {
+                                                        info.revert();
+                                                    } else {
+                                                        alert(res.msg);
+                                                    }
+                                                },
+                                                dataType: "json",
+                                                data: JSON.stringify(events),
+                                                contentType: 'application/json',
+                                            })
+                                        })
+                                        location.reload()
+                                    }
                                 }
                             },
                             eventResize: function (info) {
                                 console.log(info)
-                                if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
-                                    var events = new Array();
-                                    var obj = new Object();
-
-                                    obj.title = info.event._def.title;
-                                    obj.start = info.event._instance.range.start;
-                                    obj.end = info.event._instance.range.end;
-                                    events.push(obj);
-
-                                    console.log(events);
-                                    console.log(info.event._def.extendedProps.cal_Id)
-                                    let calId = info.event._def.extendedProps.cal_Id
-                                    $(function eidtData() {
-                                        $.ajax({
-                                            url: "/meetingroom/edit/" + calId,
-                                            method: "PATCH",
-                                            beforeSend: function (xhr) {
-                                                xhr.setRequestHeader(header, token);
-                                            },
-                                            success: function (res) {
-                                                if (res.flag) {
-                                                    info.revert();
-                                                } else {
-                                                    alert(res.msg);
-                                                }
-                                            },
-                                            dataType: "json",
-                                            data: JSON.stringify(events),
-                                            contentType: 'application/json',
-                                        })
-                                    })
+                                if (roomId === 0) {
+                                    alert('본 방은 읽기 전용입니다.');
                                     location.reload()
+                                } else {
+                                    if (confirm(info.event.title + "일정을 수정하시겠습니까 ?")) {
+                                        var events = new Array();
+                                        var obj = new Object();
+
+                                        obj.title = info.event._def.title;
+                                        obj.start = info.event._instance.range.start;
+                                        obj.end = info.event._instance.range.end;
+                                        obj.roomId = info.event._def.extendedProps.roomId; // roomId 보존
+                                        events.push(obj);
+
+                                        console.log(events);
+                                        console.log(info.event._def.extendedProps.cal_Id)
+                                        let calId = info.event._def.extendedProps.cal_Id
+                                        $(function eidtData() {
+                                            $.ajax({
+                                                url: "/meetingroom/edit/" + calId + "/" + roomId,
+                                                method: "PATCH",
+                                                beforeSend: function (xhr) {
+                                                    xhr.setRequestHeader(header, token);
+                                                },
+                                                success: function (res) {
+                                                    if (res.flag) {
+                                                        info.revert();
+                                                    } else {
+                                                        alert(res.msg);
+                                                    }
+                                                },
+                                                dataType: "json",
+                                                data: JSON.stringify(events),
+                                                contentType: 'application/json',
+                                            })
+                                        })
+                                        location.reload()
+                                    }
                                 }
                             },
                             eventClick: function (info) {
                                 console.log(info)
                                 console.log(info.event._def.extendedProps.cal_Id)
-                                if (confirm(info.event.title + "일정을 삭제하시겠습니까 ?")) {
-                                    console.log(info.event);
+                                if (roomId === 0) {
+                                    alert('본 방은 읽기 전용입니다.');
+                                    info.jsEvent.preventDefault(); // 이벤트의 기본 동작을 막습니다.
 
-                                    let calId = info.event._def.extendedProps.cal_Id
+                                } else {
+                                    if (confirm(info.event.title + "일정을 삭제하시겠습니까 ?")) {
+                                        console.log(info.event);
 
-                                    $(function deleteData() {
-                                        $.ajax({
-                                            url: "/meetingroom/del/" + calId,
-                                            dataType: "JSON",
-                                            method: "GET",
-                                            success: function (res) {
-                                                if (res.flag) {
-                                                    info.event.remove();
-                                                } else {
-                                                    alert(res.msg);
+                                        let calId = info.event._def.extendedProps.cal_Id
+
+                                        $(function deleteData() {
+                                            $.ajax({
+                                                url: "/meetingroom/del/" + calId,
+                                                dataType: "JSON",
+                                                method: "GET",
+                                                success: function (res) {
+                                                    if (res.flag) {
+                                                        info.event.remove();
+                                                    } else {
+                                                        alert(res.msg);
+                                                    }
                                                 }
-                                            }
+                                            })
                                         })
-                                    })
+                                    }
                                 }
                             },
                             events: data,
@@ -217,7 +266,7 @@
     <div class="tabbable-panel">
         <div class="tabbable-line">
             <ul class="nav nav-tabs ">
-                <li id="mtab0" class="mtab active" >
+                <li id="mtab0" class="mtab active">
                     <a class="room-link" data-room-id="0">전체보기</a>
                 </li>
                 <li id="mtab1" class="mtab">
@@ -246,6 +295,4 @@
         <div style='clear:both'></div>
     </div>
 </div>
-
-
 </html>

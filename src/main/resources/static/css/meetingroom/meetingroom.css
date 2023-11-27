@@ -27,7 +27,7 @@ Licensed under MIT
     color: #a6a6a6;
 }
 .tabbable-line > .nav-tabs > li.open, .tabbable-line > .nav-tabs > li:hover {
-    border-bottom: 4px solid #fbcdcf;
+    border-bottom: 4px solid #EAEAEA;
 }
 .tabbable-line > .nav-tabs > li.open > a, .tabbable-line > .nav-tabs > li:hover > a {
     border: 0;
@@ -41,7 +41,7 @@ Licensed under MIT
     margin-top: 0px;
 }
 .tabbable-line > .nav-tabs > li.active {
-    border-bottom: 4px solid #f3565d;
+    border-bottom: 4px solid #5D5D5D;
     position: relative;
 }
 .tabbable-line > .nav-tabs > li.active > a {
@@ -84,4 +84,48 @@ Licensed under MIT
     border-top: 0;
     border-bottom: 1px solid #eee;
     padding-bottom: 15px;
+}
+
+/*roomId 이벤트 색상*/
+.room-1 {
+    background-color: #D9E5FF;
+}
+
+.room-2 {
+    background-color: #B2CCFF;
+}
+
+.room-3 {
+    background-color: #6799FF;
+}
+
+.room-4 {
+    background-color: #4374D9;
+}
+
+.room-5 {
+    background-color: #003399;
+}
+
+.room-6 {
+    background-color: #002266;
+}
+
+/*중앙 배치*/
+.nav-tabs {
+    display: flex;
+    justify-content: center;
+}
+.nav-tabs > li {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nav-tabs .room-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 10px 0;
 }
