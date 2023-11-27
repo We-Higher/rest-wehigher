@@ -1,3 +1,10 @@
 .card-title {
     font-weight: bold !important;
 }
+.e_box {
+    position: fixed !important;  /* 고정 위치 */
+    top: 50% !important;  /* 상단으로부터 50% 떨어짐 */
+    left: 50% !important;  /* 좌측으로부터 50% 떨어짐 */
+    transform: translate(-50%, -50%) !important;  /* 자신의 너비와 높이의 50%만큼 이동하여 위치 조정 */
+    z-index: 1000 !important;  /* 다른 요소 위에 뜨도록 z-index 설정 */
+}
