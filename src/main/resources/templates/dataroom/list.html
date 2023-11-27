@@ -75,8 +75,7 @@
                                         </div>
                                     </form>
                                 </div>
-                                <form action="/dataroom/search" method="post">
-                                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                                <form action="/dataroom/search" method="get">
                                     <div class="input-group mb-3" style="padding-top: 50px;">
                                         <div class="input-group-prepend">
                                             <select name="select" class="form-select form-select-sm">
@@ -228,14 +227,14 @@
 
                                         <!-- 처음 링크 -->
                                         <li class="page-item" th:classappend="${paging.first} ? 'disabled'">
-                                            <a class="page-link" th:href="@{|?page=1|}">
+                                            <a class="page-link" th:href="@{|?page=1&select=${kw?.select}&search=${kw?.search}|}">
                                                 <span>처음</span>
                                             </a>
                                         </li>
                                         <!-- 이전 링크 -->
                                         <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
                                             <a class="page-link"
-                                               th:href="@{|?page=${paging.number}|}">
+                                               th:href="@{|?page=${paging.number}&select=${kw?.select}&search=${kw?.search}|}">
                                                 <span>이전</span>
                                             </a>
                                         </li>
@@ -244,7 +243,7 @@
                                             th:if="${page >= paging.number-4 and page <= paging.number+4}"
                                             th:classappend="${page == paging.number+1} ? 'active'"
                                             class="page-item">
-                                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}&select=${kw?.select}&search=${kw?.search}|}"></a>
                                         </li>
                                         <!-- 생략 기호 -->
                                         <li th:if="${paging.number+4 < paging.totalPages}" class="page-item disabled">
@@ -252,13 +251,13 @@
                                         </li>
                                         <!-- 다음 기호 -->
                                         <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                                            <a class="page-link" th:href="@{|?page=${paging.number+2}|}">
+                                            <a class="page-link" th:href="@{|?page=${paging.number+2}&select=${kw?.select}&search=${kw?.search}|}">
                                                 <span>다음</span>
                                             </a>
                                         </li>
                                         <!-- 마지막 링크 -->
                                         <li class="page-item" th:classappend="${paging.last} ? 'disabled'">
-                                            <a class="page-link" th:href="@{|?page=${paging.totalPages}|}">
+                                            <a class="page-link" th:href="@{|?page=${paging.totalPages}&select=${kw?.select}&search=${kw?.search}|}">
                                                 <span>마지막</span>
                                             </a>
                                         </li>

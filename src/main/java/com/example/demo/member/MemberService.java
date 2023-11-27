@@ -97,7 +97,7 @@ public class MemberService implements UserDetailsService {
         ArrayList<Member> list = (ArrayList<Member>) dao.findAll();
         ArrayList<MemberDto> list2 = new ArrayList<>();
         for (Member m : list) {
-            list2.add(new MemberDto(m.getId(), m.getUsername(), m.getPwd(), m.getName(), m.getEmail(), m.getPhone(), m.getAddress(), m.getCompanyName(), m.getDeptCode(), m.getDeptName(), m.getCompanyRank(), m.getCompanyRankName(), m.getNewNo(), m.getComCall(), m.getIsMaster(), m.getStatus(), m.getCstatus(), m.getOriginFname(), m.getThumbnailFname(), m.getNewMemNo(), m.getRemain(),m.getMonthMember()));
+            list2.add(new MemberDto(m.getId(), m.getUsername(), m.getPwd(), m.getName(), m.getEmail(), m.getPhone(), m.getAddress(), m.getCompanyName(), m.getDeptCode(), m.getDeptName(), m.getCompanyRank(), m.getCompanyRankName(), m.getNewNo(), m.getComCall(), m.getIsMaster(), m.getStatus(), m.getCstatus(), m.getOriginFname(), m.getThumbnailFname(), m.getNewMemNo(), m.getRemain(),m.getMonthMember(), null));
         }
         return list2;
     }
@@ -127,4 +127,3 @@ public class MemberService implements UserDetailsService {
     }
 
 }
-

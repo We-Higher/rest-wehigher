@@ -9,3 +9,20 @@
     color: blue !important;
     text-decoration: none;
 }
+
+/* 월요일부터 금요일까지의 날짜 검정색 */
+.fc-day-mon a,
+.fc-day-tue a,
+.fc-day-wed a,
+.fc-day-thu a,
+.fc-day-fri a{
+    color: black !important;
+    text-decoration: none;
+}
+
+.fc-event-title {
+    font-size: 13px !important; /* 이벤트 텍스트의 글자 크기를 조절할 값 */
+}
+.fc-event-time {
+    display: none !important; /* 이벤트 텍스트의 날짜를 숨김 */
+}

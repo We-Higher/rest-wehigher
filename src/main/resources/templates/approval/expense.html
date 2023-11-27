@@ -2,70 +2,9 @@
 <html lang="en">
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#approvalList1").click(function () {
-                var width = 450;
-                var height = 600;
-                var left = (window.innerWidth - width) / 2;
-                var top = (window.innerHeight - height) / 2;
-
-                window.open("/approval/approvalList1", "approvalList_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
-            });
-
-            $("#approvalList2").click(function () {
-                var width = 450;
-                var height = 600;
-                var left = (window.innerWidth - width) / 2;
-                var top = (window.innerHeight - height) / 2;
-
-                window.open("/approval/approvalList2", "approvalList_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
-            });
-
-
-            document.getElementById('plus1').addEventListener('click', function () {
-                var table = document.getElementById('dynamic_table1');
-                var row = table.insertRow(-1);
-                row.className = 'copyRow1';
-
-                var copyRow = table.getElementsByClassName('copyRow1')[0];
-                var cells = copyRow.cells;
-
-                for (var i = 0; i < cells.length; i++) {
-                    var cell = row.insertCell(i);
-                    cell.className = cells[i].className;
-                    cell.innerHTML = cells[i].innerHTML;
-                }
-
-                var deleteButtons = table.getElementById('minus1');
-                for (var j = 0; j < deleteButtons.length; j++) {
-                    deleteButtons[j].style.display = 'block';
-                }
-            });
-
-            document.addEventListener('click', function (event) {
-                if (event.target.classList.contains('minus1')) {
-                    var row = event.target.closest('tr');
-                    if (row && row.contains(event.target)) {
-                        var table = row.parentNode;
-                        if (table.children.length > 2) { // 최소 2줄의 데이터가 남아있을 경우에만 삭제
-                            table.removeChild(row);
-                        }
-                        if (table.children.length === 2) { // 남은 줄이 2줄일 경우 삭제 버튼 숨김
-                            var deleteButtons = document.getElementsByClassName('minus1');
-                            for (var k = 0; k < deleteButtons.length; k++) {
-                                deleteButtons[k].style.display = 'none';
-                            }
-                        }
-                    }
-                }
-            });
-        });
-    </script>
-    <script src="approval/js/expense.js"></script>
     <link rel="stylesheet" href="/approval/css/expense.css">
 </head>
-<form action="/expense" method="post">
+<form action="/expense" method="post" onsubmit="return expensesubmit();">
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     <div style="font-family: 돋움; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
   <span style="font-family: 돋움; font-size: 9pt; line-height: normal; margin-top: 0px; margin-bottom: 0px;">
@@ -288,7 +227,7 @@
                 <span unselectable="on" contenteditable="false" class="comp_wrap" data-cid="9" data-dsl="{{calendar}}"
                       data-wrapper=""
                       style="font-family: &quot;malgun gothic&quot;, dotum, arial, tahoma; font-size: 9pt;"
-                      data-value="" data-autotype=""><input class="ipt_editor ipt_editor_date" type="date"></span>
+                      data-value="" data-autotype=""><input class="ipt_editor ipt_editor_date" type="date" name="rdate"></span>
                             </td>
                             <td class="detailColumn centerCol dext_table_border_t dext_table_border_r dext_table_border_b dext_table_border_l"
                                 style="height: 29px;">
@@ -338,4 +277,7 @@
 </form>
 <input type="submit" value="작성" style="margin-left: 760px; margin-top: 5px">
 </div>
+	<th:block layout:fragment="script">
+    <script src="/approval/js/expense_form.js" type='text/javascript'></script>
+	</th:block>
 </html>

@@ -18,7 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -32,6 +35,9 @@ import java.util.List;
 public class MemberController {
     private final MemberService service;
     private final PasswordEncoder passwordEncoder;
+    
+    @Value("${spring.servlet.multipart.location}")
+    private String path;
 
     //자바에서 script 사용하기
     public static void init(HttpServletResponse response) {
@@ -58,6 +64,7 @@ public class MemberController {
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/join")
     public String join(MemberJoinDto memberJoinDto) {
+
         System.out.println("memberJoinDto = " + memberJoinDto);
         log.info("memberJoinDto : {}", memberJoinDto);
         service.create(memberJoinDto);
@@ -77,9 +84,11 @@ public class MemberController {
     public String edit(MemberDto dto) {
         System.out.println("dto.getDeptCode() = " + dto.getDeptCode());
         System.out.println("dto.getDeptName() = " + dto.getDeptName());
+        System.out.println("dto.getPwd() = " + dto.getPwd());
+        
         MemberDto m = service.getMemberByName(dto.getName());
         m.setUsername(dto.getUsername());
-        m.setPwd(passwordEncoder.encode(dto.getPwd()));
+        m.setPwd(dto.getPwd());
         m.setName(dto.getName());
         m.setCompanyName(dto.getCompanyName());
         m.setDeptCode(dto.getDeptCode());
@@ -114,6 +123,19 @@ public class MemberController {
     @PostMapping("/pwdedit")
     public String pwdedit(HttpServletResponse response, MemberDto dto) throws IOException {
         MemberDto m = service.getMemberByName(dto.getName());
+        
+    	MultipartFile f = dto.getF();
+        String fname = f.getOriginalFilename();
+        File newFile = new File(path + fname);
+        try {
+            f.transferTo(newFile);
+            m.setOriginFname(fname);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
         m.setUsername(dto.getUsername());
         m.setPwd(passwordEncoder.encode(dto.getPwd()));
         m.setName(dto.getName());
@@ -130,7 +152,7 @@ public class MemberController {
         service.save(m);
         init(response);
         PrintWriter out = response.getWriter();
-        out.write("<script>alert('" + "비밀번호가 변경되었습니다. 다시 로그인해주세요." + "');location.href='" + "/member/logout" + "';</script>");
+        out.write("<script>alert('" + "회원정보가 변경되었습니다. 다시 로그인해주세요." + "');location.href='" + "/member/logout" + "';</script>");
         out.flush();
         return "redirect:/member/logout";
     }
