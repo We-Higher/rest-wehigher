@@ -1,9 +1,13 @@
 package com.example.demo.employee;
 
+import com.example.demo.commute.Commute;
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberDao;
 import com.example.demo.member.MemberDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,8 +15,6 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
-    @Autowired
-    private EmployeeDao dao;
     @Autowired
     private MemberDao mdao;
 
@@ -28,39 +30,20 @@ public class EmployeeService {
     }
 
     // 옵션으로 검색
-    public ArrayList<MemberDto> getByOption(String type, String option) {
-
-        ArrayList<MemberDto> list2 = new ArrayList<>();
+    public Page<MemberDto> getByOption(String type, String option, Pageable pageable) {
+        Page<Member> list;
         if (type.equals("name")) {
-            List<Member> list = mdao.findByNameLike("%" + option + "%");
-            for (Member b : list) {
-                list2.add(new MemberDto(b.getId(), b.getUsername(), b.getPwd(), b.getName(), b.getEmail(), b.getPhone(), b.getAddress(), b.getCompanyName(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(), b.getNewNo(), b.getComCall(), b.getIsMaster(), b.getStatus(), b.getCstatus(), b.getOriginFname(), b.getThumbnailFname(), b.getNewMemNo(), b.getRemain()));
-            }
-            return list2;
+            list = mdao.findByNameLike("%" + option + "%", pageable);
         } else if (type.equals("newNo")) {
-            List<Member> list = mdao.findByNewNoLike("%" + option + "%");
-            for (Member b : list) {
-                list2.add(new MemberDto(b.getId(), b.getUsername(), b.getPwd(), b.getName(), b.getEmail(), b.getPhone(), b.getAddress(), b.getCompanyName(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(), b.getNewNo(), b.getComCall(), b.getIsMaster(), b.getStatus(), b.getCstatus(), b.getOriginFname(), b.getThumbnailFname(), b.getNewMemNo(), b.getRemain()));
-            }
-            return list2;
+            list = mdao.findByNewNoLike("%" + option + "%", pageable);
         } else if (type.equals("companyRankName")) {
-            List<Member> list = mdao.findByCompanyRankNameLike("%" + option + "%");
-            for (Member b : list) {
-                list2.add(new MemberDto(b.getId(), b.getUsername(), b.getPwd(), b.getName(), b.getEmail(), b.getPhone(), b.getAddress(), b.getCompanyName(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(), b.getNewNo(), b.getComCall(), b.getIsMaster(), b.getStatus(), b.getCstatus(), b.getOriginFname(), b.getThumbnailFname(), b.getNewMemNo(), b.getRemain()));
-            }
-            return list2;
+            list = mdao.findByCompanyRankNameLike("%" + option + "%", pageable);
         } else if (type.equals("deptName")) {
-            List<Member> list = mdao.findByDeptNameLike("%" + option + "%");
-            for (Member b : list) {
-                list2.add(new MemberDto(b.getId(), b.getUsername(), b.getPwd(), b.getName(), b.getEmail(), b.getPhone(), b.getAddress(), b.getCompanyName(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(), b.getNewNo(), b.getComCall(), b.getIsMaster(), b.getStatus(), b.getCstatus(), b.getOriginFname(), b.getThumbnailFname(), b.getNewMemNo(), b.getRemain()));
-            }
-            return list2;
+            list = mdao.findByDeptNameLike("%" + option + "%", pageable);
         } else {
-            List<Member> list = mdao.findAll();
-            for (Member b : list) {
-                list2.add(new MemberDto(b.getId(), b.getUsername(), b.getPwd(), b.getName(), b.getEmail(), b.getPhone(), b.getAddress(), b.getCompanyName(), b.getDeptCode(), b.getDeptName(), b.getCompanyRank(), b.getCompanyRankName(), b.getNewNo(), b.getComCall(), b.getIsMaster(), b.getStatus(), b.getCstatus(), b.getOriginFname(), b.getThumbnailFname(), b.getNewMemNo(), b.getRemain()));
-            }
-            return list2;
+            list = mdao.findAll(pageable);
         }
+        return list.map(MemberDto::of);
     }
+
 }

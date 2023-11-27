@@ -1,5 +1,6 @@
 package com.example.demo.mail;
 
+import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,10 +37,10 @@ public class MailController {
     }
 
     @PostMapping("/send")
-    public String sendMail(MailDto mailDto, MultipartFile file) throws MessagingException, IOException {
+    public String sendMail(MailDto mailDto, MultipartFile file) throws MessagingException, IOException, TemplateException {
         mservice.sendMultipleMessage(mailDto, file);
         System.out.println("file = " + file);
         System.out.println("메일 전송 완료");
-        return "/main";
+        return "redirect:/main";
     }
 }

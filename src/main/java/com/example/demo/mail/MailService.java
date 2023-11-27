@@ -1,28 +1,36 @@
 package com.example.demo.mail;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.mail.internet.MimeUtility;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.freemarker.FreeMarkerConfigurationFactoryBean;
+import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailService {
-
     private final JavaMailSender emailSender;
 
-    public void sendMultipleMessage(MailDto mailDto, MultipartFile file) throws MessagingException, IOException {
+    public void sendMultipleMessage(MailDto mailDto, MultipartFile file) throws MessagingException, IOException, TemplateException {
         // file 객체 널 체크
         if (file == null || file.isEmpty()) {
             MimeMessage message = emailSender.createMimeMessage();

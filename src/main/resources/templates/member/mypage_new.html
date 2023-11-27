@@ -160,65 +160,162 @@
                     </div>
                 </div>
             </div>
-            <div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
-                <div class="card-header cursor-pointer">
-                    <div class="card-title m-0">
-                        <h3 class="fw-bolder m-0">상세 프로필</h3>
+            <form action="/member/edit" method="POST">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <div class="card mb-5 mb-xl-10" id="kt_profile_details_view">
+                    <div class="card-header cursor-pointer">
+                        <div class="card-title m-0">
+                            <h3 class="fw-bolder m-0">상세 프로필</h3>
+                        </div>
+                        <div class="btn btn-icon btn-active-light-primary w-30px h-30px w-md-40px h-md-40px  align-self-center"
+                             data-kt-menu-trigger="click" data-kt-menu-attach="parent"
+                             data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
+                            <i class="bi bi-pencil"></i>
+                        </div>
+                        <div class="menu menu-sub menu-sub-dropdown menu-column w-500px w-lg-700px"
+                             data-kt-menu="true">
+                            <div class="card mb-5 mb-xl-10">
+                                <div class="card-header cursor-pointer">
+                                    <div class="card-title m-0">
+                                        <h3 class="fw-bolder m-0">프로필 수정</h3>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary align-self-center">수정</button>
+                                </div>
+                                <input type="hidden" name="name" th:value="${m.name}">
+                                <input type="hidden" name="comCall" th:value="${m.comCall}">
+                                <input type="hidden" name="companyRank" th:value="${m.companyRank}">
+                                <input type="hidden" name="deptCode" th:value="${m.deptCode}">
+                                <input type="hidden" name="isMaster" th:value="${m.isMaster}">
+                                <input type="hidden" name="newMemNo" th:value="${m.newMemNo}">
+                                <input type="hidden" name="newNo" th:value="${m.newNo}">
+                                <input type="hidden" name="originFname" th:value="${m.originFname}">
+                                <input type="hidden" name="status" th:value="${m.status}">
+                                <input type="hidden" name="thumbnailFname" th:value="${m.thumbnailFname}">
+                                <input type="hidden" name="username" th:value="${m.username}">
+                                <input type="hidden" name="cstatus" th:value="${m.cstatus}">
+                                <input type="hidden" name="companyName" th:value="${m.companyName}">
+                                <div class="card-body p-9">
+                                    <div class="row mb-7">
+                                        <label class="col-lg-4 fw-bold text-muted">이 름 (Full Name)</label>
+                                        <div class="col-lg-8">
+                                            <span class="fw-bolder fs-6 text-dark">
+                                                <div class="input-group input-group-sm mb-3">
+                                                [[${m.name}]]
+                                                </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-7">
+                                        <label class="col-lg-4 fw-bold text-muted">패스워드 (Password)</label>
+                                        <div class="col-lg-8">
+                                            <span class="fw-bolder fs-6 text-dark">
+                                              <div class="input-group input-group-sm mb-3">
+                                                  <input type="password" name="pwd" placeholder="비밀번호를 입력해주세요.."
+                                                         class="form-control" aria-label="Password"
+                                                         aria-describedby="basic-addon1">
+                                              </div>
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-7">
+                                        <label class="col-lg-4 fw-bold text-muted">이메일 (Email)</label>
+                                        <div class="col-lg-8">
+                                            <span class="fw-bolder fs-6 text-dark">
+                                               <div class="input-group input-group-sm mb-3">
+                                                  <input type="email" name="email" th:value="${m.email}"
+                                                         class="form-control" placeholder="Email" aria-label="Email"
+                                                         aria-describedby="basic-addon1">
+                                               </div>
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-7">
+                                        <label class="col-lg-4 fw-bold text-muted">주 소 (Address)</label>
+                                        <div class="col-lg-8">
+                                            <span class="fw-bolder fs-6 text-dark">
+                                                <div class="input-group input-group-sm mb-3">
+                                                  <input type="text" name="address" th:value="${m.address}"
+                                                         class="form-control" placeholder="Address" aria-label="Address"
+                                                         aria-describedby="basic-addon1">
+                                                 </div>
+                                                </span>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-7">
+                                        <label class="col-lg-4 fw-bold text-muted">핸드폰 번호 (Phone)</label>
+                                        <div class="col-lg-8 fv-row">
+                                            <span class="fw-bold fs-6">
+                                              <div class="input-group input-group-sm mb-3">
+                                                  <input type="text" name="phone" th:value="${m.phone}"
+                                                         class="form-control" placeholder="Phone" aria-label="Phone"
+                                                         aria-describedby="basic-addon1">
+                                              </div>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <a href="#" class="btn btn-primary align-self-center">프로필 수정</a>
                 </div>
-                <div class="card-body p-9">
-                    <div class="row mb-7">
-                        <label class="col-lg-4 fw-bold text-muted">이 름 (Full Name)</label>
-                        <div class="col-lg-8">
-                            <span class="fw-bolder fs-6 text-dark">[[${m.name}]]</span>
-                        </div>
+            </form>
+            <div class="card-body p-9">
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-bold text-muted">이 름 (Full Name)</label>
+                    <div class="col-lg-8">
+                        <span class="fw-bolder fs-6 text-dark">[[${m.name}]]</span>
                     </div>
-                    <div class="row mb-7">
-                        <label class="col-lg-4 fw-bold text-muted">직 급 (Rank)</label>
-                        <div class="col-lg-8 fv-row">
-                            <span class="fw-bold fs-6">[[${m.companyRankName}]]</span>
-                        </div>
+                </div>
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-bold text-muted">직 급 (Rank)</label>
+                    <div class="col-lg-8 fv-row">
+                        <span class="fw-bold fs-6">[[${m.companyRankName}]]</span>
                     </div>
-                    <div class="row mb-7">
-                        <label class="col-lg-4 fw-bold text-muted">회 사 (Company)</label>
-                        <div class="col-lg-8 fv-row">
-                            <span class="fw-bold fs-6">[[${m.companyName}]]</span>
-                        </div>
+                </div>
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-bold text-muted">부 서 (Department)</label>
+                    <div class="col-lg-8 fv-row">
+                        <span class="fw-bold fs-6">[[${m.deptName}]]</span>
                     </div>
-                    <div class="row mb-7">
-                        <label class="col-lg-4 fw-bold text-muted">사 번 (Emp_Number)</label>
-                        <div class="col-lg-8 fv-row">
-                            <span class="fw-bold fs-6">[[${m.newNo}]]</span>
-                        </div>
+                </div>
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-bold text-muted">회 사 (Company)</label>
+                    <div class="col-lg-8 fv-row">
+                        <span class="fw-bold fs-6">[[${m.companyName}]]</span>
                     </div>
-                    <div class="row mb-7">
-                        <label class="col-lg-4 fw-bold text-muted">핸드폰 번호 (Phone)</label>
-                        <div class="col-lg-8 fv-row">
-                            <span class="fw-bold fs-6">[[${m.phone}]]</span>
-                        </div>
+                </div>
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-bold text-muted">사 번 (Emp_Number)</label>
+                    <div class="col-lg-8 fv-row">
+                        <span class="fw-bold fs-6">[[${m.newNo}]]</span>
                     </div>
-                    <div class="row mb-7">
-                        <label class="col-lg-4 fw-bold text-muted">사내전화 (Contact Phone)
-                            <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
-                               title="Phone number must be active"></i></label>
-                        <div class="col-lg-8 d-flex align-items-center">
-                            <span class="fw-bolder fs-6 me-2">[[${m.comCall}]]</span>
-                        </div>
+                </div>
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-bold text-muted">핸드폰 번호 (Phone)</label>
+                    <div class="col-lg-8 fv-row">
+                        <span class="fw-bold fs-6">[[${m.phone}]]</span>
                     </div>
-                    <div class="row mb-7">
-                        <label class="col-lg-4 fw-bold text-muted">국 가 (Country)
-                            <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
-                               title="Country of origination"></i></label>
-                        <div class="col-lg-8">
-                            <span class="fw-bolder fs-6 text-dark">대한민국</span>
-                        </div>
+                </div>
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-bold text-muted">사내전화 (Contact Phone)
+                        <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
+                           title="Phone number must be active"></i></label>
+                    <div class="col-lg-8 d-flex align-items-center">
+                        <span class="fw-bolder fs-6 me-2">[[${m.comCall}]]</span>
                     </div>
-                    <div class="row mb-10">
-                        <label class="col-lg-4 fw-bold text-muted">잔여 연차일(Remain Vacation)</label>
-                        <div class="col-lg-8">
-                            <span class="fw-bold fs-6">[[${m.remain}]]</span>
-                        </div>
+                </div>
+                <div class="row mb-7">
+                    <label class="col-lg-4 fw-bold text-muted">국 가 (Country)
+                        <i class="fas fa-exclamation-circle ms-1 fs-7" data-bs-toggle="tooltip"
+                           title="Country of origination"></i></label>
+                    <div class="col-lg-8">
+                        <span class="fw-bolder fs-6 text-dark">대한민국</span>
+                    </div>
+                </div>
+                <div class="row mb-10">
+                    <label class="col-lg-4 fw-bold text-muted">잔여 연차일(Remain Vacation)</label>
+                    <div class="col-lg-8">
+                        <span class="fw-bold fs-6">[[${m.remain}]]</span>
                     </div>
                 </div>
             </div>

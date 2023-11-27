@@ -163,32 +163,6 @@
                                     <!--end::Toolbar-->
                                 </form>
                                 <!--end::Form-->
-                                <!--begin::Recently viewed-->
-                                <div data-kt-search-element="results" class="d-none">
-                                    <!--begin::Items-->
-                                    <div class="scroll-y mh-200px mh-lg-325px">
-                                        <!--begin::Category title-->
-                                        <h3 class="fs-5 text-muted m-0 pb-5"
-                                            data-kt-search-element="category-title">Users</h3>
-                                        <!--end::Category title-->
-                                        <!--begin::Item-->
-                                        <a href="#" class="d-flex text-dark text-hover-primary align-items-center mb-5">
-                                            <!--begin::Symbol-->
-                                            <div class="symbol symbol-40px me-4">
-<!--                                                <img th:src="/img/${m.originFname}" alt=""/>-->
-                                            </div>
-                                            <!--end::Symbol-->
-                                            <!--begin::Title-->
-                                            <div class="d-flex flex-column justify-content-start fw-bold">
-                                                <span class="fs-6 fw-bold">${m.name}</span>
-                                                <span class="fs-7 fw-bold text-muted">${m.deptName}</span>
-                                            </div>
-                                            <!--end::Title-->
-                                        </a>
-                                        <!--end::Item-->
-                                    </div>
-                                </div>
-                                <!--end::Recently viewed-->
                                 <!--begin::Empty-->
                                 <div data-kt-search-element="empty" class="text-center d-none">
                                     <!--begin::Icon-->
@@ -1088,7 +1062,7 @@
                                 <!--begin::Avatar-->
                                 <div class="symbol symbol-50px me-5">
                                     <img th:if="${#strings.isEmpty(#authentication.principal.originFname)}" src="/img/default.png" alt="image"/>
-                                    <img th:if="${!#strings.isEmpty(#authentication.principal.originFname)}" th:src="${#authentication.principal.originFname}" alt="image"/>
+                                    <img th:if="${!#strings.isEmpty(#authentication.principal.originFname)}" th:src="@{'/img/' + ${#authentication.principal.originFname}}" alt="image"/>
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->

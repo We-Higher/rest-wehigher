@@ -184,8 +184,10 @@
                                                     <div class="col-lg-8 fv-row">
                                                                     <span class="fw-bold fs-6">
                                                                       <div class="input-group input-group-sm mb-3">
-                                                                          <select name="isMaster" class="form-select form-select-sm form-select-solid">
-                                                                            <option selected="selected" value="0">일반회원</option>
+                                                                          <select name="isMaster"
+                                                                                  class="form-select form-select-sm form-select-solid">
+                                                                            <option selected="selected"
+                                                                                    value="0">일반회원</option>
                                                                             <option value="1">관리자</option>
                                                                          </select>
                                                                       </div>
@@ -211,7 +213,8 @@
                                     </div>
                                     <input type="text" name="option" class="form-control form-control-sm">
                                     <div class="input-group-append">
-                                        <button type="submit" value="검색" name="search" class="btn btn-success btn-sm" style="z-index: 0;">
+                                        <button type="submit" value="검색" name="search" class="btn btn-success btn-sm"
+                                                style="z-index: 0;">
                                             Search
                                         </button>
                                     </div>
@@ -235,7 +238,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="m : ${list}">
+                                    <tr th:each="m : ${paging}">
                                         <td th:text="${m.newNo}"></td>
                                         <td th:if="${#authentication.principal.isMaster == 1}"
                                             th:text="${m.name}"></td>
@@ -427,6 +430,49 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                                <!-- 페이징처리 시작 -->
+                                <div th:if="${!paging.isEmpty()}">
+                                    <ul class="pagination justify-content-center">
+
+                                        <!-- 처음 링크 -->
+                                        <li class="page-item" th:classappend="${paging.first} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=1|}">
+                                                <span>처음</span>
+                                            </a>
+                                        </li>
+                                        <!-- 이전 링크 -->
+                                        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{|?page=${paging.number}|}">
+                                                <span>이전</span>
+                                            </a>
+                                        </li>
+                                        <!-- 페이지 번호 -->
+                                        <li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
+                                            th:if="${page >= paging.number-4 and page <= paging.number+4}"
+                                            th:classappend="${page == paging.number+1} ? 'active'"
+                                            class="page-item">
+                                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                        </li>
+                                        <!-- 생략 기호 -->
+                                        <li th:if="${paging.number+4 < paging.totalPages}" class="page-item disabled">
+                                            <a class="page-link">...</a>
+                                        </li>
+                                        <!-- 다음 기호 -->
+                                        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=${paging.number+2}|}">
+                                                <span>다음</span>
+                                            </a>
+                                        </li>
+                                        <!-- 마지막 링크 -->
+                                        <li class="page-item" th:classappend="${paging.last} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=${paging.totalPages}|}">
+                                                <span>마지막</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- 페이징처리 끝 -->
                             </div>
                         </div>
                     </div>

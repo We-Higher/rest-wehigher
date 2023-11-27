@@ -4,11 +4,14 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -67,4 +70,25 @@ public class CommuteService {
         Pageable pageable = PageRequest.of(page, 10);
         return this.cdao.findAll(pageable);
     }
+
+    public Page<Commute> getMyList(Long id, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        return this.cdao.findByMemberId(id, pageable);
+    }
+
+    public Page<Commute> getEditRequestList(int page, String editStartTime, String editEndTime) {
+        Pageable pageable = PageRequest.of(page, 10); // size는 한 페이지에 표시할 데이터 수를 지정합니다.
+        List<Commute> list = cdao.findAll();
+        List<Commute> filteredList = list.stream()
+                .filter(c -> c.getEditStartTime() != null || c.getEditEndTime() != null)
+                .collect(Collectors.toList());
+
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), filteredList.size());
+
+        Page<Commute> pages = new PageImpl<>(filteredList.subList(start, end), pageable, filteredList.size());
+
+        return pages;
+    }
+
 }

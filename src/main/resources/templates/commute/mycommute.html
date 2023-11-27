@@ -43,7 +43,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="c:${list}">
+                                    <tr th:each="c:${paging}">
                                         <td>[[${c.member.name}]]</td>
                                         <td>[[${c.member.deptName}]]</td>
                                         <td>[[${c.member.companyRankName}]]</td>
@@ -168,6 +168,49 @@
                                     </tr>
                                     </tbody>
                                 </table>
+                                <!-- 페이징처리 시작 -->
+                                <div th:if="${!paging.isEmpty()}">
+                                    <ul class="pagination justify-content-center">
+
+                                        <!-- 처음 링크 -->
+                                        <li class="page-item" th:classappend="${paging.first} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=1|}">
+                                                <span>처음</span>
+                                            </a>
+                                        </li>
+                                        <!-- 이전 링크 -->
+                                        <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
+                                            <a class="page-link"
+                                               th:href="@{|?page=${paging.number}|}">
+                                                <span>이전</span>
+                                            </a>
+                                        </li>
+                                        <!-- 페이지 번호 -->
+                                        <li th:each="page: ${#numbers.sequence(1, paging.totalPages)}"
+                                            th:if="${page >= paging.number-4 and page <= paging.number+4}"
+                                            th:classappend="${page == paging.number+1} ? 'active'"
+                                            class="page-item">
+                                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                        </li>
+                                        <!-- 생략 기호 -->
+                                        <li th:if="${paging.number+4 < paging.totalPages}" class="page-item disabled">
+                                            <a class="page-link">...</a>
+                                        </li>
+                                        <!-- 다음 기호 -->
+                                        <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=${paging.number+2}|}">
+                                                <span>다음</span>
+                                            </a>
+                                        </li>
+                                        <!-- 마지막 링크 -->
+                                        <li class="page-item" th:classappend="${paging.last} ? 'disabled'">
+                                            <a class="page-link" th:href="@{|?page=${paging.totalPages}|}">
+                                                <span>마지막</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <!-- 페이징처리 끝 -->
                             </div>
                         </div>
                     </div>
