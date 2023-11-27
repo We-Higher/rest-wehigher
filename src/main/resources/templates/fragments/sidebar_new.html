@@ -387,7 +387,7 @@
 														<span class="badge badge-pro badge-light-danger fw-bold fs-9 px-2 py-1 ms-1">Pro</span></span>
                                 </a>
                             </div>
-                            <div class="menu-item">
+                            <div class="menu-item" th:if="${#authentication.principal.isMaster == 1}">
                                 <a class="menu-link" href="/commute/editRequestList" data-kt-page="pro">
 														<span class="menu-bullet">
 															<span class="bullet bullet-dot"></span>

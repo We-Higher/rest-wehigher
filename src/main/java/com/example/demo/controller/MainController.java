@@ -55,7 +55,7 @@ public class MainController {
         ArrayList<MemberDto> monthMemlist = new ArrayList<>();
         for (MemberDto dto : list) {
             if (dto.getMonthMember() == 1) {
-                monthMemlist.add(new MemberDto(dto.getId(), dto.getUsername(), dto.getPwd(), dto.getName(), dto.getEmail(), dto.getPhone(), dto.getAddress(), dto.getCompanyName(), dto.getDeptCode(), dto.getDeptName(), dto.getCompanyRank(), dto.getCompanyRankName(), dto.getNewNo(), dto.getComCall(), dto.getIsMaster(), dto.getStatus(), dto.getCstatus(), dto.getOriginFname(), dto.getThumbnailFname(), dto.getNewMemNo(), dto.getRemain(), dto.getMonthMember()));
+                monthMemlist.add(new MemberDto(dto.getId(), dto.getUsername(), dto.getPwd(), dto.getName(), dto.getEmail(), dto.getPhone(), dto.getAddress(), dto.getCompanyName(), dto.getDeptCode(), dto.getDeptName(), dto.getCompanyRank(), dto.getCompanyRankName(), dto.getNewNo(), dto.getComCall(), dto.getIsMaster(), dto.getStatus(), dto.getCstatus(), dto.getOriginFname(), dto.getThumbnailFname(), dto.getNewMemNo(), dto.getRemain(), dto.getMonthMember(), null));
             }
         }
         map.addAttribute("monthMemlist", monthMemlist);

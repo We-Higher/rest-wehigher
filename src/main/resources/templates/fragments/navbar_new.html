@@ -1051,7 +1051,7 @@
                          data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end"
                          data-kt-menu-flip="bottom">
                         <img th:if="${#strings.isEmpty(#authentication.principal.originFname)}" src="/img/default.png" alt="image"/>
-                        <img th:if="${!#strings.isEmpty(#authentication.principal.originFname)}" th:src="${#authentication.principal.originFname}" alt="image"/>
+                        <img th:if="${!#strings.isEmpty(#authentication.principal.originFname)}" th:src="@{'/profile/' + ${#authentication.principal.originFname}}" alt="image"/>
                     </div>
                     <!--begin::Menu-->
                     <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold py-4 fs-6 w-275px" style="z-index: 3;"
@@ -1062,7 +1062,7 @@
                                 <!--begin::Avatar-->
                                 <div class="symbol symbol-50px me-5">
                                     <img th:if="${#strings.isEmpty(#authentication.principal.originFname)}" src="/img/default.png" alt="image"/>
-                                    <img th:if="${!#strings.isEmpty(#authentication.principal.originFname)}" th:src="@{'/img/' + ${#authentication.principal.originFname}}" alt="image"/>
+                                    <img th:if="${!#strings.isEmpty(#authentication.principal.originFname)}" th:src="@{'/profile/' + ${#authentication.principal.originFname}}" alt="image"/>
                                 </div>
                                 <!--end::Avatar-->
                                 <!--begin::Username-->
@@ -1090,11 +1090,6 @@
                         <div class="separator my-2"></div>
                         <!--end::Menu separator-->
 
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-5 my-1">
-                            <a href="#" class="menu-link px-5">Account Settings</a>
-                        </div>
-                        <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-5">
                             <a href="/member/logout" class="menu-link px-5">로그아웃</a>
