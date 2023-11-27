@@ -6,7 +6,6 @@ import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +42,7 @@ public class DataroomController {
     private final MemberService memberService;
 
     @RequestMapping("/list")
-    public void list(Model m, @RequestParam(value = "page", defaultValue = "1") int page, Principal principal, Model map) {
+    public void list(Model m, @RequestParam(value = "page", defaultValue = "1") int page, Principal principal) {
         Page<Dataroom> paging = this.service.getList(page - 1);
         m.addAttribute("paging", paging);
         ArrayList<DataroomDto> list = service.getAll();
@@ -51,20 +50,18 @@ public class DataroomController {
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = LocalDateTime.now().format(formatter1);
         MemberDto mdto = memberService.getMember(principal.getName());
-        map.addAttribute("date", date);
-        map.addAttribute("name", mdto.getName());
+        m.addAttribute("date", date);
+        m.addAttribute("name", mdto.getName());
     }
 
-//    @GetMapping("/add")
-//    public void addForm(Principal principal, Model map) {
-//        System.out.println("principal = " + principal);
-//        System.out.println("principal.getName() = " + principal.getName());
-//        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        String date = LocalDateTime.now().format(formatter1);
-//        MemberDto mdto = memberService.getMember(principal.getName());
-//        map.addAttribute("date", date);
-//        map.addAttribute("name", mdto.getName());
-//    }
+    @GetMapping("/search")
+    public String searchReferenceList(ReferenceSearch referenceSearch, @RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+        Page<DataroomDto> listReference = service.getSearchReference(referenceSearch, page-1);
+        model.addAttribute("paging", listReference);
+        model.addAttribute("kw", referenceSearch);
+
+        return "dataroom/list";
+    }
 
     @PostMapping("/add")
     public String add(Principal principal, DataroomDto dto) {
@@ -142,13 +139,6 @@ public class DataroomController {
         return "redirect:/dataroom/list";
     }
 
-    @PostMapping("/search")
-    public String searchReferenceList(ReferenceSearch referenceSearch, Pageable pageable, Model model) {
-        Page<DataroomDto> listReference = service.getSearchReference(referenceSearch, pageable);
-        model.addAttribute("paging", listReference);
-        System.out.println("listReference = " + listReference);
-        return "dataroom/list";
-    }
 
 
     @RequestMapping("/down")

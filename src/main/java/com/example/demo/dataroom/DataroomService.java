@@ -70,16 +70,17 @@ public class DataroomService {
     }
 
     //    select로 검색
-    public Page<DataroomDto> getSearchReference(ReferenceSearch referenceSearch, Pageable pageable) {
-        Page<Dataroom> page;
+    public Page<DataroomDto> getSearchReference(ReferenceSearch referenceSearch, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Dataroom> list;
         if (Objects.equals("writer", referenceSearch.getSelect())) {
-            page = dao.findByMemberNameContains(referenceSearch.getSearch(), pageable);
+            list = dao.findByMemberNameContains(referenceSearch.getSearch(), pageable);
         } else if (Objects.equals("title", referenceSearch.getSelect())) {
-            page = dao.findByTitleContains(referenceSearch.getSearch(), pageable);
+            list = dao.findByTitleContains(referenceSearch.getSearch(), pageable);
         } else {
-            page = dao.findAll(pageable);
+            list = dao.findAll(pageable);
         }
-        return page.map(DataroomDto::of);
+        return list.map(DataroomDto::of);
     }
 
     //페이지
