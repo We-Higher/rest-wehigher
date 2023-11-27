@@ -24,24 +24,40 @@
     <!-- page style -->
     <th:block layout:fragment="style"></th:block>
 </head>
-<!-- Sidebar -->
-<div class="sidebar" th:replace="~{fragments/sidebar_new :: sidebarFragment}"></div>
+<body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disabled">
+<!--Begin::Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5FS8GGP" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!--End::Google Tag Manager (noscript) -->
 
-<!-- Navbar -->
-<div class="navbar" th:replace="~{fragments/navbar_new :: navbarFragment}"></div>
+<!--begin::Main-->
+<!--begin::Root-->
+<div class="d-flex flex-column flex-root">
+    <!--begin::Page-->
+    <div class="page d-flex flex-row flex-column-fluid">
+        <!--begin::Aside-->
+        <div class="sidebar" th:replace="~{fragments/sidebar_new :: sidebarFragment}"></div>
+        <!--end::Aside-->
 
-<!-- Main content -->
-<div class="main-content">
-    <!--begin::Wrapper-->
-    <div style="min-height: 100vh;" class="wrapper d-flex flex-column flex-column-auto" id="kt_wrapper">
-        <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disabled flex-grow-1">
-        <th:block layout:fragment="content"></th:block>
-        </body>
+        <!--begin::Wrapper-->
+        <div class="wrapper d-flex flex-column flex-row-fluid" id="kt_wrapper">
+            <!--begin::Header-->
+            <div class="navbar" th:replace="~{fragments/navbar_new :: navbarFragment}"></div>
+            <!--end::Header-->
+
+            <!--begin::Content-->
+            <th:block layout:fragment="content"></th:block>
+            <!--end::Content-->
+
+            <!--begin::Footer-->
+            <div class="footer" th:replace="~{fragments/footer :: footerFragment}"></div>
+            <!--end::Footer-->
+        </div>
+        <!--end::Wrapper-->
     </div>
+    <!--end::Page-->
 </div>
-
-<!-- Footer -->
-<div class="footer" th:replace="~{fragments/footer :: footerFragment}"></div>
+<!--end::Root-->
+</body>
 
 <!-- global js -->
 <script src="/plugins/global/plugins.bundle.js"></script>
