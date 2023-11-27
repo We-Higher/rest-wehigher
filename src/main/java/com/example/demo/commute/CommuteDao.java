@@ -19,4 +19,6 @@ public interface CommuteDao extends JpaRepository<Commute, Integer> {
     Page<Commute> findByMemberId(Long id, Pageable pageable);    //회원번호로 검색
     
     Commute findByBasicDateAndMemberUsername(String BasicDate, String Username);
+
+    Page<Commute> findByBasicDateLikeAndMemberId(String BasicDate, Long id, Pageable pageable);
 }

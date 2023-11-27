@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -149,9 +150,9 @@ public class approvalController {
 
     //1차 결재자 검색
     @PostMapping("/approvalList1")
-    public ModelAndView getbyOption(String type, String option, Pageable pageable) {
+    public ModelAndView getbyOption(String type, String option, Pageable pageable, @RequestParam(value = "page", defaultValue = "1") int page) {
         ModelAndView mav = new ModelAndView("approval/approvalList1");
-        Page<MemberDto> list = empservice.getByOption(type, option, pageable);
+        Page<MemberDto> list = empservice.getByOption(type, option, page);
         mav.addObject("list", list);
         return mav;
     }
@@ -167,9 +168,9 @@ public class approvalController {
 
     //2차 결재자 검색
     @PostMapping("/approvalList2")
-    public ModelAndView getbyOption2(String type, String option, Pageable pageable) {
+    public ModelAndView getbyOption2(String type, String option, Pageable pageable, @RequestParam(value = "page", defaultValue = "1") int page) {
         ModelAndView mav = new ModelAndView("approval/approvalList2");
-        Page<MemberDto> list = empservice.getByOption(type, option,pageable);
+        Page<MemberDto> list = empservice.getByOption(type, option, page);
         mav.addObject("list", list);
         return mav;
     }

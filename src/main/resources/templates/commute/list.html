@@ -8,22 +8,21 @@
                     <div class="card">
                         <div class="card-header card-header-danger">
                             <h2 class="card-title ">근태관리</h2>
-                            <form action="/commute/list" method="post">
-                                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                            <form action="/commute/search" method="GET">
                                 <div class="input-group mb-3" style="padding-top: 50px;">
                                     <div class="input-group-prepend">
                                         <select name="type" class="form-select form-select-sm">
-                                            <option value="basicDate">기준일</option>
+<!--                                            <option value="basicDate">기준일</option>-->
                                             <option value="name">이름</option>
                                             <option value="deptName">부서</option>
                                         </select>
                                     </div>
-                                    <input type="date" name="option1" class="form-control form-control-sm"
-                                           id="dateOption">
-                                    <input type="text" name="option2" class="form-control form-control-sm"
+<!--                                    <input type="date" name="option1" class="form-control form-control-sm"-->
+<!--                                           id="dateOption">-->
+                                    <input type="text" name="option" class="form-control form-control-sm"
                                            id="textOption">
                                     <div class="input-group-append">
-                                        <button type="submit" value="검색" name="search" class="btn btn-success btn-sm" style="z-index: 1">
+                                        <button type="submit" value="검색" class="btn btn-success btn-sm" style="z-index: 1">
                                             Search
                                         </button>
                                     </div>
@@ -61,14 +60,15 @@
 
                                         <!-- 처음 링크 -->
                                         <li class="page-item" th:classappend="${paging.first} ? 'disabled'">
-                                            <a class="page-link" th:href="@{|?page=1|}">
+                                            <a class="page-link"
+                                               th:href="@{|?page=1&type=${type}&option=${option}|}">
                                                 <span>처음</span>
                                             </a>
                                         </li>
                                         <!-- 이전 링크 -->
                                         <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
                                             <a class="page-link"
-                                               th:href="@{|?page=${paging.number}|}">
+                                               th:href="@{|?page=${paging.number}&type=${type}&option=${option}|}">
                                                 <span>이전</span>
                                             </a>
                                         </li>
@@ -77,7 +77,8 @@
                                             th:if="${page >= paging.number-4 and page <= paging.number+4}"
                                             th:classappend="${page == paging.number+1} ? 'active'"
                                             class="page-item">
-                                            <a th:text="${page}" class="page-link" th:href="@{|?page=${page}|}"></a>
+                                            <a th:text="${page}" class="page-link"
+                                               th:href="@{|?page=${page}&type=${type}&option=${option}|}"></a>
                                         </li>
                                         <!-- 생략 기호 -->
                                         <li th:if="${paging.number+4 < paging.totalPages}" class="page-item disabled">
@@ -85,13 +86,15 @@
                                         </li>
                                         <!-- 다음 기호 -->
                                         <li class="page-item" th:classappend="${!paging.hasNext} ? 'disabled'">
-                                            <a class="page-link" th:href="@{|?page=${paging.number+2}|}">
+                                            <a class="page-link"
+                                               th:href="@{|?page=${paging.number+2}&type=${type}&option=${option}|}">
                                                 <span>다음</span>
                                             </a>
                                         </li>
                                         <!-- 마지막 링크 -->
                                         <li class="page-item" th:classappend="${paging.last} ? 'disabled'">
-                                            <a class="page-link" th:href="@{|?page=${paging.totalPages}|}">
+                                            <a class="page-link"
+                                               th:href="@{|?page=${paging.totalPages}&type=${type}&option=${option}|}">
                                                 <span>마지막</span>
                                             </a>
                                         </li>

@@ -55,11 +55,15 @@ public class DataroomController {
     }
 
     @GetMapping("/search")
-    public String searchReferenceList(ReferenceSearch referenceSearch, @RequestParam(value = "page", defaultValue = "1") int page, Model model) {
+    public String searchReferenceList(ReferenceSearch referenceSearch, @RequestParam(value = "page", defaultValue = "1") int page, Model model, Principal principal) {
         Page<DataroomDto> listReference = service.getSearchReference(referenceSearch, page-1);
         model.addAttribute("paging", listReference);
         model.addAttribute("kw", referenceSearch);
-
+        DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = LocalDateTime.now().format(formatter1);
+        MemberDto mdto = memberService.getMember(principal.getName());
+        model.addAttribute("date", date);
+        model.addAttribute("name", mdto.getName());
         return "dataroom/list";
     }
 

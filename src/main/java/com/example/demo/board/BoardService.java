@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -55,13 +56,12 @@ public class BoardService {
     }
 
     // 옵션으로 검색
-    public Page<BoardDto> getByOption(String type, String option, Pageable pageable) {
-
+    public Page<BoardDto> getByOption(String type, String option, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
         Page<Board> list;
-        if (type.equals("name")) {
+        if (Objects.equals("name", type)) {
             list = dao.findByMemberNameLike("%" + option + "%", pageable);
-        }
-        if (type.equals("title")) {
+        } else if (Objects.equals("title", type)) {
             list = dao.findByTitleLike("%" + option + "%", pageable);
         } else {
             list = dao.findAll(pageable);
@@ -70,12 +70,12 @@ public class BoardService {
     }
 
     // 공지사항 옵션으로 검색
-    public Page<NotifyDto> getByOption2(String type, String option, Pageable pageable) {
+    public Page<NotifyDto> getByOption2(String type, String option, int page) {
+        Pageable pageable = PageRequest.of(page, 10);
         Page<Notify> list;
-        if (type.equals("name")) {
+        if (Objects.equals("name", type)) {
             list = ndao.findByMemberNameLike("%" + option + "%", pageable);
-        }
-        if (type.equals("title")) {
+        } else if (Objects.equals("title", type)) {
             list = ndao.findByTitleLike("%" + option + "%", pageable);
         } else {
             list = ndao.findAll(pageable);
