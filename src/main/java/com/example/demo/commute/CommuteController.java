@@ -1,5 +1,6 @@
 package com.example.demo.commute;
 
+import com.example.demo.dataroom.Dataroom;
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,8 +43,8 @@ public class CommuteController {
     //근태관리
     @GetMapping("/list")
     public String list(Model map, Principal principal, @RequestParam(value = "page", defaultValue = "1") int page) {
-        Page<Commute> paging = this.cservice.getList(page-1);
-        map.addAttribute("paging",paging);
+        Page<Commute> paging = this.cservice.getList(page - 1);
+        map.addAttribute("paging", paging);
         ArrayList<CommuteDto> list = cservice.getAll();
         MemberDto mdto = mservice.getMember(principal.getName());
         map.addAttribute("mdto", mdto);
@@ -54,10 +57,10 @@ public class CommuteController {
     public String getByOption(String type, Model map, String option1, String option2, Pageable pageable) {
 
         if (!option1.isEmpty()) {
-            Page<CommuteDto> list1 = cservice.getByOption(type, option1,pageable);
+            Page<CommuteDto> list1 = cservice.getByOption(type, option1, pageable);
             map.addAttribute("list", list1);
         } else if (!option2.isEmpty()) {
-            Page<CommuteDto> list2 = cservice.getByOption(type, option2,pageable);
+            Page<CommuteDto> list2 = cservice.getByOption(type, option2, pageable);
             map.addAttribute("list", list2);
         }
         return "/commute/list";
@@ -65,18 +68,23 @@ public class CommuteController {
 
     //나의 출퇴근 기록
     @GetMapping("/mycommute")
-    public String mycommute(Model map, Principal principal,Pageable pageable) {
+    public String mycommute(Model map, Principal principal, @RequestParam(value = "page", defaultValue = "1") int page, Pageable pageable) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member loginMember = (Member) authentication.getPrincipal();
+
+        Page<Commute> paging = this.cservice.getMyList(loginMember.getId(), page - 1);
+        map.addAttribute("paging", paging);
         MemberDto mdto = mservice.getMember(principal.getName());
-        Page<CommuteDto> list = cservice.getByMemberId(mdto.getId(),pageable);
+        Page<CommuteDto> list = cservice.getByMemberId(mdto.getId(), pageable);
         map.addAttribute("list", list);
         return "/commute/mycommute";
     }
 
     //옵션으로 검색(내 출퇴근 이력)
     @PostMapping("/mycommute")
-    public String getByMycommut(String type, Model map, String option, Principal principal,Pageable pageable) {
+    public String getByMycommut(String type, Model map, String option, Principal principal, Pageable pageable) {
         MemberDto mdto = mservice.getMember(principal.getName());
-        Page<CommuteDto> list = cservice.getByOption(type, option,pageable);
+        Page<CommuteDto> list = cservice.getByOption(type, option, pageable);
         for (CommuteDto cdto : list) {
             if (mdto.getId() == cdto.getMember().getId()) {
                 list.map(commuteDto -> commuteDto);
@@ -109,17 +117,19 @@ public class CommuteController {
             map.addAttribute("list", list);
             init(response);
             PrintWriter out = response.getWriter();
-            out.println(String.format("<script>window.close();</script>"));
+            out.println(String.format("<script>alert('근태수정 신청이 완료됐습니다.');</script>"));
             out.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "/commute/editRequestList";
+        return "/main";
     }
 
     //출퇴근기록 수정요청목록
     @GetMapping("/editRequestList")
-    public String edit(Model map) {
+    public String edit(Model map, @RequestParam(value = "page", defaultValue = "1") int page, String editStartTime, String editEndTime) {
+        Page<Commute> paging = this.cservice.getEditRequestList(page - 1, editStartTime, editEndTime);
+        map.addAttribute("paging", paging);
         ArrayList<CommuteDto> list = cservice.getAll();
         ArrayList<CommuteDto> list2 = new ArrayList<>();
         for (CommuteDto cdto : list) {
@@ -152,7 +162,7 @@ public class CommuteController {
         }
         return "redirect:/commute/editRequestList";
     }*/
-    
+
     //수정요청 승인
     @RequestMapping("/approve")
     public String approve(int commuteNum) {
@@ -190,22 +200,21 @@ public class CommuteController {
         String formattedTime2 = LocalDateTime.now().format(formatter2);
         CommuteDto cdto2 = cservice.getByDateAndUserName(formattedTime1, principal.getName());
         System.out.println(cdto2);
-	    if(cdto2==null) {
-	    	mdto.setCstatus(1);
-	    	mservice.save(mdto);	
-	  	    cdto.setBasicDate(formattedTime1);
-	  	    cdto.setStartTime(formattedTime2);
-	  	    cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
-	  	    cservice.save(cdto);
-	    }
-        else {
-        	
+        if (cdto2 == null) {
+            mdto.setCstatus(1);
+            mservice.save(mdto);
+            cdto.setBasicDate(formattedTime1);
+            cdto.setStartTime(formattedTime2);
+            cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(),mdto.getMonthMember()));
+            cservice.save(cdto);
+        } else {
+
             init(response);
             PrintWriter out = response.getWriter();
-            out.write("<script>alert('"+"이미 출근처리가 완료되었습니다."+"');location.href='"+"/main"+"';</script>");
+            out.write("<script>alert('" + "이미 출근처리가 완료되었습니다." + "');location.href='" + "/main" + "';</script>");
             out.flush();
         }
-	    return "redirect:/main";
+        return "redirect:/main";
     }
 
     //퇴근
@@ -219,20 +228,19 @@ public class CommuteController {
         cdto = cservice.getByDateAndUserName(formattedTime1, principal.getName());
         System.out.println(cdto.getEndTime());
         System.out.println(formattedTime2);
-        if(cdto.getEndTime()==null) {
+        if (cdto.getEndTime() == null) {
             mdto.setCstatus(2);
             mservice.save(mdto);
-	        cdto.setEndTime(formattedTime2);
-	        System.out.println("test " + cdto.getCommuteNum());
-	        System.out.println("test " + cdto);
-	        cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain()));
-	        cservice.save(cdto);
-        }
-        else {
-        	
+            cdto.setEndTime(formattedTime2);
+            System.out.println("test " + cdto.getCommuteNum());
+            System.out.println("test " + cdto);
+            cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(),mdto.getMonthMember()));
+            cservice.save(cdto);
+        } else {
+
             init(response);
             PrintWriter out = response.getWriter();
-            out.write("<script>alert('"+"이미 퇴근처리가 완료되었습니다."+"');location.href='"+"/main"+"';</script>");
+            out.write("<script>alert('" + "이미 퇴근처리가 완료되었습니다." + "');location.href='" + "/main" + "';</script>");
             out.flush();
             //out.close();
         }

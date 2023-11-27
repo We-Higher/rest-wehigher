@@ -8,10 +8,13 @@ import com.example.demo.approval.vacation.VacationDto;
 import com.example.demo.approval.vacation.VacationService;
 import com.example.demo.employee.EmployeeDto;
 import com.example.demo.employee.EmployeeService;
+import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.security.Principal;
 import java.util.ArrayList;
+
 @PreAuthorize("isAuthenticated()")
 @Controller
 @RequestMapping("/approval")
@@ -43,7 +47,7 @@ public class approvalController {
         response.setContentType("text/html; charset=utf-8");
         response.setCharacterEncoding("utf-8");
     }
-    
+
     @GetMapping("/draft")
     public void list(Model map) {
         ArrayList<ExpenseDto> elist = eservice.getAll();
@@ -75,7 +79,7 @@ public class approvalController {
         map.addAttribute("rlist", rlist);
         map.addAttribute("vlist", vlist);
     }
-    
+
     @GetMapping("/myrefuse")
     public void RefuseListById(Model map, Principal principal) {
         ArrayList<ExpenseDto> elist = eservice.getAll();
@@ -110,7 +114,7 @@ public class approvalController {
         map.addAttribute("vdto", vdto);
         return "approval/edit/editVacation";
     }
-    
+
     @GetMapping("/expense/editread")
     public String editExpenseRead(ExpenseDto edto, Model map) {
         edto = eservice.getById(edto.getExpenseNum());
@@ -142,15 +146,15 @@ public class approvalController {
         mav.addObject("list", list);
         return mav;
     }
-    
+
     //1차 결재자 검색
     @PostMapping("/approvalList1")
-	public ModelAndView getbyOption(String type, String option) {
-    	ModelAndView mav = new ModelAndView("approval/approvalList1");
-		ArrayList<MemberDto> list = empservice.getByOption(type, option);
-		mav.addObject("list", list);
-		return mav;
-	}
+    public ModelAndView getbyOption(String type, String option, Pageable pageable) {
+        ModelAndView mav = new ModelAndView("approval/approvalList1");
+        Page<MemberDto> list = empservice.getByOption(type, option, pageable);
+        mav.addObject("list", list);
+        return mav;
+    }
 
     //2차 결재자 선택
     @GetMapping("/approvalList2")
@@ -160,85 +164,85 @@ public class approvalController {
         mav.addObject("list", list);
         return mav;
     }
-    
+
     //2차 결재자 검색
     @PostMapping("/approvalList2")
-	public ModelAndView getbyOption2(String type, String option) {
-    	ModelAndView mav = new ModelAndView("approval/approvalList2");
-		ArrayList<MemberDto> list = empservice.getByOption(type, option);
-		mav.addObject("list", list);
-		return mav;
-	}
-    
+    public ModelAndView getbyOption2(String type, String option, Pageable pageable) {
+        ModelAndView mav = new ModelAndView("approval/approvalList2");
+        Page<MemberDto> list = empservice.getByOption(type, option,pageable);
+        mav.addObject("list", list);
+        return mav;
+    }
+
     //품의서 결재
     @PostMapping("/report/approve")
     public String ReportApproval(HttpServletResponse response, int reportNum, Principal principal) throws IOException {
 
         init(response);
-    	MemberDto mdto = mservice.getMember(principal.getName());
-    	ReportDto rdto = rservice.getById(reportNum);
-    	rservice.approveReport(response, rdto, mdto);
-    	
-    	return "redirect:/approval/process";
+        MemberDto mdto = mservice.getMember(principal.getName());
+        ReportDto rdto = rservice.getById(reportNum);
+        rservice.approveReport(response, rdto, mdto);
+
+        return "redirect:/approval/process";
     }
 
     //지출결의서 결재
     @PostMapping("/expense/approve")
     public String ExpenseApproval(HttpServletResponse response, int expenseNum, Principal principal) throws IOException {
-    	
+
         init(response);
-    	MemberDto mdto = mservice.getMember(principal.getName());
-    	ExpenseDto edto = eservice.getById(expenseNum);
-    	eservice.approveExpense(response, edto, mdto);
-    	
-    	return "redirect:/approval/process";
+        MemberDto mdto = mservice.getMember(principal.getName());
+        ExpenseDto edto = eservice.getById(expenseNum);
+        eservice.approveExpense(response, edto, mdto);
+
+        return "redirect:/approval/process";
     }
-    
+
     //휴가신청서 결재
     @PostMapping("/vacation/approve")
     public String VacationApproval(HttpServletResponse response, int vacationNum, Principal principal) throws IOException {
-    	
+
         init(response);
-    	MemberDto mdto = mservice.getMember(principal.getName());
-    	VacationDto vdto = vservice.getById(vacationNum);
-    	vservice.approveVacation(response, vdto, mdto);
-    	
-    	return "redirect:/approval/process";
+        MemberDto mdto = mservice.getMember(principal.getName());
+        VacationDto vdto = vservice.getById(vacationNum);
+        vservice.approveVacation(response, vdto, mdto);
+
+        return "redirect:/approval/process";
     }
-    
+
     //품의서 반려
     @GetMapping("/report/refuse")
     public String ReportRefuse(HttpServletResponse response, int reportNum, Principal principal) throws IOException {
 
         init(response);
-    	MemberDto mdto = mservice.getMember(principal.getName());
-    	ReportDto rdto = rservice.getById(reportNum);
-    	rservice.refuseReport(response, rdto, mdto);
-    	
-    	return "redirect:/approval/process";
+        MemberDto mdto = mservice.getMember(principal.getName());
+        ReportDto rdto = rservice.getById(reportNum);
+        rservice.refuseReport(response, rdto, mdto);
+
+        return "redirect:/approval/process";
     }
 
     //지출결의서 반려
     @GetMapping("/expense/refuse")
     public String ExpenseRefuse(HttpServletResponse response, int expenseNum, Principal principal) throws IOException {
-    	
+
         init(response);
-    	MemberDto mdto = mservice.getMember(principal.getName());
-    	ExpenseDto edto = eservice.getById(expenseNum);
-    	eservice.refuseExpense(response, edto, mdto);
-    	
-    	return "redirect:/approval/process";
+        MemberDto mdto = mservice.getMember(principal.getName());
+        ExpenseDto edto = eservice.getById(expenseNum);
+        eservice.refuseExpense(response, edto, mdto);
+
+        return "redirect:/approval/process";
     }
-    
+
     //휴가신청서 반려
     @GetMapping("/vacation/refuse")
     public String VacationRefuse(HttpServletResponse response, int vacationNum, Principal principal) throws IOException {
-    	
+
         init(response);
-    	MemberDto mdto = mservice.getMember(principal.getName());
-    	VacationDto vdto = vservice.getById(vacationNum);
-    	vservice.refuseVacation(response, vdto, mdto);
-    	
-    	return "redirect:/approval/process";
+        MemberDto mdto = mservice.getMember(principal.getName());
+        VacationDto vdto = vservice.getById(vacationNum);
+        vservice.refuseVacation(response, vdto, mdto);
+
+        return "redirect:/approval/process";
     }
 }

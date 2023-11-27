@@ -23,4 +23,16 @@ public class NotifyDto {
 	private String title;
 	private String content;
 	private int cnt;
+
+	public static NotifyDto of(Notify notify) {
+		return new NotifyDto(
+				notify.getNum(),
+				notify.getWdate(),
+				notify.getUdate(),
+				notify.getMember(),
+				notify.getTitle(),
+				notify.getContent(),
+				notify.getCnt()
+		);
+	}
 }

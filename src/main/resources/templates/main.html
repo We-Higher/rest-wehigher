@@ -9,26 +9,26 @@
     <link href="/css/style.bundle.css" rel="stylesheet" type="text/css"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
-            $(".selectMember").change(function () {
-                var $checkbox = $(this);
-                var $row = $checkbox.closest("tr");
+        function changeSubMenuContent(event, page) {
+            event.preventDefault(); // 기본 동작(링크 이동) 중단
 
-                if ($checkbox.is(":checked")) {
-                    var name = $row.find(".name").text();
-                    var newNo = $row.find(".newNo").text();
-                    var deptName = $row.find(".deptName").text();
-                    var companyRankName = $row.find(".companyRankName").text();
+            // AJAX를 사용하여 서버로부터 새로운 내용을 받아옴
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var newContent = xhr.responseText; // 서버로부터 받아온 새로운 내용
 
-                    alert("체크박스가 체크되었습니다!\n\n이름: " + name + "\n사번: " + newNo + "\n부서: " + deptName + "\n직급: " + companyRankName);
-                } else {
-                    alert("체크박스가 해제되었습니다!");
+                    // 서브메뉴의 내용을 변경
+                    var subMenu = document.querySelector('.menu-sub');
+                    subMenu.innerHTML = newContent;
                 }
-            });
-        });
+            };
+            xhr.open('GET', `/main?page=${page}`, true);
+            console.log(${page});
+            xhr.send();
+        }
     </script>
 </head>
-
 <div layout:fragment="content">
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <!--begin::Container-->
@@ -120,73 +120,50 @@
                                             <div class="card-body p-9">
                                                 <div class="row mb-7">
                                                     <div class="col-lg-12 fv-row">
-            <span class="fw-bold fs-6">
-                <div class="input-group input-group-sm mb-3">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-row-bordered gy-5 gs-7"
-                               style="table-layout: auto; width: 100%;">
-                            <tr class="fw-bold fs-6 text-gray-800">
-                                <th style="font-size: 13px; width: 20%;">이름</th>
-                                <th style="font-size: 13px; width: 20%;">사번</th>
-                                <th style="font-size: 13px; width: 20%;">부서</th>
-                                <th style="font-size: 13px; width: 20%;">직급</th>
-                                <th style="font-size: 13px; width: 20%;"><i class="bi bi-check-square-fill"></i></th>
-                            </tr>
-                            <tr th:each="e : ${pagingMember}" style="text-align: center">
-                                <td style="white-space: nowrap; font-size: 13px; width: 20%;"><span class="name"
-                                                                                                    th:text="${e.name}"></span></td>
-                                <td style="white-space: nowrap; font-size: 13px; width: 20%;"><span class="newNo"
-                                                                                                    th:text="${e.newNo}"></span></td>
-                                <td style="white-space: nowrap; font-size: 13px; width: 20%;"><span class="deptName"
-                                                                                                    th:text="${e.deptName}"></span></td>
-                                <td style="white-space: nowrap; font-size: 13px; width: 20%;"><span
-                                        class="companyRankName" th:text="${e.companyRankName}"></span></td>
-                                <td style="width: 20%;"><input type="checkbox" name="selectedMembers" th:value="${e.id}"
-                                                               th:checked="${e.monthMember == 1}"></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </span>
-                                                        <!-- 페이징처리 시작 -->
-                                                        <div th:if="${!pagingMember.isEmpty()}">
-                                                            <ul class="pagination justify-content-center">
-                                                                <!-- 이전 링크 -->
-                                                                <li class="page-item"
-                                                                    th:classappend="${!pagingMember.hasPrevious} ? 'disabled'">
-                                                                    <a class="page-link"
-                                                                       th:href="@{|?page=${pagingMember.number}|}">
-                                                                        <span>이전</span>
-                                                                    </a>
-                                                                </li>
-                                                                <!-- 페이지 번호 -->
-                                                                <li th:each="page: ${#numbers.sequence(1, pagingMember.totalPages)}"
-                                                                    th:if="${page >= pagingMember.number-4 and page <= pagingMember.number+4}"
-                                                                    th:classappend="${page == pagingMember.number+1} ? 'active'"
-                                                                    class="page-item">
-                                                                    <a th:text="${page}" class="page-link"
-                                                                       th:href="@{|?page=${page}|}"></a>
-                                                                </li>
-                                                                <!-- 생략 기호 -->
-                                                                <li th:if="${pagingMember.number+4 < pagingMember.totalPages}"
-                                                                    class="page-item disabled">
-                                                                    <a class="page-link">...</a>
-                                                                </li>
-                                                                <!-- 다음 기호 -->
-                                                                <li class="page-item"
-                                                                    th:classappend="${!pagingMember.hasNext} ? 'disabled'">
-                                                                    <a class="page-link"
-                                                                       th:href="@{|?page=${pagingMember.number+2}|}">
-                                                                        <span>다음</span>
-                                                                    </a>
-                                                                </li>
-                                                            </ul>
+                                                    <span class="fw-bold fs-6">
+                                                        <div class="input-group input-group-sm mb-3">
+                                                               <div class="scroll-y me-n5 pe-5 h-200px h-lg-auto"
+                                                                    data-kt-scroll="true"
+                                                                    data-kt-scroll-activate="{default: false, lg: true}"
+                                                                    data-kt-scroll-max-height="auto"
+                                                                    data-kt-scroll-dependencies="#kt_header, #kt_toolbar, #kt_footer, #kt_chat_contacts_header"
+                                                                    data-kt-scroll-wrappers="#kt_content, #kt_chat_contacts_body"
+                                                                    data-kt-scroll-offset="5px">
+                                                                <table class="table table-striped table-row-bordered gy-5 gs-7"
+                                                                       style="table-layout: auto; width: 100%;">
+                                                                    <tr class="fw-bold fs-6 text-gray-800">
+                                                                        <th style="font-size: 13px; width: 20%;">이름</th>
+                                                                        <th style="font-size: 13px; width: 20%;">사번</th>
+                                                                        <th style="font-size: 13px; width: 20%;">부서</th>
+                                                                        <th style="font-size: 13px; width: 20%;">직급</th>
+                                                                        <th style="font-size: 13px; width: 20%;"><i
+                                                                                class="bi bi-check-square-fill"></i></th>
+                                                                    </tr>
+                                                                    <tr th:each="e : ${list}"
+                                                                        style="text-align: center">
+                                                                        <td style="white-space: nowrap; font-size: 13px; width: 20%;"><span
+                                                                                class="name"
+                                                                                th:text="${e.name}"></span></td>
+                                                                        <td style="white-space: nowrap; font-size: 13px; width: 20%;"><span
+                                                                                class="newNo"
+                                                                                th:text="${e.newNo}"></span></td>
+                                                                        <td style="white-space: nowrap; font-size: 13px; width: 20%;"><span
+                                                                                class="deptName"
+                                                                                th:text="${e.deptName}"></span></td>
+                                                                        <td style="white-space: nowrap; font-size: 13px; width: 20%;"><span
+                                                                                class="companyRankName"
+                                                                                th:text="${e.companyRankName}"></span></td>
+                                                                        <td style="width: 20%;">
+                                                                            <input type="checkbox" name="selectedMembers"
+                                                                                   th:value="${e.id}" th:checked="${e.monthMember == 1}"></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
                                                         </div>
-                                                        <!-- 페이징처리 끝 -->
+                                                    </span>
                                                     </div>
                                                 </div>
                                             </div>
-
                                         </div>
                                     </form>
                                 </div>
