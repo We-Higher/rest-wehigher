@@ -1,5 +1,7 @@
 package com.example.demo.member;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.example.demo.commute.Commute;
 import com.example.demo.commute.CommuteDto;
 import lombok.*;
@@ -32,6 +34,7 @@ public class MemberDto {
     private int newMemNo; // 임시 테이블 사번
     private int remain; //연차 잔여일
     private int monthMember;
+    private MultipartFile f;
     // TODO multipart 추가
 
     public MemberDto toDto(Member member) {
@@ -84,7 +87,8 @@ public class MemberDto {
                 member.getThumbnailFname(),
                 member.getNewMemNo(),
                 member.getRemain(),
-                member.getMonthMember()
+                member.getMonthMember(),
+                null
         );
     }
 }

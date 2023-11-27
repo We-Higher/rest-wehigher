@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import com.example.demo.member.Member;
 
@@ -62,27 +63,7 @@ public class ScheduleService {
 
     //삭제
     public void del(int id) {
-    	
-    	Schedule entity = dao.findById(id).orElse(null);
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		Member loginMember = (Member) authentication.getPrincipal();
-    	if(entity.getCnt()==0) {
-    		dao.deleteById(id);
-    	}
-    	else {
     		
-    		if(loginMember.getIsMaster()==0) {
-    			
-                /*PrintWriter out = response.getWriter();
-                out.write("<script>alert('"+"관리자만 삭제 가능합니다."+"');location.href='"+"/schedule"+"';</script>");
-                out.flush();*/
-    			System.out.println("관리자만 삭제 가능합니다.");
-    		}
-    		else {
-    			
-    			dao.deleteById(id);
-    		}
-    		
-    	}
+    	dao.deleteById(id);
     }
 }

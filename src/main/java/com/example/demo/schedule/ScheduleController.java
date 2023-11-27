@@ -21,143 +21,166 @@ import java.util.*;
 @Controller
 @RequestMapping("/schedule")
 public class ScheduleController {
-    private final ScheduleService service;
-    private final MemberService memberService;
+	private final ScheduleService service;
+	private final MemberService memberService;
+	private final ScheduleDao dao;
 
-    @RequestMapping("")
-    public String schedule() {
-        return "schedule/calendar";
-    }
+	@RequestMapping("")
+	public String schedule() {
+		return "schedule/calendar";
+	}
 
+	// 목록
+	@RequestMapping("/list")
+	@ResponseBody
+	public ArrayList<Map<String, Object>> list(ModelMap map) {// map은 자동으로 뷰페이지로 전달됨
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Member member = (Member) authentication.getPrincipal();
+		if (member.getIsMaster() == 1) {
 
-    //목록
-    @RequestMapping("/list")
-    @ResponseBody
-    public ArrayList<Map<String, Object>> list(ModelMap map) {//map은 자동으로 뷰페이지로 전달됨
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
-        if(member.getIsMaster()==1){
+			ArrayList<ScheduleDto> listAll3 = service.getAll();
 
-            ArrayList<ScheduleDto> listAll3 = service.getAll();
+			JSONObject jsonObj = new JSONObject();
+			JSONArray jsonArr = new JSONArray();
 
-            JSONObject jsonObj = new JSONObject();
-            JSONArray jsonArr = new JSONArray();
+			HashMap<String, Object> hash = new HashMap<>();
+			for (int i = 0; i < listAll3.size(); i++) {
+				hash.put("cal_Id", listAll3.get(i).getId());
+				hash.put("title", listAll3.get(i).getTitle());
+				hash.put("start", listAll3.get(i).getStartDate());
+				hash.put("end", listAll3.get(i).getEndDate());
+				hash.put("check", listAll3.get(i).getCnt());
+				jsonObj = new JSONObject(hash);
+				jsonArr.add(jsonObj);
+			}
+			return jsonArr;
+		} else {
+			ArrayList<ScheduleDto> listAll = service.getByMember(member);
+			ArrayList<ScheduleDto> listAll2 = service.getByMember(null);
 
-            HashMap<String, Object> hash = new HashMap<>();
-            for (int i = 0; i < listAll3.size(); i++) {
-                hash.put("cal_Id", listAll3.get(i).getId());
-                hash.put("title", listAll3.get(i).getTitle());
-                hash.put("start", listAll3.get(i).getStartDate());
-                hash.put("end", listAll3.get(i).getEndDate());
-                hash.put("check", listAll3.get(i).getCnt());
-                jsonObj = new JSONObject(hash);
-                jsonArr.add(jsonObj);
-            }
-            return jsonArr;
-        }
-        else {
-            ArrayList<ScheduleDto> listAll = service.getByMember(member);
-            ArrayList<ScheduleDto> listAll2 = service.getByMember(null);
+			JSONObject jsonObj = new JSONObject();
+			JSONArray jsonArr = new JSONArray();
 
-            JSONObject jsonObj = new JSONObject();
-            JSONArray jsonArr = new JSONArray();
+			HashMap<String, Object> hash = new HashMap<>();
+			HashMap<String, Object> hash2 = new HashMap<>();
 
-            HashMap<String, Object> hash = new HashMap<>();
-            HashMap<String, Object> hash2 = new HashMap<>();
+			for (int i = 0; i < listAll.size(); i++) {
+				hash.put("cal_Id", listAll.get(i).getId());
+				hash.put("title", listAll.get(i).getTitle());
+				hash.put("start", listAll.get(i).getStartDate());
+				hash.put("end", listAll.get(i).getEndDate());
+				hash.put("check", listAll.get(i).getCnt());
+				jsonObj = new JSONObject(hash);
+				jsonArr.add(jsonObj);
+			}
 
-            for (int i = 0; i < listAll.size(); i++) {
-                hash.put("cal_Id", listAll.get(i).getId());
-                hash.put("title", listAll.get(i).getTitle());
-                hash.put("start", listAll.get(i).getStartDate());
-                hash.put("end", listAll.get(i).getEndDate());
-                hash.put("check", listAll.get(i).getCnt());
-                jsonObj = new JSONObject(hash);
-                jsonArr.add(jsonObj);
-            }
+			for (int i = 0; i < listAll2.size(); i++) {
+				hash2.put("cal_Id", listAll2.get(i).getId());
+				hash2.put("title", listAll2.get(i).getTitle());
+				hash2.put("start", listAll2.get(i).getStartDate());
+				hash2.put("end", listAll2.get(i).getEndDate());
+				hash2.put("check", listAll2.get(i).getCnt());
+				jsonObj = new JSONObject(hash2);
+				jsonArr.add(jsonObj);
+			}
 
-            for (int i = 0; i < listAll2.size(); i++) {
-                hash2.put("cal_Id", listAll2.get(i).getId());
-                hash2.put("title", listAll2.get(i).getTitle());
-                hash2.put("start", listAll2.get(i).getStartDate());
-                hash2.put("end", listAll2.get(i).getEndDate());
-                hash2.put("check", listAll2.get(i).getCnt());
-                jsonObj = new JSONObject(hash2);
-                jsonArr.add(jsonObj);
-            }
+			return jsonArr;
+		}
+	}
 
-            return jsonArr;
-        }
-    }
+	// 일정추가
+	@PostMapping("/add")
+	@ResponseBody
+	public Map addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
-    //일정추가
-    @PostMapping("/add")
-    @ResponseBody
-    public Map addEvent(@RequestBody List<Map<String, Object>> param) throws Exception {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
+		String title = (String) param.get(0).get("title");
+		String startDateString = (String) param.get(0).get("start");
+		String endDateString = (String) param.get(0).get("end");
 
-        String title = (String) param.get(0).get("title");
-        String startDateString = (String) param.get(0).get("start");
-        String endDateString = (String) param.get(0).get("end");
+		LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
+		LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Member member = (Member) authentication.getPrincipal();
 
-        LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
-        LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
+		ScheduleDto dto = ScheduleDto.builder().member(member).title(title).startDate(startDate).endDate(endDate)
+				.build();
+		ScheduleDto s = service.save(dto);
 
-        ScheduleDto dto = ScheduleDto.builder()
-                .member(member).title(title).startDate(startDate).endDate(endDate)
-                .build();
-        ScheduleDto s = service.save(dto);
+		Map<String, String> map = new HashMap<>();
+		map.put("id", s.getId() + "");
+		return map;
+	}
 
-        Map<String, String> map = new HashMap<>();
-        map.put("id", s.getId() + "");
-        return map;
-    }
+	// 일정삭제
+	@GetMapping("/del/{id}")
+	@ResponseBody
+	public ModelMap del(@PathVariable("id") int id) {
 
-    //일정삭제
-    @GetMapping("/del/{id}")
-    public String del(@PathVariable("id") int id) {
-        service.del(id);
-        return "redirect:/schedule";
-    }
+		Schedule entity = dao.findById(id).orElse(null);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Member loginMember = (Member) authentication.getPrincipal();
+		ModelMap map = new ModelMap();
+		boolean flag = true;
+		if (entity.getCnt() == 0) {
+			service.del(id);
+		} else {
 
-    //수정
-    @PatchMapping("/edit/{id}")
-    @ResponseBody
-    public Map modifyEvent(@PathVariable("id") int id, @RequestBody List<Map<String, Object>> param) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
+			if (loginMember.getIsMaster() == 0) {
 
-        ScheduleDto origin = service.get(id);
+				String msg = "관리자만 삭제 가능합니다.";
+				map.put("msg", msg);
+				flag = false;
+			} else {
 
-        String startDateString = (String) param.get(0).get("start");
-        String endDateString = (String) param.get(0).get("end");
+				service.del(id);
+			}
+		}
+		map.put("flag", flag);
+		return map;
+	}
 
-        LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
-        LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+	// 수정
+	@PatchMapping("/edit/{id}")
+	@ResponseBody
+	public ModelMap modifyEvent(@PathVariable("id") int id, @RequestBody List<Map<String, Object>> param) {
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Member member = (Member) authentication.getPrincipal();
+		ModelMap map = new ModelMap();
+		boolean flag = true;
 
-        ScheduleDto dto = ScheduleDto.builder()
-                .member(member).id(id).title(origin.getTitle()).startDate(startDate).endDate(endDate)
-                .build();
+		DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.KOREA);
 
-        if (origin.getCnt() == 0) {
-            origin = service.save(dto);
-        } else {
+		ScheduleDto origin = service.get(id);
 
-            if (member.getIsMaster() == 0) {
-    			
-                /*PrintWriter out = response.getWriter();
-                out.write("<script>alert('"+"관리자만 삭제 가능합니다."+"');location.href='"+"/schedule"+"';</script>");
-                out.flush();*/
-                System.out.println("관리자만 변경 가능합니다.");
-            } else {
+		String startDateString = (String) param.get(0).get("start");
+		String endDateString = (String) param.get(0).get("end");
 
-                ScheduleDto s = service.save(dto);
-            }
-        }
+		LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
+		LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
 
-        return null;
-    }
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Member member = (Member) authentication.getPrincipal();
+
+		ScheduleDto dto = ScheduleDto.builder().member(member).id(id).title(origin.getTitle()).startDate(startDate)
+				.endDate(endDate).build();
+
+		if (origin.getCnt() == 0) {
+			origin = service.save(dto);
+
+		} else {
+
+			if (member.getIsMaster() == 0) {
+
+				String msg = "관리자만 변경 가능합니다.";
+				map.put("msg", msg);
+				flag = false;
+				
+			} else {
+
+				ScheduleDto s = service.save(dto);
+			}
+		}
+		map.put("flag", flag);
+		return map;
+	}
 }
