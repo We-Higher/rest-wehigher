@@ -1,4 +1,5 @@
 application.properties
+src/main/resources/static/profile/**
 
 HELP.md
 target/

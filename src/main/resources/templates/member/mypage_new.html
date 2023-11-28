@@ -2,6 +2,9 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
+<th:block layout:fragment="style">
+    <link rel="stylesheet" href="/css/dataroom/dataroom.css">
+</th:block>
 <div layout:fragment="content">
     <body id="kt_body" class="header-fixed header-tablet-and-mobile-fixed aside-fixed aside-secondary-disabled">
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
@@ -172,7 +175,7 @@
                              data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
                             <i class="bi bi-pencil"></i>
                         </div>
-                        <div class="menu menu-sub menu-sub-dropdown menu-column w-500px w-lg-700px"
+                        <div class="menu menu-sub menu-sub-dropdown menu-column w-500px w-lg-700px e_box"
                              data-kt-menu="true">
                             <div class="card mb-5 mb-xl-10">
                                 <div class="card-header cursor-pointer">

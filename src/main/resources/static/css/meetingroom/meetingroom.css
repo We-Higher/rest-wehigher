@@ -1,9 +1,3 @@
-/***
-Bootstrap Line Tabs by @keenthemes
-A component of Metronic Theme - #1 Selling Bootstrap 3 Admin Theme in Themeforest: http://j.mp/metronictheme
-Licensed under MIT
-***/
-
 /* Tabs panel */
 .tabbable-panel {
     border:1px solid #eee;
@@ -128,4 +122,8 @@ Licensed under MIT
     justify-content: center;
     height: 100%;
     padding: 10px 0;
+    font-weight: bold;
+}
+.fc-event-title {
+    font-weight: bold !important; /* 이벤트의 글자를 굵게 지정 */
 }
