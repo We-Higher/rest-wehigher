@@ -46,16 +46,6 @@ public class VacationController {
             init(response);
             PrintWriter out = response.getWriter();
             MemberDto mdto = mservice.getMember(principal.getName());
-            String startDate = dto.getStartDate();
-            String endDate = dto.getEndDate();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate startDateLocalDate = LocalDate.parse(startDate, formatter);
-            LocalDate endDateLocalDate = LocalDate.parse(endDate, formatter);
-            long daysBetween = ChronoUnit.DAYS.between(startDateLocalDate, endDateLocalDate);
-            int remain = (int) daysBetween;
-            System.out.println("remain = " + remain);
-            mdto.setRemain(mdto.getRemain() - remain - 1);
-            mservice.save(mdto);
             dto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(),mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(),mdto.getMonthMember()));
             vservice.saveVacation(dto);
             out.println(String.format("<script>window.close();</script>"));
