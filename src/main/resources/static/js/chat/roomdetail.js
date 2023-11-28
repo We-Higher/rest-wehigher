@@ -7,6 +7,14 @@ let dataDiv = $('#kt_content')
 let roomId = dataDiv.data('room-pk')
 let sender = dataDiv.data('sender-name')
 let senderPk = dataDiv.data('sender-pk')
+let senderProfile = dataDiv.data('sender-profile')
+console.log(senderProfile)
+if (senderProfile == null) {
+    senderProfile = '/img/default.png'
+} else {
+    senderProfile = `/profile/${senderProfile}`
+}
+console.log(senderProfile)
 const csrftoken = document.querySelector('[name=_csrf]').value
 var message = '';
 // var messages = [];
@@ -20,11 +28,22 @@ var message = '';
 function sendMessage() {
     message = $('#messageInput').val();
     if (message !== "") {
+        let now = new Date();
+        let year = now.getFullYear();
+        let month = ("0" + (now.getMonth() + 1)).slice(-2);  // 월은 0부터 시작하므로 1을 더해줍니다.
+        let date = ("0" + now.getDate()).slice(-2);
+        let hours = ("0" + now.getHours()).slice(-2);
+        let minutes = ("0" + now.getMinutes()).slice(-2);
+        let seconds = ("0" + now.getSeconds()).slice(-2);
+
+        let timestamp = `${year}-${month}-${date} ${hours}:${minutes}:${seconds}`;
+        console.log(timestamp);  // "yyyy-MM-dd HH:mm:ss" 형식으로 출력됩니다.
         let params = new URLSearchParams()
         params.append("type", "TALK")
         params.append("room", roomId)
         params.append("sender", senderPk)
         params.append("message", message)
+        params.append('timestamp', timestamp)
         axios
             .post('/chat/message/add',
                 params,
@@ -39,7 +58,9 @@ function sendMessage() {
                     sender: sender,
                     message: message,
                     senderPk: senderPk,
-                    roomPk: roomId
+                    roomPk: roomId,
+                    timestamp: timestamp,
+                    senderProfile : senderProfile,
                 }))
                 $('#messageInput').val('');
             })
@@ -55,6 +76,8 @@ function sendMessage() {
 function recvMessage(recv) {
     // messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
     // $('#messages').append('<li class="list-group-item">' + recv.sender + ' - ' + recv.message + '</li>');
+    console.log('recv!!!!!!')
+    console.log(recv.senderProfile)
     if (sender === recv.sender) {
         $('#messages').append(makeMessageOut(recv))
     } else {
@@ -89,10 +112,10 @@ function makeMessageIn(recv) {
     let wrapDiv = $('<div/>', {class: 'd-flex flex-column align-items-start'})
     let userDiv = $('<div/>', {class: 'd-flex align-items-center mb-2'})
         .append($('<div/>', {class: 'symbol  symbol-35px symbol-circle'})
-            .append($('<img/>').attr('alt', 'Pic').attr('src', '/img/default.png')))
+            .append($('<img/>').attr('alt', 'Pic').attr('src', recv.senderProfile)))
         .append($('<div/>', {class: 'ms-3'})
             .append($('<a/>', {class: 'fs-5 fw-bolder text-gray-900 text-hover-primary me-1'}).attr('href', '#').text(recv.sender))
-            .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text('Just now')))
+            .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text(recv.timestamp)))
     let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-info text-dark fw-bold mw-lg-400px text-start'}).attr('data-kt-element', 'message-text').text(recv.message)
 
     msgDiv.append(wrapDiv.append(userDiv).append(textDiv))
@@ -105,10 +128,10 @@ function makeMessageOut(recv) {
     let wrapDiv = $('<div/>', {class: 'd-flex flex-column align-items-end'})
     let userDiv = $('<div/>', {class: 'd-flex align-items-center mb-2'})
         .append($('<div/>', {class: 'me-3'})
-            .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text('Just now'))
+            .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text(recv.timestamp))
             .append($('<a/>', {class: 'fs-5 fw-bolder text-gray-900 text-hover-primary ms-1'}).attr('href', '#').text(recv.sender)))
         .append($('<div/>', {class: 'symbol  symbol-35px symbol-circle'})
-            .append($('<img/>').attr('alt', 'Pic').attr('src', '/img/default.png')))
+            .append($('<img/>').attr('alt', 'Pic').attr('src', recv.senderProfile)))
     let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-primary text-dark fw-bold mw-lg-400px text-end'}).attr('data-kt-element', 'message-text').text(recv.message)
 
     msgDiv.append(wrapDiv.append(userDiv).append(textDiv))
