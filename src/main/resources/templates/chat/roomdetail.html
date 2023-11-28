@@ -207,7 +207,7 @@
                                                         <a href="#"
                                                            class="fs-5 fw-bolder text-gray-900 text-hover-primary me-1"
                                                            th:text="${c.sender.name}"></a>
-                                                        <span class="text-muted fs-7 mb-1">Just now</span>
+                                                        <span class="text-muted fs-7 mb-1" th:text="${c.timestamp}"></span>
                                                     </div>
                                                     <!--end::Details-->
 
@@ -233,7 +233,7 @@
                                                 <div class="d-flex align-items-center mb-2">
                                                     <!--begin::Details-->
                                                     <div class="me-3">
-                                                        <span class="text-muted fs-7 mb-1">Just now</span>
+                                                        <span class="text-muted fs-7 mb-1" th:text="${c.timestamp}"></span>
                                                         <a href="#"
                                                            class="fs-5 fw-bolder text-gray-900 text-hover-primary ms-1"
                                                            th:text="${c.sender.name}"></a>
