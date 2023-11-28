@@ -50569,3 +50569,7 @@ body {
         padding: 15px 0;
     }
 }
+
+.menu-link .svg-icon-1 path {
+    fill: gray; /* 변경할 색상 */
+}

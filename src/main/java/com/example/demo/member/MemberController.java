@@ -116,7 +116,7 @@ public class MemberController {
     public String mypageForm(String name, Model map) {
         MemberDto dto = service.getMember(name);
         map.addAttribute("m", dto);
-        return "member/mypage_new";
+        return "member/mypage";
     }
 
     @PreAuthorize("isAuthenticated()")
