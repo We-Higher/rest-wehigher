@@ -159,6 +159,7 @@ public class CommuteController {
         String formattedTime1 = LocalDateTime.now().format(formatter1);
         String formattedTime2 = LocalDateTime.now().format(formatter2);
         CommuteDto cdto2 = cservice.getByDateAndUserName(formattedTime1, principal.getName());
+        System.out.println("mdto.getCstatus() = " + mdto.getCstatus());
         System.out.println(cdto2);
         if (cdto2 == null) {
             mdto.setCstatus(1);
@@ -168,7 +169,6 @@ public class CommuteController {
             cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(), mdto.getMonthMember()));
             cservice.save(cdto);
         } else {
-
             init(response);
             PrintWriter out = response.getWriter();
             out.write("<script>alert('" + "이미 출근처리가 완료되었습니다." + "');location.href='" + "/main" + "';</script>");
@@ -188,8 +188,9 @@ public class CommuteController {
         cdto = cservice.getByDateAndUserName(formattedTime1, principal.getName());
         System.out.println(cdto.getEndTime());
         System.out.println(formattedTime2);
+        System.out.println("mdto.getCstatus() = " + mdto.getCstatus());
         if (cdto.getEndTime() == null) {
-            mdto.setCstatus(2);
+            mdto.setCstatus(0);
             mservice.save(mdto);
             cdto.setEndTime(formattedTime2);
             System.out.println("test " + cdto.getCommuteNum());
