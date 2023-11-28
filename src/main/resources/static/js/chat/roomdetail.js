@@ -7,6 +7,14 @@ let dataDiv = $('#kt_content')
 let roomId = dataDiv.data('room-pk')
 let sender = dataDiv.data('sender-name')
 let senderPk = dataDiv.data('sender-pk')
+let senderProfile = dataDiv.data('sender-profile')
+console.log(senderProfile)
+if (senderProfile == null) {
+    senderProfile = '/img/default.png'
+} else {
+    senderProfile = `/profile/${senderProfile}`
+}
+console.log(senderProfile)
 const csrftoken = document.querySelector('[name=_csrf]').value
 var message = '';
 // var messages = [];
@@ -52,6 +60,7 @@ function sendMessage() {
                     senderPk: senderPk,
                     roomPk: roomId,
                     timestamp: timestamp,
+                    senderProfile : senderProfile,
                 }))
                 $('#messageInput').val('');
             })
@@ -67,6 +76,8 @@ function sendMessage() {
 function recvMessage(recv) {
     // messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
     // $('#messages').append('<li class="list-group-item">' + recv.sender + ' - ' + recv.message + '</li>');
+    console.log('recv!!!!!!')
+    console.log(recv.senderProfile)
     if (sender === recv.sender) {
         $('#messages').append(makeMessageOut(recv))
     } else {
@@ -101,7 +112,7 @@ function makeMessageIn(recv) {
     let wrapDiv = $('<div/>', {class: 'd-flex flex-column align-items-start'})
     let userDiv = $('<div/>', {class: 'd-flex align-items-center mb-2'})
         .append($('<div/>', {class: 'symbol  symbol-35px symbol-circle'})
-            .append($('<img/>').attr('alt', 'Pic').attr('src', '/img/default.png')))
+            .append($('<img/>').attr('alt', 'Pic').attr('src', recv.senderProfile)))
         .append($('<div/>', {class: 'ms-3'})
             .append($('<a/>', {class: 'fs-5 fw-bolder text-gray-900 text-hover-primary me-1'}).attr('href', '#').text(recv.sender))
             .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text(recv.timestamp)))
@@ -120,7 +131,7 @@ function makeMessageOut(recv) {
             .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text(recv.timestamp))
             .append($('<a/>', {class: 'fs-5 fw-bolder text-gray-900 text-hover-primary ms-1'}).attr('href', '#').text(recv.sender)))
         .append($('<div/>', {class: 'symbol  symbol-35px symbol-circle'})
-            .append($('<img/>').attr('alt', 'Pic').attr('src', '/img/default.png')))
+            .append($('<img/>').attr('alt', 'Pic').attr('src', recv.senderProfile)))
     let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-primary text-dark fw-bold mw-lg-400px text-end'}).attr('data-kt-element', 'message-text').text(recv.message)
 
     msgDiv.append(wrapDiv.append(userDiv).append(textDiv))

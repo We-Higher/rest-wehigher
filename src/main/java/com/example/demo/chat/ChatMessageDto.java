@@ -17,4 +17,5 @@ public class ChatMessageDto {
     private String message; // 메시지
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime timestamp; // 보낸시간
+    private String senderProfile;
 }

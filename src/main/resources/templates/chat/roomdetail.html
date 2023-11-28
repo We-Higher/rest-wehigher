@@ -30,7 +30,8 @@
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content"
          th:data-room-id="${chatRoom.roomId}" th:data-room-pk="${chatRoom.id}"
          th:data-sender-pk="${#authentication.principal.id}"
-         th:data-sender-name="${#authentication.principal.name}">
+         th:data-sender-name="${#authentication.principal.name}"
+         th:data-sender-profile="${#authentication.principal.originFname}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <!--begin::Container-->
         <div class=" container-xxl " id="kt_content_container">
