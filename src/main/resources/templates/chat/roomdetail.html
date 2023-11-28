@@ -52,10 +52,10 @@
                                 <div class="symbol-group symbol-hover">
                                     <div class="symbol  symbol-35px symbol-circle "
                                          th:each="m, loop : ${chatRoom.participants}">
-                                        <!--                                                    <span class="symbol-label  bg-light-primary text-primary 40px " th:text="${#strings.substring(m.name, 0, 1)}"></span>-->
-                                        <img alt="Pic" src="/img/default.png"/>
+                                        <!-- <span class="symbol-label  bg-light-primary text-primary 40px " th:text="${#strings.substring(m.name, 0, 1)}" th:if="${#strings.isEmpty(m.originFname)}"></span> -->
+                                        <img th:if="${#strings.isEmpty(m.originFname)}" src="/img/default.png" alt="image"/>
+                                        <img th:if="${!#strings.isEmpty(m.originFname)}" th:src="@{'/profile/' + ${m.originFname}}" alt="image"/>
                                     </div>
-                                    <!-- TODO: loop 7까지 -->
                                     <!--begin::All users-->
                                     <a href="#" class="symbol symbol-35px symbol-circle"
                                        data-bs-toggle="modal"
@@ -198,7 +198,8 @@
                                                 <div class="d-flex align-items-center mb-2">
                                                     <!--begin::Avatar-->
                                                     <div class="symbol  symbol-35px symbol-circle ">
-                                                        <img alt="Pic" src="/img/default.png"/>
+                                                        <img th:if="${#strings.isEmpty(c.sender.originFname)}" src="/img/default.png" alt="image"/>
+                                                        <img th:if="${!#strings.isEmpty(c.sender.originFname)}" th:src="@{'/profile/' + ${c.sender.originFname}}" alt="image"/>
                                                     </div>
                                                     <!--end::Avatar-->
                                                     <!--begin::Details-->
@@ -241,7 +242,8 @@
 
                                                     <!--begin::Avatar-->
                                                     <div class="symbol  symbol-35px symbol-circle ">
-                                                        <img alt="Pic" src="/img/default.png"/>
+                                                        <img th:if="${#strings.isEmpty(c.sender.originFname)}" src="/img/default.png" alt="image"/>
+                                                        <img th:if="${!#strings.isEmpty(c.sender.originFname)}" th:src="@{'/profile/' + ${c.sender.originFname}}" alt="image"/>
                                                     </div>
                                                     <!--end::Avatar-->
                                                 </div>
@@ -354,7 +356,8 @@
                                         <div class="d-flex align-items-center">
                                             <!--begin::Avatar-->
                                             <div class="symbol symbol-35px symbol-circle">
-                                                <img alt="Pic" src="/img/default.png"/>
+                                                <img th:if="${#strings.isEmpty(m.originFname)}" src="/img/default.png" alt="image"/>
+                                                <img th:if="${!#strings.isEmpty(m.originFname)}" th:src="@{'/profile/' + ${m.originFname}}" alt="image"/>
                                                 <!-- <span class="symbol-label bg-light-danger text-danger fw-bold">M</span> -->
                                             </div>
                                             <!--end::Avatar-->
