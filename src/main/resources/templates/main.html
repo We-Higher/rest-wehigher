@@ -1,5 +1,8 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
+<th:block layout:fragment="style">
+    <link rel="stylesheet" href="/css/dataroom/dataroom.css">
+</th:block>
 <head>
     <base href="">
     <meta charset="utf-8"/>
@@ -91,7 +94,7 @@
                                      data-kt-menu-placement="bottom-end" data-kt-menu-flip="bottom">
                                     <i class="bi bi-person-plus-fill">선택하기</i>
                                 </div>
-                                <div class="menu menu-sub menu-sub-dropdown menu-column w-400px w-lg-400px"
+                                <div class="menu menu-sub menu-sub-dropdown menu-column w-400px w-lg-450px e_box"
                                      data-kt-menu="true">
                                     <form action="/member/monthMember"
                                           method="POST">
