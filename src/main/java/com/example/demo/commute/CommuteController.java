@@ -48,7 +48,7 @@ public class CommuteController {
         map.addAttribute("paging", paging);
         MemberDto mdto = mservice.getMember(principal.getName());
         map.addAttribute("mdto", mdto);
-        return "/commute/list";
+        return "commute/list";
     }
 
     //옵션으로 검색(전체 출퇴근 관리)
@@ -58,7 +58,7 @@ public class CommuteController {
         map.addAttribute("paging", list2);
         map.addAttribute("type", type);
         map.addAttribute("option", option);
-        return "/commute/list";
+        return "commute/list";
     }
 
     //나의 출퇴근 기록
@@ -69,7 +69,7 @@ public class CommuteController {
 
         Page<Commute> paging = this.cservice.getMyList(loginMember.getId(), page - 1);
         map.addAttribute("paging", paging);
-        return "/commute/mycommute";
+        return "commute/mycommute";
     }
 
     //옵션으로 검색(내 출퇴근 이력)
@@ -82,7 +82,7 @@ public class CommuteController {
         map.addAttribute("paging", list);
         map.addAttribute("type", type);
         map.addAttribute("option", option);
-        return "/commute/mycommute";
+        return "commute/mycommute";
     }
 
     //출퇴근기록 수정요청폼
@@ -90,7 +90,7 @@ public class CommuteController {
     public String editRequest(Model map, int commuteNum) {
         CommuteDto cdto = cservice.get(commuteNum);
         map.addAttribute("cdto", cdto);
-        return "/commute/editRequestForm";
+        return "commute/editRequestForm";
     }
 
     //출퇴근기록 수정요청 저장
@@ -120,7 +120,7 @@ public class CommuteController {
     public String edit(Model map, @RequestParam(value = "page", defaultValue = "1") int page, String editStartTime, String editEndTime) {
         Page<Commute> paging = this.cservice.getEditRequestList(page - 1, editStartTime, editEndTime);
         map.addAttribute("paging", paging);
-        return "/commute/editRequestList";
+        return "commute/editRequestList";
     }
 
     //수정요청 승인
