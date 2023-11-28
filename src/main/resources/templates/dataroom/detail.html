@@ -2,19 +2,6 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <div layout:fragment="content">
-    <head>
-        <meta charset="UTF-8">
-        <title>Insert title here</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-        <script type="text/javascript" th:inline="javascript">
-            $(document).ready(function () {
-                $("#del").click(function () {
-                    location.href = "/dataroom/del?num=[[${dto.num }]]";
-                });
-            });
-        </script>
-    </head>
-
     <body>
     <div class="container py-4">
         <form method="get" action="/dataroom/detail" enctype="multipart/form-data">
@@ -41,13 +28,6 @@
                         <small class="text-muted" id="wdate" name="wdate" th:text="${dto.wdate }"></small>
                     </p>
                 </div>
-
-<!--                <div class="row mb-3">-->
-<!--                    <div class="text-end mt-3" th:if="${#authentication.principal.isMaster == 1}">-->
-<!--                        <a th:href="@{/dataroom/edit(num=${dto.num })}" class="btn btn-primary me-2">수정</a>-->
-<!--                        <input type="button" id="del" class="btn btn-danger me-2" value="삭제">-->
-<!--                    </div>-->
-<!--                </div>-->
             </div>
         </form>
     </div>
