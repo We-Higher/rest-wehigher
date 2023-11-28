@@ -72,8 +72,9 @@
                                     <div class="d-flex align-items-center">
                                         <!--begin::Avatar-->
                                         <div class="symbol  symbol-45px symbol-circle ">
-                                            <img alt="Pic" src="/img/default.png"/>
-                                            <div class="symbol-badge bg-success start-100 top-100 border-4 h-15px w-15px ms-n2 mt-n2"></div>
+                                            <img th:if="${#strings.isEmpty(m.originFname)}" src="/img/default.png" alt="image"/>
+                                            <img th:if="${!#strings.isEmpty(m.originFname)}" th:src="@{'/profile/' + ${m.originFname}}" alt="image"/>
+                                            <div class="symbol-badge bg-success start-100 top-100 border-4 h-15px w-15px ms-n2 mt-n2" th:if="${m.cstatus eq 1}"></div>
                                         </div><!--end::Avatar-->
                                         <!--begin::Details-->
                                         <div class="ms-6">

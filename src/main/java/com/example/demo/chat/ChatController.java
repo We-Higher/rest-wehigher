@@ -16,15 +16,17 @@ public class ChatController {
     private final ChatMessageService chatMessageService;
 
     @MessageMapping("/chat/message")
-    public void message(ChatMessageDto chatMessage, ModelMap map) {
-//        if (ChatMessage.MessageType.ENTER.equals(chatMessage.getType()))
-//            chatMessage.setMessage(chatMessage.getSender() + "님이 입장하셨습니다.");
-        messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
+    public void message(ChatMessageDto chatMessageDto, ModelMap map) {
+//        if (ChatMessage.MessageType.ENTER.equals(chatMessageDto.getType()))
+//            chatMessageDto.setMessage(chatMessageDto.getSender() + "님이 입장하셨습니다.");
+        messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessageDto.getRoomId(), chatMessageDto);
     }
 
     @PostMapping("/chat/message/add")
     @ResponseBody
-    public ChatMessage addMessage(ChatMessage chatMessage) {
+    public ChatMessage addMessage(ChatMessage chatMessage, ModelMap map) {
+        System.out.println("map.get(\"timestamp\") = " + map.get("timestamp"));
+        System.out.println("chatMessage.getTimestamp() = " + chatMessage.getTimestamp());
         return chatMessageService.create(chatMessage);
     }
 }

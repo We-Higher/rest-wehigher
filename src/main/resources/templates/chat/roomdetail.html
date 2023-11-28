@@ -30,7 +30,8 @@
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content"
          th:data-room-id="${chatRoom.roomId}" th:data-room-pk="${chatRoom.id}"
          th:data-sender-pk="${#authentication.principal.id}"
-         th:data-sender-name="${#authentication.principal.name}">
+         th:data-sender-name="${#authentication.principal.name}"
+         th:data-sender-profile="${#authentication.principal.originFname}">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <!--begin::Container-->
         <div class=" container-xxl " id="kt_content_container">
@@ -52,10 +53,10 @@
                                 <div class="symbol-group symbol-hover">
                                     <div class="symbol  symbol-35px symbol-circle "
                                          th:each="m, loop : ${chatRoom.participants}">
-                                        <!--                                                    <span class="symbol-label  bg-light-primary text-primary 40px " th:text="${#strings.substring(m.name, 0, 1)}"></span>-->
-                                        <img alt="Pic" src="/img/default.png"/>
+                                        <!-- <span class="symbol-label  bg-light-primary text-primary 40px " th:text="${#strings.substring(m.name, 0, 1)}" th:if="${#strings.isEmpty(m.originFname)}"></span> -->
+                                        <img th:if="${#strings.isEmpty(m.originFname)}" src="/img/default.png" alt="image"/>
+                                        <img th:if="${!#strings.isEmpty(m.originFname)}" th:src="@{'/profile/' + ${m.originFname}}" alt="image"/>
                                     </div>
-                                    <!-- TODO: loop 7까지 -->
                                     <!--begin::All users-->
                                     <a href="#" class="symbol symbol-35px symbol-circle"
                                        data-bs-toggle="modal"
@@ -198,7 +199,8 @@
                                                 <div class="d-flex align-items-center mb-2">
                                                     <!--begin::Avatar-->
                                                     <div class="symbol  symbol-35px symbol-circle ">
-                                                        <img alt="Pic" src="/img/default.png"/>
+                                                        <img th:if="${#strings.isEmpty(c.sender.originFname)}" src="/img/default.png" alt="image"/>
+                                                        <img th:if="${!#strings.isEmpty(c.sender.originFname)}" th:src="@{'/profile/' + ${c.sender.originFname}}" alt="image"/>
                                                     </div>
                                                     <!--end::Avatar-->
                                                     <!--begin::Details-->
@@ -206,7 +208,7 @@
                                                         <a href="#"
                                                            class="fs-5 fw-bolder text-gray-900 text-hover-primary me-1"
                                                            th:text="${c.sender.name}"></a>
-                                                        <span class="text-muted fs-7 mb-1">Just now</span>
+                                                        <span class="text-muted fs-7 mb-1" th:text="${#temporals.format(c.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></span>
                                                     </div>
                                                     <!--end::Details-->
 
@@ -232,7 +234,7 @@
                                                 <div class="d-flex align-items-center mb-2">
                                                     <!--begin::Details-->
                                                     <div class="me-3">
-                                                        <span class="text-muted fs-7 mb-1">Just now</span>
+                                                        <span class="text-muted fs-7 mb-1" th:text="${#temporals.format(c.timestamp, 'yyyy-MM-dd HH:mm:ss')}"></span>
                                                         <a href="#"
                                                            class="fs-5 fw-bolder text-gray-900 text-hover-primary ms-1"
                                                            th:text="${c.sender.name}"></a>
@@ -241,7 +243,8 @@
 
                                                     <!--begin::Avatar-->
                                                     <div class="symbol  symbol-35px symbol-circle ">
-                                                        <img alt="Pic" src="/img/default.png"/>
+                                                        <img th:if="${#strings.isEmpty(c.sender.originFname)}" src="/img/default.png" alt="image"/>
+                                                        <img th:if="${!#strings.isEmpty(c.sender.originFname)}" th:src="@{'/profile/' + ${c.sender.originFname}}" alt="image"/>
                                                     </div>
                                                     <!--end::Avatar-->
                                                 </div>
@@ -354,7 +357,8 @@
                                         <div class="d-flex align-items-center">
                                             <!--begin::Avatar-->
                                             <div class="symbol symbol-35px symbol-circle">
-                                                <img alt="Pic" src="/img/default.png"/>
+                                                <img th:if="${#strings.isEmpty(m.originFname)}" src="/img/default.png" alt="image"/>
+                                                <img th:if="${!#strings.isEmpty(m.originFname)}" th:src="@{'/profile/' + ${m.originFname}}" alt="image"/>
                                                 <!-- <span class="symbol-label bg-light-danger text-danger fw-bold">M</span> -->
                                             </div>
                                             <!--end::Avatar-->

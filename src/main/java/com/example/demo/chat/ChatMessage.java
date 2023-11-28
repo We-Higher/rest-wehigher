@@ -3,6 +3,9 @@ package com.example.demo.chat;
 import com.example.demo.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,4 +28,6 @@ public class ChatMessage {
     @ManyToOne
     private Member sender; // 메시지 보낸사람
     private String message; // 메시지
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp; // 보낸시간
 }
