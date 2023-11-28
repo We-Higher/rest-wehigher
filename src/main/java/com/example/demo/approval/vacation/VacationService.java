@@ -1,7 +1,7 @@
 package com.example.demo.approval.vacation;
 
 import com.example.demo.member.MemberDto;
-import com.example.demo.schedule.ScheduleService;
+import com.example.demo.member.MemberService;
 
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -29,7 +30,7 @@ public class VacationService {
     private ScheduleDao sdao;
     
     @Autowired
-    private ScheduleService sservice;
+    private MemberService mservice;
     
     public static void init(HttpServletResponse response) {
         response.setContentType("text/html; charset=utf-8");
@@ -72,6 +73,16 @@ public class VacationService {
             String endDateString = v.getEndDate() + "T18:00:00.000Z";
     		LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
             LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+            
+            //기안자 연차일 감소
+            MemberDto mdto2 = mservice.getMember(dto.getMember().getUsername());
+            long daysBetween = ChronoUnit.DAYS.between(startDate, endDate);
+            int remain = (int) daysBetween;
+            System.out.println("remain = " + remain);
+            mdto2.setRemain(mdto2.getRemain() - remain - 1);
+            mservice.save(mdto2);
+            
+            //캘린더에 추가
             ScheduleDto sdto = ScheduleDto.builder()
                     .title(dto.getMember().getName() + "" + dto.getMember().getCompanyRankName() + "휴가").startDate(startDate).endDate(endDate)
                     .build();
