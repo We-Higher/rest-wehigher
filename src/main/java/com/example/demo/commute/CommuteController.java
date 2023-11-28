@@ -168,6 +168,10 @@ public class CommuteController {
             cdto.setStartTime(formattedTime2);
             cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(), mdto.getMonthMember()));
             cservice.save(cdto);
+            init(response);
+            PrintWriter out = response.getWriter();
+            out.write("<script>alert('" + "출근이 정상적으로 처리되었습니다." + "');location.href='" + "/main" + "';</script>");
+            out.flush();
         } else {
             init(response);
             PrintWriter out = response.getWriter();
@@ -197,6 +201,10 @@ public class CommuteController {
             System.out.println("test " + cdto);
             cdto.setMember(new Member(mdto.getId(), mdto.getUsername(), mdto.getPwd(), mdto.getName(), mdto.getEmail(), mdto.getPhone(), mdto.getAddress(), mdto.getCompanyName(), mdto.getDeptCode(), mdto.getDeptName(), mdto.getCompanyRank(), mdto.getCompanyRankName(), mdto.getNewNo(), mdto.getComCall(), mdto.getIsMaster(), mdto.getStatus(), mdto.getCstatus(), mdto.getOriginFname(), mdto.getThumbnailFname(), mdto.getNewMemNo(), mdto.getRemain(), mdto.getMonthMember()));
             cservice.save(cdto);
+            init(response);
+            PrintWriter out = response.getWriter();
+            out.write("<script>alert('" + "퇴근이 정상적으로 처리되었습니다." + "');location.href='" + "/main" + "';</script>");
+            out.flush();
         } else {
 
             init(response);
