@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	$("#approvalList1").click(function() {
-		var width = 450;
-		var height = 600;
+		var width = 600;
+		var height = 700;
 		var left = (window.innerWidth - width) / 2;
 		var top = (window.innerHeight - height) / 2;
 
@@ -9,8 +9,8 @@ $(document).ready(function() {
 	});
 
 	$("#approvalList2").click(function() {
-		var width = 450;
-		var height = 600;
+		var width = 600;
+		var height = 700;
 		var left = (window.innerWidth - width) / 2;
 		var top = (window.innerHeight - height) / 2;
 

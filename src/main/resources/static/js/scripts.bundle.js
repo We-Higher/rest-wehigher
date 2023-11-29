@@ -5804,7 +5804,7 @@ $(document).ready(function () {
 
     $("#vacation").click(function () {
         var width = 830;
-        var height = 750;
+        var height = 780;
         var left = (window.innerWidth - width) / 2;
         var top = (window.innerHeight - height) / 2;
 
@@ -5820,23 +5820,6 @@ $(document).ready(function () {
 
         window.open("/commute/editRequest?commuteNum=" + commuteNum, "editRequest_window", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top + ",history=no,resizable=no,status=no,scrollbars=yes,menubar=no");
     })
-
-    // 첫 번째 폼 숨기기
-    // $("#textOption").hide();
-
-    // 선택 옵션에 따라 폼 변경
-    // $("select[name='type']").change(function () {
-    //     var selectedOption = $(this).val();
-    //
-    //     if (selectedOption === 'basicDate') {
-    //         $("#dateOption").show();
-    //         $("#textOption").hide();
-    //     } else {
-    //         $("#dateOption").hide();
-    //         $("#textOption").show();
-    //     }
-    // })
-
 });
 
 
