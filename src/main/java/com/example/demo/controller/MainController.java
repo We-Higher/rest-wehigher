@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.board.BoardService;
 import com.example.demo.board.Notify;
-import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
 import jakarta.servlet.http.HttpSession;
@@ -18,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -29,7 +27,6 @@ public class MainController {
     BoardService bservice;
     @Autowired
     MemberService mservice;
-
 
     @RequestMapping("/")
     public String Home(HttpSession session) {
@@ -59,5 +56,4 @@ public class MainController {
         map.addAttribute("monthMemlist", monthMemlist);
         return "main";
     }
-
 }
