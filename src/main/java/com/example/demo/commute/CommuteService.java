@@ -3,10 +3,7 @@ package com.example.demo.commute;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,7 +32,7 @@ public class CommuteService {
 
 
     public ArrayList<CommuteDto> getAll() {
-        ArrayList<Commute> list = (ArrayList<Commute>) cdao.findAll();
+        ArrayList<Commute> list = (ArrayList<Commute>) cdao.findAll(Sort.by(Sort.Direction.DESC, "commuteNum"));
         ArrayList<CommuteDto> list2 = new ArrayList<>();
         for (Commute c : list) {
             list2.add(new CommuteDto(c.getCommuteNum(), c.getMember(), c.getBasicDate(), c.getStartTime(), c.getEndTime(), c.getReason(), c.getEditStartTime(), c.getEditEndTime(), c.getEditBasicDate()));
@@ -49,7 +46,7 @@ public class CommuteService {
     }
 
     public Page<CommuteDto> getByOption(String type, String option, int page) {
-        Pageable pageable = PageRequest.of(page, 10); // size는 한 페이지에 표시할 데이터 수를 지정합니다.
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "commuteNum")); // size는 한 페이지에 표시할 데이터 수를 지정합니다.
         Page<Commute> list;
         if (Objects.equals("basicDate", type)) {
             list = cdao.findByBasicDateLike(option, pageable);

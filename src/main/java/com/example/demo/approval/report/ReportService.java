@@ -5,6 +5,7 @@ import com.example.demo.member.MemberDto;
 import jakarta.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,7 +30,7 @@ public class ReportService {
     }
 
     public ArrayList<ReportDto> getAll() {
-        ArrayList<Report> list = (ArrayList<Report>) dao.findAll();
+        ArrayList<Report> list = (ArrayList<Report>) dao.findAll(Sort.by(Sort.Direction.DESC, "reportNum"));
         ArrayList<ReportDto> list2 = new ArrayList<>();
         for (Report r : list) {
             list2.add(new ReportDto(r.getReportNum(), r.getMember(), r.getTitle(), r.getContent(), r.getWdate(), r.getServiceLife(), r.getClassification(), r.getStatus(), r.getRstatus(), r.getApproval1(),r.getApproval2(), r.getApproval1rank(), r.getApproval2rank(), r.getApp1username(), r.getApp2username()));

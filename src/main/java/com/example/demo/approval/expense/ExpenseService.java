@@ -2,10 +2,9 @@ package com.example.demo.approval.expense;
 
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberDto;
-
 import jakarta.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class ExpenseService {
     }
 
     public ArrayList<ExpenseDto> getAll(){
-        ArrayList<Expense> list = (ArrayList<Expense>) dao.findAll();
+        ArrayList<Expense> list = (ArrayList<Expense>) dao.findAll(Sort.by(Sort.Direction.DESC, "expenseNum"));
         ArrayList<ExpenseDto> list2 = new ArrayList<>();
         for(Expense e : list){
             list2.add(new ExpenseDto(e.getExpenseNum(),e.getMember(),e.getTitle(),e.getContent(),e.getWdate(),e.getCategory(),e.getDetail(),e.getSum(),e.getNote(),e.getStatus(), e.getRstatus(), e.getApproval1(),e.getApproval2(), e.getApproval1rank(), e.getApproval2rank(), e.getApp1username(), e.getApp2username()));

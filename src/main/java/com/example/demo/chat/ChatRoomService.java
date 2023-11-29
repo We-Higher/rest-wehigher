@@ -2,6 +2,7 @@ package com.example.demo.chat;
 
 import com.example.demo.member.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class ChatRoomService {
     }
 
     public List<ChatRoom> getByParticipantId(long participantId) {
-        return chatRoomDao.findByParticipants_Id(participantId);
+        return chatRoomDao.findByParticipants_Id(participantId, Sort.by(Sort.Direction.DESC, "id"));
     }
 
     public ChatRoom getById(int id) {
