@@ -178,6 +178,6 @@ public class MeetingroomController {
     //화상회의 접속
     @GetMapping("/meeting")
     public String room() {
-        return "/meetingroom/meeting";
+        return "meetingroom/meeting";
     }
 }

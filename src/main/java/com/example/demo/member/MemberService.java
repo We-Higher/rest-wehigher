@@ -48,10 +48,15 @@ public class MemberService implements UserDetailsService {
     }
 
     public MemberDto getMember(String username) {
-        Member m = dao.findByUsername(username).orElseThrow(() ->
-                new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+        Member m = dao.findByUsername(username).orElse(null);
+        if (m == null) {
+            // throw new RuntimeException("사용자를 찾을 수 없습니다.");
+            System.err.println("사용자를 찾을 수 없습니다.");
+            return null;
+        }
         return new MemberDto().toDto(m);
     }
+
 
     public MemberDto getById(long id) {
         Member m = dao.getById(id);
