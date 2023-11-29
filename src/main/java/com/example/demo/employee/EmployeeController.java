@@ -36,7 +36,7 @@ public class EmployeeController {
         map.addAttribute("paging", paging);
         ArrayList<MemberDto> list = mservice.getAll();
         map.addAttribute("list", list);
-        return "/employee/list";
+        return "employee/list";
     }
 
     // 옵션으로 검색
@@ -48,7 +48,7 @@ public class EmployeeController {
         map.addAttribute("paging", paging);
         map.addAttribute("type", type);
         map.addAttribute("option", option);
-        return "/employee/list";
+        return "employee/list";
     }
 }
 

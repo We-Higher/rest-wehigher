@@ -63,7 +63,7 @@ public class BoardController {
         map.addAttribute("paging", paging);
         map.addAttribute("type", type);
         map.addAttribute("option", option);
-        return "/board/list";
+        return "board/list";
     }
 
     //공지사항 옵션으로 검색
@@ -76,7 +76,7 @@ public class BoardController {
         map.addAttribute("paging", paging);
         map.addAttribute("type", type);
         map.addAttribute("option", option);
-        return "/board/notify";
+        return "board/notify";
     }
 
     //작성폼
@@ -88,7 +88,7 @@ public class BoardController {
         MemberDto mdto = mservice.getMember(principal.getName());
         map.addAttribute("date", date);
         map.addAttribute("name", mdto.getName());
-        return "/board/add";
+        return "board/add";
     }
 
     //공지사항 작성폼
@@ -97,7 +97,7 @@ public class BoardController {
         DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = LocalDateTime.now().format(formatter1);
         map.addAttribute("date", date);
-        return "/board/notifyadd";
+        return "board/notifyadd";
     }
 
     //게시글 작성

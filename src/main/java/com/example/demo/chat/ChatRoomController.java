@@ -77,7 +77,7 @@ public class ChatRoomController {
 
         model.addAttribute("chatRoom", chatRoom);
         model.addAttribute("clist", clist);
-        return "/chat/roomdetail";
+        return "chat/roomdetail";
     }
 
     // 특정 채팅방 조회
