@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -94,7 +95,7 @@ public class MemberService implements UserDetailsService {
     }
 
     public ArrayList<MemberDto> getAll() {
-        ArrayList<Member> list = (ArrayList<Member>) dao.findAll();
+        ArrayList<Member> list = (ArrayList<Member>) dao.findAll(Sort.by(Sort.Direction.DESC, "companyRank"));
         ArrayList<MemberDto> list2 = new ArrayList<>();
         for (Member m : list) {
             list2.add(new MemberDto(m.getId(), m.getUsername(), m.getPwd(), m.getName(), m.getEmail(), m.getPhone(), m.getAddress(), m.getCompanyName(), m.getDeptCode(), m.getDeptName(), m.getCompanyRank(), m.getCompanyRankName(), m.getNewNo(), m.getComCall(), m.getIsMaster(), m.getStatus(), m.getCstatus(), m.getOriginFname(), m.getThumbnailFname(), m.getNewMemNo(), m.getRemain(),m.getMonthMember(), null));
@@ -113,11 +114,11 @@ public class MemberService implements UserDetailsService {
     }
 
     public ArrayList<Member> getByIdNot(Long id) {
-        return dao.findByIdNot(id);
+        return dao.findByIdNot(id, Sort.by(Sort.Direction.DESC, "companyRank"));
     }
 
     public Page<Member> getList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "companyRank"));
         return this.dao.findAll(pageable);
     }
 

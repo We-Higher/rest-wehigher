@@ -1,6 +1,7 @@
 package com.example.demo.chat;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,6 @@ public class ChatMessageService {
     }
 
     public List<ChatMessage> getByRoomId(int roomId) {
-        return messageDao.findByRoom_Id(roomId);
+        return messageDao.findByRoom_Id(roomId, Sort.by(Sort.Direction.ASC, "id"));
     }
 }

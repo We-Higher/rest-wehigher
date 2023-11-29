@@ -14,7 +14,7 @@ $(document).ready(function () {
                 $('#chatrooms-sub-header').text(`${chatrooms.length} 개`)
                 $('#chatrooms').empty();
                 $.each(chatrooms, function (index, item) {
-                    $('#chatrooms').append(makeRoom(item));
+                    $('#chatrooms').prepend(makeRoom(item));
                 });
             });
     }

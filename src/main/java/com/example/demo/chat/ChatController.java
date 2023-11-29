@@ -25,8 +25,6 @@ public class ChatController {
     @PostMapping("/chat/message/add")
     @ResponseBody
     public ChatMessage addMessage(ChatMessage chatMessage, ModelMap map) {
-        System.out.println("map.get(\"timestamp\") = " + map.get("timestamp"));
-        System.out.println("chatMessage.getTimestamp() = " + chatMessage.getTimestamp());
         return chatMessageService.create(chatMessage);
     }
 }

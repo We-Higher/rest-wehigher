@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -37,7 +38,7 @@ public class BoardService {
 
     // 전체검색. dao.findAll()
     public ArrayList<BoardDto> getAll() {
-        List<Board> list = dao.findAll();
+        List<Board> list = dao.findAll(Sort.by(Sort.Direction.DESC, "num"));
         ArrayList<BoardDto> list2 = new ArrayList<>();
         for (Board b : list) {
             list2.add(new BoardDto(b.getNum(), b.getWdate(), b.getUdate(), b.getMember(), b.getTitle(), b.getContent(), b.getCnt()));
@@ -47,7 +48,7 @@ public class BoardService {
 
     // 공지사항 전체검색. ndao.findAll()
     public ArrayList<NotifyDto> getAllnotify() {
-        List<Notify> list = ndao.findAll();
+        List<Notify> list = ndao.findAll(Sort.by(Sort.Direction.DESC, "num"));
         ArrayList<NotifyDto> list2 = new ArrayList<>();
         for (Notify b : list) {
             list2.add(new NotifyDto(b.getNum(), b.getWdate(), b.getUdate(), b.getMember(), b.getTitle(), b.getContent(), b.getCnt()));
@@ -57,7 +58,7 @@ public class BoardService {
 
     // 옵션으로 검색
     public Page<BoardDto> getByOption(String type, String option, int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "num"));
         Page<Board> list;
         if (Objects.equals("name", type)) {
             list = dao.findByMemberNameLike("%" + option + "%", pageable);
@@ -71,7 +72,7 @@ public class BoardService {
 
     // 공지사항 옵션으로 검색
     public Page<NotifyDto> getByOption2(String type, String option, int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "num"));
         Page<Notify> list;
         if (Objects.equals("name", type)) {
             list = ndao.findByMemberNameLike("%" + option + "%", pageable);
@@ -146,12 +147,12 @@ public class BoardService {
     }
 
     public Page<Board> getBoardList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "num"));
         return this.dao.findAll(pageable);
     }
 
     public Page<Notify> getNotifyList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "num"));
         return this.ndao.findAll(pageable);
     }
 

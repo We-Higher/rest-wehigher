@@ -11,6 +11,7 @@ import com.example.demo.schedule.ScheduleDao;
 import com.example.demo.schedule.ScheduleDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class VacationService {
     }
 
     public ArrayList<VacationDto> getAll() {
-        ArrayList<Vacation> list = (ArrayList<Vacation>) dao.findAll();
+        ArrayList<Vacation> list = (ArrayList<Vacation>) dao.findAll(Sort.by(Sort.Direction.DESC, "vacationNum"));
         ArrayList<VacationDto> list2 = new ArrayList<>();
         for (Vacation v : list) {
             list2.add(new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(), v.getWdate(), v.getStatus(), v.getRstatus(), v.getApproval1(), v.getApproval2(), v.getApproval1rank(), v.getApproval2rank(), v.getApp1username(), v.getApp2username()));

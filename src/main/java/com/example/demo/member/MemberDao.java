@@ -2,6 +2,7 @@ package com.example.demo.member;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,5 +20,5 @@ public interface MemberDao extends JpaRepository<Member, Long> {
     Page<Member> findByDeptNameLike(String deptName, Pageable pageable);  //부서명으로 검색
 
     // 특정 사용자 제외 조회(채팅 초대)
-    ArrayList<Member> findByIdNot(Long id);
+    ArrayList<Member> findByIdNot(Long id, Sort sort);
 }

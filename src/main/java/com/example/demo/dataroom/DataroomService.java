@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,7 +44,7 @@ public class DataroomService {
     }
 
     public ArrayList<DataroomDto> getAll() {
-        List<Dataroom> l = dao.findAll();
+        List<Dataroom> l = dao.findAll(Sort.by(Sort.Direction.DESC, "num"));
         ArrayList<DataroomDto> list = new ArrayList<DataroomDto>();
         for (Dataroom d : l) {
             list.add(new DataroomDto(d.getNum(), d.getMember(), d.getWdate(), d.getTitle(), d.getContent(),
@@ -71,7 +72,7 @@ public class DataroomService {
 
     //    select로 검색
     public Page<DataroomDto> getSearchReference(ReferenceSearch referenceSearch, int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "num"));
         Page<Dataroom> list;
         if (Objects.equals("writer", referenceSearch.getSelect())) {
             list = dao.findByMemberNameContains(referenceSearch.getSearch(), pageable);
@@ -85,7 +86,7 @@ public class DataroomService {
 
     //페이지
     public Page<Dataroom> getList(int page) {
-        Pageable pageable = PageRequest.of(page, 10);
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "num"));
         return this.dao.findAll(pageable);
     }
 
