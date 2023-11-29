@@ -24,12 +24,12 @@
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
         <div class="container px-4 py-5">
             <div class="card card0">
-                <div class="d-flex flex-lg-row flex-column-reverse">
+                <div class="d-flex flex-lg-row flex-column">
                     <div class="card card1">
                         <div class="row justify-content-center my-auto">
-                            <div class="col-md-8 col-10 my-5">
-                                <div class="row justify-content-center px-3 mb-3">
-                                    <img id="logo" src="/img/logo.png" class="img-fluid" alt="Logo" style="width: 250px; height: 150px;">
+                            <div class="col-md-8 col-9 my-5">
+                                <div class="row justify-content-center mb-3">
+                                    <img id="logo" src="/img/logo.png" class="img-fluid" alt="Logo" style="width: 100%; height: auto;">
                                 </div>
                                 <div class="form-group">
                                     <label class="form-control-label text-muted">Username</label>
@@ -45,10 +45,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card card2">
-                        <div class="my-auto mx-md-5 px-md-5 right">
-                            <h3 class="text-white">We are more than just a company</h3>
-                            <small class="text-white">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</small>
+                    <div class="card card2" style="column-fill: auto;">
+                        <div class="my-auto mx-md-20 px-md-20 right">
+                            <h2 class="text-info">For the future of innovation together</h2>
+                            <a class="text-white">We will be partners for a better future with innovative IT solutions.</a>
                         </div>
                     </div>
                 </div>
