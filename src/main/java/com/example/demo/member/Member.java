@@ -102,18 +102,11 @@ public class Member implements UserDetails {
         // 권한들을 담을 빈 리스트
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        if ("admin".equals(username)) {
+        if ("admin".equals(username) || isMaster == 1) {
             authorities.add(new SimpleGrantedAuthority(MemberRole.ADMIN.getValue()));
         } else {
             authorities.add(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
         }
-
-        if (isMaster == 1) {
-            authorities.add(new SimpleGrantedAuthority(MemberRole.ADMIN.getValue()));
-        } else {
-            authorities.add(new SimpleGrantedAuthority(MemberRole.USER.getValue()));
-        }
-
 
         return authorities;
     }
