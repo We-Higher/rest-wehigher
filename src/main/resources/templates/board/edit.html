@@ -27,13 +27,7 @@
             </div>
             <div class="card-body">
                 <p class="card-text" id="content" th:text="${b.content}"
-                   style="font-size: 15px; margin-bottom: 50px;"></p>
-                <div class="row">
-                    <div class="col-md-3 ">
-                        <span>첨부파일: </span>
-                        <a class="ml-3" style="display: inline-block; width: auto;"></a>
-                    </div>
-                </div>
+                   style="font-size: 15px; margin-bottom: 50px; white-space: pre-line;"></p>
                 <p class="card-text"><small class="text-muted">게시자: </small>
                     <small class="text-muted" id="writer" th:text="${b.member.name }"></small>
                     <small class="text-muted"> | 게시일: </small>

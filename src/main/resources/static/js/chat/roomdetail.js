@@ -116,7 +116,7 @@ function makeMessageIn(recv) {
         .append($('<div/>', {class: 'ms-3'})
             .append($('<a/>', {class: 'fs-5 fw-bolder text-gray-900 text-hover-primary me-1'}).attr('href', '#').text(recv.sender))
             .append($('<span/>', {class: 'text-muted fs-7 mb-1'}).text(recv.timestamp)))
-    let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-info text-dark fw-bold mw-lg-400px text-start'}).attr('data-kt-element', 'message-text').text(recv.message)
+    let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-info text-dark fw-bold mw-lg-400px text-start', css: {'white-space': 'pre-line'}}).attr('data-kt-element', 'message-text').text(recv.message)
 
     msgDiv.append(wrapDiv.append(userDiv).append(textDiv))
 
@@ -132,7 +132,7 @@ function makeMessageOut(recv) {
             .append($('<a/>', {class: 'fs-5 fw-bolder text-gray-900 text-hover-primary ms-1'}).attr('href', '#').text(recv.sender)))
         .append($('<div/>', {class: 'symbol  symbol-35px symbol-circle'})
             .append($('<img/>').attr('alt', 'Pic').attr('src', recv.senderProfile)))
-    let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-primary text-dark fw-bold mw-lg-400px text-end'}).attr('data-kt-element', 'message-text').text(recv.message)
+    let textDiv = $('<div/>', {class: 'p-5 rounded bg-light-primary text-dark fw-bold mw-lg-400px text-end', css: {'white-space': 'pre-line'}}).attr('data-kt-element', 'message-text').text(recv.message)
 
     msgDiv.append(wrapDiv.append(userDiv).append(textDiv))
 
