@@ -3,6 +3,7 @@ package com.example.demo.chat;
 import com.example.demo.member.Member;
 import com.example.demo.member.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Controller
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/chat")
 public class ChatRoomController {
 
