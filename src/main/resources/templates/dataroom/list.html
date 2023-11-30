@@ -116,8 +116,8 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="i: ${paging}">
-                                        <td th:text="${i.num}"></td>
+                                    <tr th:each="i, loop: ${paging}">
+                                        <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
                                         <td><a th:href="@{/dataroom/detail(num=${i.num})}" th:text="${i.title }"></a>
                                         </td>
                                         <td th:text="${i.member.name}"></td>

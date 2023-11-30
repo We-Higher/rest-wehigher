@@ -115,8 +115,8 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr th:each="b:${paging}">
-                                        <td th:text="${b.num}"></td>
+                                    <tr th:each="b, loop:${paging}">
+                                        <td th:text="${paging.getTotalElements - (paging.number * paging.size) - loop.index}"></td>
                                         <td th:text="${b.member.name }"></td>
                                         <td><a th:href="@{/board/notifyedit(num=${b.num })}"
                                                th:text="${b.title }"></a><span
