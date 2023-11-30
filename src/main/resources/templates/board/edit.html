@@ -1,63 +1,65 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorate="~{layout}">
+      layout:decorate="~{layout}">
 <div layout:fragment="content">
-		<div class="container py-4">
-			<div class="text-end mt-5 ">
-				<a href="/board/list" class="btn btn-secondary" style="font-size: 13px;">목록</a>
-			</div>
-			<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-			<p class="card-text" style="font-size: 20px;"><strong>[자유게시판]</strong></p>
-			<div class="card mt-5 mb-3">
-				<div class="card-header">
-					<h2 class="card-title" id="title">[[${b.title}]]</h2>
-				</div>
-				<div class="card-body">
-					<p class="card-text" id="content" th:text="${b.content}"
-						style="font-size: 15px; margin-bottom: 50px;"></p>
-					<div class="row">
-						<div class="col-md-3 ">
-							<span>첨부파일: </span>
-							<a class="ml-3" style="display: inline-block; width: auto;"></a>
-						</div>
-					</div>
-					<p class="card-text"><small class="text-muted">게시자: </small>
-						<small class="text-muted" id="writer" th:text="${b.member.name }"></small>
-						<small class="text-muted"> | 게시일: </small>
-						<small class="text-muted" id="wdate" th:text="${b.wdate }"></small>
-						<input type="hidden" id="bnum" name="bnum" th:value="${b.num}">
-						<input type="hidden" id="mname" name="mname" th:value="${#authentication.principal.name}">
-					</p>
-				</div>
-			</div>
-				<div class="comment-count"><strong>댓글 &nbsp;</strong><span id="count">0</span></div>
-
-
-			<div class="comment-box" id="commentbox">
-
+    <div class="container py-4">
+        <div class="text-end mt-5 ">
+            <a href="/board/list" class="btn btn-secondary" style="font-size: 13px;">목록</a>
+        </div>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <p class="card-text" style="font-size: 20px;"><strong>[자유게시판]</strong></p>
+        <div class="card mt-5 mb-3">
+            <div class="card-header">
+                <h2 class="card-title" id="title">[[${b.title}]]</h2>
             </div>
+            <div class="card-body">
+                <p class="card-text" id="content" th:text="${b.content}"
+                   style="font-size: 15px; margin-bottom: 50px;"></p>
+                <div class="row">
+                    <div class="col-md-3 ">
+                        <span>첨부파일: </span>
+                        <a class="ml-3" style="display: inline-block; width: auto;"></a>
+                    </div>
+                </div>
+                <p class="card-text"><small class="text-muted">게시자: </small>
+                    <small class="text-muted" id="writer" th:text="${b.member.name }"></small>
+                    <small class="text-muted"> | 게시일: </small>
+                    <small class="text-muted" id="wdate" th:text="${b.wdate }"></small>
+                    <input type="hidden" id="bnum" name="bnum" th:value="${b.num}">
+                    <input type="hidden" id="mname" name="mname" th:value="${#authentication.principal.name}">
+                </p>
+            </div>
+        </div>
+        <div class="comment-count"><strong>댓글 &nbsp;</strong><span id="count">0</span></div>
 
 
-				<!-- <span class="c-icon"><i class="fa-solid fa-user"></i>  -->
-				<div class="comment-name">
-<!--					<span class="anonym">작성자 :-->
-						<input type="hidden" class="form-control" id="com_writer" placeholder="이름" name="com_writer"
-							th:value="${#authentication.principal.name}" readonly style="width: 250px; border:none;">
-<!--					</span>-->
-				</div>
+        <div class="comment-box" id="commentbox">
 
-				<!-- </span> -->
-				<!--<img src="/익명.jpg" width ="50px" alt="My Image"><!-->
-				<div class="mb-3 comment-sbox">
-					<textarea class="form-control comment-input" id="com_content" cols="80" rows="2" name="com_content" placeholder="댓글을 입력하세요."></textarea>
-				</div>
+        </div>
 
-				<div class="regBtn">
-					<button class="btn btn-primary mb-3" id="Comment_regist">등 록</button>
-				</div>
+
+        <!-- <span class="c-icon"><i class="fa-solid fa-user"></i>  -->
+        <div class="comment-name">
+            <!--					<span class="anonym">작성자 :-->
+            <input type="hidden" class="form-control" id="com_writer" placeholder="이름" name="com_writer"
+                   th:value="${#authentication.principal.name}" readonly style="width: 250px; border:none;">
+            <!--					</span>-->
+        </div>
+
+        <!-- </span> -->
+        <!--<img src="/익명.jpg" width ="50px" alt="My Image"><!-->
+        <div class="mb-3 comment-sbox">
+    <textarea class="form-control comment-input" id="com_content" cols="80" rows="2" name="com_content"
+              placeholder="댓글을 입력하세요."></textarea>
+        </div>
+
+        <div class="regBtn text-end">
+            <button class="btn btn-primary mb-3" style="right:10%;" id="Comment_regist">등 록</button>
+        </div>
+
+    </div>
 </div>
 <th:block layout:fragment="script">
-	<script src="/board/js/board_form.js" type='text/javascript'></script>
+    <script src="/board/js/board_form.js" type='text/javascript'></script>
 </th:block>
-
 </html>
