@@ -3,6 +3,8 @@ package com.example.demo.chat;
 import com.example.demo.member.Member;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -26,6 +28,8 @@ public class ChatMessage {
     @ManyToOne
     private ChatRoom room; // 채팅방
     @ManyToOne
+    @JoinColumn(nullable=false)//member(id)에 조인. 널 허용 안함
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member sender; // 메시지 보낸사람
     private String message; // 메시지
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
