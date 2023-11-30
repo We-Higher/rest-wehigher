@@ -8,5 +8,7 @@ import java.util.List;
 
 @Repository
 public interface ScheduleDao extends JpaRepository<Schedule, Integer> {
-    List<Schedule> findByMemberOrMemberId(Member member, Long adminId);
+    List<Schedule> findByMember(Member member);
+
+    List<Schedule> findByCnt(int cnt);
 }

@@ -3,18 +3,10 @@ package com.example.demo.schedule;
 import com.example.demo.member.Member;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-
-import com.example.demo.member.Member;
 
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +45,7 @@ public class ScheduleService {
 
     //member 리스트
     public ArrayList<ScheduleDto> getByMember(Member member){
-        List<Schedule> ms=dao.findByMemberOrMemberId(member, 1L);
+        List<Schedule> ms=dao.findByMember(member);
         ArrayList<ScheduleDto> list =new ArrayList<>();
         for(Schedule entity:ms) {
             list.add(new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(), entity.getCnt()));
@@ -65,5 +57,15 @@ public class ScheduleService {
     public void del(int id) {
     		
     	dao.deleteById(id);
+    }
+
+    // cnt(isNotice)만 찾기
+    public ArrayList<ScheduleDto> getByIsNotice(int cnt){
+        List<Schedule> ms = dao.findByCnt(cnt);
+        ArrayList<ScheduleDto> list =new ArrayList<>();
+        for(Schedule entity:ms) {
+            list.add(new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(), entity.getCnt()));
+        }
+        return list;
     }
 }

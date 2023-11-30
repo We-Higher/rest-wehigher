@@ -56,7 +56,7 @@ public class ScheduleController {
 			return jsonArr;
 		} else {
 			ArrayList<ScheduleDto> listAll = service.getByMember(member);
-			ArrayList<ScheduleDto> listAll2 = service.getByMember(null);
+			ArrayList<ScheduleDto> listAll2 = service.getByIsNotice(1);
 
 			JSONObject jsonObj = new JSONObject();
 			JSONArray jsonArr = new JSONArray();
@@ -105,6 +105,9 @@ public class ScheduleController {
 
 		ScheduleDto dto = ScheduleDto.builder().member(member).title(title).startDate(startDate).endDate(endDate)
 				.build();
+		if (member.getIsMaster() == 1) {
+			dto.setCnt(1);
+		}
 		ScheduleDto s = service.save(dto);
 
 		Map<String, String> map = new HashMap<>();
@@ -122,20 +125,15 @@ public class ScheduleController {
 		Member loginMember = (Member) authentication.getPrincipal();
 		ModelMap map = new ModelMap();
 		boolean flag = true;
-		if (entity.getCnt() == 0) {
-			service.del(id);
+
+		if (loginMember.getIsMaster() == 0) {
+			String msg = "관리자만 삭제 가능합니다.";
+			map.put("msg", msg);
+			flag = false;
 		} else {
-
-			if (loginMember.getIsMaster() == 0) {
-
-				String msg = "관리자만 삭제 가능합니다.";
-				map.put("msg", msg);
-				flag = false;
-			} else {
-
-				service.del(id);
-			}
+			service.del(id);
 		}
+
 		map.put("flag", flag);
 		return map;
 	}
@@ -162,24 +160,16 @@ public class ScheduleController {
 		Member member = (Member) authentication.getPrincipal();
 
 		ScheduleDto dto = ScheduleDto.builder().member(member).id(id).title(origin.getTitle()).startDate(startDate)
-				.endDate(endDate).build();
+				.endDate(endDate).cnt(origin.getCnt()).build();
 
-		if (origin.getCnt() == 0) {
-			origin = service.save(dto);
-
+		if (member.getIsMaster() == 0) {
+			String msg = "관리자만 변경 가능합니다.";
+			map.put("msg", msg);
+			flag = false;
 		} else {
-
-			if (member.getIsMaster() == 0) {
-
-				String msg = "관리자만 변경 가능합니다.";
-				map.put("msg", msg);
-				flag = false;
-				
-			} else {
-
-				ScheduleDto s = service.save(dto);
-			}
+			ScheduleDto s = service.save(dto);
 		}
+
 		map.put("flag", flag);
 		return map;
 	}
