@@ -64,20 +64,19 @@ $(document).ready(function() {
 						console.log(list[i].content);
 						console.log(list[i].member.name);
 
-
 						comment_html += '<div class="card mb-3">';
 						comment_html += '<div class="card-body">';
 						comment_html += "<span id='com_writer'><strong>" + writer + "</strong></span><br/>";
-						comment_html += "<span id='com-content'>" + content + "</span><br>";
+						comment_html += "<span id='com-content'>" + content + "</span>";
 
-						console.log(comment_html)
+						console.log(comment_html);
 
 						if (writer == mname) {
-							comment_html += "<span class='delete btn btn-danger btn-sm' style='cursor:pointer;' data-id =" + rnum + ">삭제</span><br></div></div>";
-						} else {
-							comment_html += "</div></div>";
+							comment_html += "<button class='delete' style='cursor:pointer; position:absolute; border: none; background-color: white; top:10%; right:1%;' data-id =" + rnum + "><i class='bi bi-x-square' style='color: red;'></i></button>";
 						}
-						console.log(comment_html)
+
+						comment_html += "</div></div>";
+						console.log(comment_html);
 					}
 
 					// $(".comment_box").html(comment_html);
@@ -85,7 +84,7 @@ $(document).ready(function() {
 
 				} else {
 					var comment_html = "<div>등록된 댓글이 없습니다.</div>";
-					// $(".comment_box").html(comment_html);
+					$('#count').html(0);
 					$("#commentbox").html(comment_html);
 				}
 
