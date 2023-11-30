@@ -53,8 +53,8 @@ $(document).ready(function() {
 			success: function(data) {
 				if (data.total > 0) {
 					var list = data.list;
-					var comment_html = "<div>";
 
+					var comment_html = ''
 					$('#count').html(data.total);
 					for (var i = 0; i < list.length; i++) {
 						var content = list[i].content;
@@ -64,25 +64,28 @@ $(document).ready(function() {
 						console.log(list[i].content);
 						console.log(list[i].member.name);
 
+
+						comment_html += '<div class="card mb-3">';
+						comment_html += '<div class="card-body">';
 						comment_html += "<span id='com_writer'><strong>" + writer + "</strong></span><br/>";
 						comment_html += "<span id='com-content'>" + content + "</span><br>";
 
 						console.log(comment_html)
 
 						if (writer == mname) {
-							comment_html += "<span id='delete' style='cursor:pointer;' data-id =" + rnum + ">[삭제]</span><br></div><hr>";
+							comment_html += "<span class='delete btn btn-danger btn-sm' style='cursor:pointer;' data-id =" + rnum + ">삭제</span><br></div></div>";
 						} else {
-							comment_html += "</div><hr>";
+							comment_html += "</div></div>";
 						}
 						console.log(comment_html)
 					}
 
-					$(".comment_box").html(comment_html);
+					// $(".comment_box").html(comment_html);
 					$("#commentbox").html(comment_html);
 
 				} else {
 					var comment_html = "<div>등록된 댓글이 없습니다.</div>";
-					$(".comment_box").html(comment_html);
+					// $(".comment_box").html(comment_html);
 					$("#commentbox").html(comment_html);
 				}
 
@@ -93,7 +96,7 @@ $(document).ready(function() {
 		});
 	}
 
-	$(document).on('click', '#delete', function() {
+	$(document).on('click', '.delete', function() {
 		// 클릭 이벤트 발생 시 실행될 코드
 		var rnum = $(this).data('id');
 		console.log(rnum);
