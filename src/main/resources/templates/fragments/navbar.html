@@ -149,8 +149,8 @@
                     <!--end::Menu wrapper-->
                 </div>
                 <!--end::Chat-->
-                <!--begin::Notifications-->
-                <div class="d-flex align-items-center ms-1 ms-lg-3">
+                <!--begin::Mail-->
+                <div class="d-flex align-items-center ms-1 ms-lg-3" th:if="${#authentication.principal.isMaster == 1}">
                     <!--begin::Menu wrapper-->
                     <div class="btn btn-icon btn-active-light-primary position-relative w-30px h-30px w-md-40px h-md-40px"
                          data-bs-toggle="tooltip"
@@ -170,7 +170,7 @@
                     </div>
                     <!--end::Menu wrapper-->
                 </div>
-                <!--end::Notifications-->
+                <!--end::Mail-->
                 <!--begin::User-->
                 <div class="d-flex align-items-center ms-1 ms-lg-3" id="kt_header_user_menu_toggle">
                     <!--begin::Menu wrapper-->

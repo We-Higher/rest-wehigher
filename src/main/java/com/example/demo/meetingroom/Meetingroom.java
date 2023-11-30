@@ -24,6 +24,7 @@ public class Meetingroom {
     private int id;
 
     @ManyToOne
+    @JoinColumn(nullable=false)//member(id)에 조인. 널 허용 안함
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
