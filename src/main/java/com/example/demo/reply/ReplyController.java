@@ -1,38 +1,18 @@
 package com.example.demo.reply;
 
 import com.example.demo.board.Board;
-import com.example.demo.board.BoardDto;
 import com.example.demo.board.BoardService;
-import com.example.demo.commute.Commute;
 import com.example.demo.member.Member;
-import com.example.demo.member.MemberDto;
 import com.example.demo.member.MemberService;
-
-import org.apache.catalina.connector.Request;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.net.http.HttpRequest;
 import java.security.Principal;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -83,7 +63,7 @@ public class ReplyController {
     	Board board = bservice.getBoard2(num);
     	System.out.println("num" + num);
     	System.out.println("content" + content);
-		ReplyDto dto = ReplyDto.builder().num(num).wdate(null).udate(null).board(board).title("").content(content).member(member)
+		ReplyDto dto = ReplyDto.builder().wdate(null).udate(null).board(board).title("").content(content).member(member)
 				.build();
 		ReplyDto r = rservice.saveReply(dto, check);
     	/*c.setContent(content);
