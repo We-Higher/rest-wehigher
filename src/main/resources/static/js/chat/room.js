@@ -61,11 +61,33 @@ $(document).ready(function () {
         let secDiv = $('<div/>', {class: 'd-flex align-items-center flex-row-fluid flex-wrap'})
         let blockDiv = $('<div/>', {class: 'flex-grow-1 me-2'})
             .append($('<a/>', {class: 'text-gray-800 text-hover-primary fs-4 fw-bolder'}).attr('href', `/chat/room/enter/${item.id}`).text(item.roomName))
+        let outBtn = $('<button/>', {class: 'btn btn-danger btn-sm out-room'}).text('나가기').attr('data-room-id', item.id)
+            // .append('<i/>').attr('class', 'bi bi-x-square', 'style', 'color : red;')
         let pDiv = $('<span/>', {class: 'badge fs-6 badge-light fw-bold my-2'}).text(`${item.participants.length} 명`)
 
-        itemDiv.append(secDiv.append(blockDiv).append(pDiv))
+        itemDiv.append(secDiv.append(blockDiv).append(pDiv).append(outBtn))
 
         return itemDiv
+    }
+
+    function outRoom(id) {
+        axios
+            .post('/chat/room/out/' + id,
+                '',
+                {
+                    headers: {
+                        'X-CSRF-TOKEN': csrftoken
+                    }
+                }
+            )
+            .then(function (response) {
+                alert('방을 나갔습니다.')
+                findAllRoom()
+            })
+            .catch(function (response) {
+                console.log(response)
+                alert("나가기 실패!");
+            });
     }
 
     $('#createRoom').on('click', createRoom);
@@ -75,5 +97,17 @@ $(document).ready(function () {
             createRoom();
         }
     });
+
+    // 나가기
+    $(document).on('click', '.out-room', function() {
+        // console.log('나가기')
+        // // console.log(this.data('id'))
+        // console.log(this.id)
+        // console.log($(this).data('roomId'))
+
+        outRoom($(this).data('roomId'))
+    })
     findAllRoom();
+
+
 });

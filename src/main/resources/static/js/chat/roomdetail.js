@@ -76,14 +76,17 @@ function sendMessage() {
 function recvMessage(recv) {
     // messages.unshift({"type":recv.type,"sender":recv.type=='ENTER'?'[알림]':recv.sender,"message":recv.message})
     // $('#messages').append('<li class="list-group-item">' + recv.sender + ' - ' + recv.message + '</li>');
-    console.log('recv!!!!!!')
-    console.log(recv.senderProfile)
-    if (sender === recv.sender) {
+    let scroll = document.querySelector('#messages')
+
+    if (sender == recv.sender) {
         $('#messages').append(makeMessageOut(recv))
     } else {
         $('#messages').append(makeMessageIn(recv))
     }
-    // TODO: scroll
+
+    scroll.scrollTop = parseInt(scroll.scrollHeight);
+
+    // TODO: scroll (완료)
     // TODO: recv객체...
     // TODO: in/out 분기 수정..
 }
@@ -155,6 +158,8 @@ $(document).ready(function () {
         }
     });
 
+    let scroll = document.querySelector('#messages')
+    scroll.scrollTop = parseInt(scroll.scrollHeight);
 
     connect();
 });

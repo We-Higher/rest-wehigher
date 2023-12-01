@@ -88,4 +88,20 @@ public class ChatRoomController {
     public ChatRoom roomInfo(@PathVariable int roomId) {
         return chatRoomDao.getById(roomId);
     }
+
+    // 채팅방 나가기
+    @PostMapping("/room/out/{roomId}")
+    @ResponseBody
+    public boolean roomOut(@PathVariable int roomId) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member loginMember = (Member) authentication.getPrincipal();
+        boolean flag = true;
+
+        ChatRoom chatRoom = chatRoomService.getById(roomId);
+        chatRoom.getParticipants().removeIf(member -> member.getId().equals(loginMember.getId()));
+
+        chatRoomService.edit(chatRoom);
+
+        return flag;
+    }
 }
