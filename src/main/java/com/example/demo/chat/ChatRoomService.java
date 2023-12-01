@@ -27,4 +27,8 @@ public class ChatRoomService {
     public ChatRoom getById(int id) {
         return chatRoomDao.getById(id);
     }
+
+    public ChatRoom edit(ChatRoom chatRoom) {
+        return chatRoomDao.save(chatRoom);
+    }
 }
