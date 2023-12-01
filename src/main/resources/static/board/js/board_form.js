@@ -60,12 +60,15 @@ $(document).ready(function() {
 						var content = list[i].content;
 						var writer = list[i].member.name;
 						var rnum = list[i].num;
+						var fname = list[i].member.originFname;
 
 						console.log(list[i].content);
 						console.log(list[i].member.name);
+						console.log(list[i].member.originFname);
 
 						comment_html += '<div class="card mb-3">';
 						comment_html += '<div class="card-body">';
+						comment_html += '<img src="/profile/' + fname + '" style="width: 40px; height: 40px; border-radius: 100px; margin-right: 10px; margin-bottom: 10px;">';
 						comment_html += "<span id='com_writer'><strong>" + writer + "</strong></span><br/>";
 						comment_html += "<span id='com-content'>" + content + "</span>";
 
