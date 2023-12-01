@@ -82,10 +82,11 @@ public class VacationService {
             System.out.println("remain = " + remain);
             mdto2.setRemain(mdto2.getRemain() - remain - 1);
             mservice.save(mdto2);
-            
+            /*ScheduleDto dto = ScheduleDto.builder().member(member).title(title).startDate(startDate).endDate(endDate)
+                    .build();*/
             //캘린더에 추가
             ScheduleDto sdto = ScheduleDto.builder()
-                    .title(dto.getMember().getName() + "" + dto.getMember().getCompanyRankName() + "휴가").startDate(startDate).endDate(endDate)
+            		.member(dto.getMember()).title(dto.getMember().getName() + "" + dto.getMember().getCompanyRankName() + "휴가").startDate(startDate).endDate(endDate)
                     .build();
             sdao.save(new Schedule(sdto.getId(), sdto.getMember(), sdto.getTitle(), sdto.getStartDate(), sdto.getEndDate(), 1));
             return new VacationDto(v.getVacationNum(), v.getMember(), v.getType(), v.getStartDate(), v.getEndDate(), v.getReason(), v.getWdate(), v.getStatus(), v.getRstatus(), v.getApproval1(), v.getApproval2(), v.getApproval1rank(), v.getApproval2rank(), v.getApp1username(), v.getApp2username());

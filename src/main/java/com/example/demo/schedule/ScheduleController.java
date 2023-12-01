@@ -55,14 +55,14 @@ public class ScheduleController {
             }
             return jsonArr;
         } else {
-            ArrayList<ScheduleDto> listAll = service.getByMember(member);
-            ArrayList<ScheduleDto> listAll2 = service.getByIsNotice(1);
+            ArrayList<ScheduleDto> listAll = service.getByMemberOrCnt(member, 1);
+            //ArrayList<ScheduleDto> listAll2 = service.getByIsNotice(1);
 
             JSONObject jsonObj = new JSONObject();
             JSONArray jsonArr = new JSONArray();
 
             HashMap<String, Object> hash = new HashMap<>();
-            HashMap<String, Object> hash2 = new HashMap<>();
+            //HashMap<String, Object> hash2 = new HashMap<>();
 
             for (int i = 0; i < listAll.size(); i++) {
                 hash.put("cal_Id", listAll.get(i).getId());
@@ -74,7 +74,7 @@ public class ScheduleController {
                 jsonArr.add(jsonObj);
             }
 
-            for (int i = 0; i < listAll2.size(); i++) {
+            /*for (int i = 0; i < listAll2.size(); i++) {
                 hash2.put("cal_Id", listAll2.get(i).getId());
                 hash2.put("title", listAll2.get(i).getTitle());
                 hash2.put("start", listAll2.get(i).getStartDate());
@@ -82,7 +82,7 @@ public class ScheduleController {
                 hash2.put("check", listAll2.get(i).getCnt());
                 jsonObj = new JSONObject(hash2);
                 jsonArr.add(jsonObj);
-            }
+            }*/
 
             return jsonArr;
         }

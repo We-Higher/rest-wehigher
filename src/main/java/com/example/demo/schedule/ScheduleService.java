@@ -44,8 +44,8 @@ public class ScheduleService {
     }
 
     //member 리스트
-    public ArrayList<ScheduleDto> getByMember(Member member){
-        List<Schedule> ms=dao.findByMember(member);
+    public ArrayList<ScheduleDto> getByMemberOrCnt(Member member, int cnt){
+        List<Schedule> ms=dao.findByMemberOrCnt(member, cnt);
         ArrayList<ScheduleDto> list =new ArrayList<>();
         for(Schedule entity:ms) {
             list.add(new ScheduleDto(entity.getId(), entity.getMember(), entity.getTitle(), entity.getStartDate(), entity.getEndDate(), entity.getCnt()));
